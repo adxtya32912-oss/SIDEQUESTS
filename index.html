@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIDEQUEST</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne+Mono&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage: #8FAE8B;
+    --sage-light: #B5CCB0;
+    --sage-pale: #D4E4D0;
+    --sage-xpale: #EBF2E8;
+    --beige: #E8DFC8;
+    --beige-dark: #C9BA9B;
+    --beige-xdark: #A89878;
+    --cream: #F5F0E8;
+    --black: #1A1A18;
+    --black2: #2C2C28;
+    --gray: #6B6B65;
+    --gray-light: #9B9B92;
+    --white: #FAFAF7;
+    --danger: #C44B2B;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; background:var(--cream); color:var(--black); font-family:'Space Grotesk', sans-serif; overflow:hidden; }
+
+  /* NAV */
+  #app { display:flex; flex-direction:column; height:100vh; max-width:480px; margin:0 auto; background:var(--white); position:relative; box-shadow:0 0 60px rgba(0,0,0,0.08); }
+  #topbar { padding:16px 20px 12px; border-bottom:1px solid var(--beige); display:flex; align-items:center; justify-content:space-between; background:var(--white); flex-shrink:0; }
+  #topbar .logo { font-family:'Syne', sans-serif; font-weight:800; font-size:18px; letter-spacing:0.08em; color:var(--black); }
+  #topbar .logo span { color:var(--sage); }
+  #xp-bar-wrap { height:3px; background:var(--beige); flex-shrink:0; }
+  #xp-bar { height:100%; background:var(--sage); transition:width 0.6s cubic-bezier(.4,0,.2,1); }
+  #level-badge { font-family:'Syne Mono', monospace; font-size:11px; background:var(--sage); color:var(--white); padding:3px 8px; border-radius:20px; }
+
+  /* TABS */
+  #tabs { display:flex; border-bottom:1px solid var(--beige); background:var(--white); flex-shrink:0; overflow-x:auto; scrollbar-width:none; }
+  #tabs::-webkit-scrollbar { display:none; }
+  .tab-btn { flex:0 0 auto; padding:10px 14px; font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:500; letter-spacing:0.05em; color:var(--gray); background:none; border:none; cursor:pointer; position:relative; text-transform:uppercase; white-space:nowrap; transition:color .2s; }
+  .tab-btn.active { color:var(--black); }
+  .tab-btn.active::after { content:''; position:absolute; bottom:0; left:8px; right:8px; height:2px; background:var(--sage); border-radius:2px 2px 0 0; }
+  .tab-btn:hover { color:var(--black2); }
+
+  /* SCREENS */
+  #screens { flex:1; overflow:hidden; position:relative; }
+  .screen { position:absolute; inset:0; overflow-y:auto; padding:20px; opacity:0; pointer-events:none; transform:translateY(8px); transition:opacity .25s ease, transform .25s ease; scrollbar-width:thin; scrollbar-color:var(--beige) transparent; }
+  .screen.active { opacity:1; pointer-events:all; transform:translateY(0); }
+
+  /* QUEST CARDS */
+  .quest-card { background:var(--white); border:1px solid var(--beige); border-radius:12px; padding:16px; margin-bottom:12px; cursor:pointer; transition:all .2s; position:relative; overflow:hidden; }
+  .quest-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--sage); border-radius:3px 0 0 3px; opacity:0; transition:opacity .2s; }
+  .quest-card:hover { border-color:var(--sage-light); transform:translateY(-1px); box-shadow:0 4px 16px rgba(143,174,139,0.12); }
+  .quest-card:hover::before { opacity:1; }
+  .quest-card.completed { background:var(--sage-xpale); border-color:var(--sage-pale); }
+  .quest-card.completed::before { opacity:1; background:var(--sage); }
+  .quest-meta { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+  .cat-tag { font-size:10px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; padding:3px 8px; border-radius:20px; }
+  .cat-ADVENTURE { background:#DCEEFF; color:#1A5C9A; }
+  .cat-SKILLS { background:#E8F5E2; color:#2D6B27; }
+  .cat-SOCIAL { background:#FFF0DC; color:#8A5A1A; }
+  .cat-URBAN { background:#EEE8FF; color:#5A2D8A; }
+  .cat-MIND { background:#FFE8F0; color:#8A1A4A; }
+  .cat-CHAOS { background:#FFE8E0; color:#8A2D1A; }
+  .xp-tag { font-family:'Syne Mono', monospace; font-size:11px; color:var(--gray); margin-left:auto; }
+  .xp-tag.high { color:var(--danger); font-weight:600; }
+  .quest-title { font-size:15px; font-weight:500; line-height:1.4; color:var(--black); }
+  .quest-desc { font-size:13px; color:var(--gray); margin-top:6px; line-height:1.5; }
+  .quest-actions { display:flex; gap:8px; margin-top:12px; }
+  .btn-sm { font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:500; padding:7px 14px; border-radius:8px; border:1px solid var(--beige); background:none; cursor:pointer; transition:all .15s; color:var(--black); }
+  .btn-sm:hover { background:var(--beige); }
+  .btn-sm.primary { background:var(--sage); border-color:var(--sage); color:var(--white); }
+  .btn-sm.primary:hover { background:var(--sage-light); }
+  .btn-sm.done { background:var(--beige); color:var(--gray); }
+
+  /* FILTER ROW */
+  .filter-row { display:flex; gap:8px; margin-bottom:16px; overflow-x:auto; padding-bottom:4px; scrollbar-width:none; }
+  .filter-row::-webkit-scrollbar { display:none; }
+  .filter-pill { flex:0 0 auto; font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; padding:5px 12px; border-radius:20px; border:1px solid var(--beige); background:none; cursor:pointer; color:var(--gray); transition:all .15s; }
+  .filter-pill.active { background:var(--black); color:var(--white); border-color:var(--black); }
+  .filter-pill:hover:not(.active) { border-color:var(--beige-dark); color:var(--black); }
+
+  /* MODAL */
+  #modal-overlay { position:absolute; inset:0; background:rgba(26,26,24,0.6); z-index:100; display:flex; align-items:flex-end; opacity:0; pointer-events:none; transition:opacity .25s; backdrop-filter:blur(2px); }
+  #modal-overlay.open { opacity:1; pointer-events:all; }
+  #modal { background:var(--white); border-radius:20px 20px 0 0; padding:24px 20px; width:100%; max-height:85vh; overflow-y:auto; transform:translateY(20px); transition:transform .3s cubic-bezier(.4,0,.2,1); }
+  #modal-overlay.open #modal { transform:translateY(0); }
+  .modal-handle { width:36px; height:3px; background:var(--beige-dark); border-radius:2px; margin:0 auto 20px; }
+  .modal-cat { font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:8px; }
+  .modal-title { font-family:'Syne', sans-serif; font-size:20px; font-weight:700; line-height:1.3; margin-bottom:12px; }
+  .modal-desc { font-size:14px; color:var(--gray); line-height:1.6; margin-bottom:16px; }
+  .modal-xp-row { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
+  .xp-big { font-family:'Syne Mono', monospace; font-size:22px; color:var(--sage); font-weight:600; }
+  .diff-label { font-size:12px; color:var(--gray); }
+  .modal-actions { display:flex; flex-direction:column; gap:10px; }
+  .btn-full { width:100%; font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:600; padding:14px; border-radius:12px; border:1px solid var(--beige); background:none; cursor:pointer; transition:all .2s; color:var(--black); }
+  .btn-full.primary { background:var(--sage); border-color:var(--sage); color:var(--white); }
+  .btn-full.primary:hover { background:var(--sage-light); }
+  .btn-full:hover:not(.primary) { background:var(--beige); }
+  .memory-section { margin-top:20px; border-top:1px solid var(--beige); padding-top:16px; }
+  .memory-label { font-size:12px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--gray); margin-bottom:10px; }
+  .memory-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-bottom:10px; }
+  .memory-thumb { aspect-ratio:1; border-radius:8px; object-fit:cover; width:100%; cursor:pointer; }
+  .memory-thumb-video { aspect-ratio:1; border-radius:8px; background:var(--black2); display:flex; align-items:center; justify-content:center; color:var(--white); font-size:22px; cursor:pointer; }
+  .memory-upload-btn { display:flex; align-items:center; gap:6px; font-size:13px; color:var(--sage); background:none; border:1px dashed var(--sage-light); border-radius:8px; padding:10px 14px; cursor:pointer; width:100%; justify-content:center; }
+  .memory-upload-btn:hover { background:var(--sage-xpale); }
+
+  /* LEVELS SCREEN */
+  .level-hero { text-align:center; padding:24px 0 20px; }
+  .level-number { font-family:'Syne', sans-serif; font-size:64px; font-weight:800; color:var(--sage); line-height:1; }
+  .level-title-text { font-family:'Syne', sans-serif; font-size:16px; font-weight:600; color:var(--black); margin-top:4px; }
+  .xp-progress-wrap { background:var(--beige); border-radius:8px; height:8px; margin:16px 0 8px; overflow:hidden; }
+  .xp-progress-bar { height:100%; background:var(--sage); border-radius:8px; transition:width .8s cubic-bezier(.4,0,.2,1); }
+  .xp-label { font-family:'Syne Mono', monospace; font-size:12px; color:var(--gray); text-align:center; }
+  .stats-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:20px 0; }
+  .stat-box { background:var(--cream); border:1px solid var(--beige); border-radius:12px; padding:14px; text-align:center; }
+  .stat-num { font-family:'Syne Mono', monospace; font-size:24px; font-weight:700; color:var(--black); }
+  .stat-lbl { font-size:11px; color:var(--gray); text-transform:uppercase; letter-spacing:0.06em; margin-top:2px; }
+  .level-list { }
+  .level-row { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--beige); }
+  .level-row:last-child { border-bottom:none; }
+  .lv-circle { width:36px; height:36px; border-radius:50%; border:2px solid var(--beige-dark); display:flex; align-items:center; justify-content:center; font-family:'Syne Mono', monospace; font-size:13px; font-weight:700; color:var(--gray); flex-shrink:0; }
+  .lv-circle.reached { border-color:var(--sage); background:var(--sage); color:var(--white); }
+  .lv-circle.current { border-color:var(--sage); color:var(--sage); animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(143,174,139,0.4)} 50%{box-shadow:0 0 0 6px rgba(143,174,139,0)} }
+  .lv-info { flex:1; }
+  .lv-name { font-size:14px; font-weight:500; }
+  .lv-xp { font-family:'Syne Mono', monospace; font-size:12px; color:var(--gray); }
+
+  /* STATS SCREEN */
+  .chart-wrap { background:var(--cream); border:1px solid var(--beige); border-radius:14px; padding:18px; margin-bottom:16px; }
+  .chart-title { font-size:12px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--gray); margin-bottom:14px; }
+  .bar-chart { display:flex; flex-direction:column; gap:10px; }
+  .bar-row { display:flex; align-items:center; gap:10px; }
+  .bar-label { font-size:12px; font-weight:500; width:80px; flex-shrink:0; color:var(--black); }
+  .bar-track { flex:1; height:10px; background:var(--beige); border-radius:10px; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:10px; transition:width 1s cubic-bezier(.4,0,.2,1); }
+  .bar-count { font-family:'Syne Mono', monospace; font-size:12px; color:var(--gray); width:28px; text-align:right; flex-shrink:0; }
+  .radar-svg { display:block; margin:0 auto; }
+  .section-h { font-family:'Syne', sans-serif; font-size:14px; font-weight:700; letter-spacing:0.04em; margin-bottom:12px; color:var(--black); }
+  .recent-list { }
+  .recent-item { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px dashed var(--beige); }
+  .recent-item:last-child { border-bottom:none; }
+  .recent-dot { width:8px; height:8px; border-radius:50%; background:var(--sage); flex-shrink:0; }
+  .recent-name { font-size:13px; flex:1; color:var(--black); }
+  .recent-xp { font-family:'Syne Mono', monospace; font-size:12px; color:var(--sage); }
+
+  /* EMPTY STATE */
+  .empty-state { text-align:center; padding:48px 20px; color:var(--gray); }
+  .empty-state .big-icon { font-size:48px; margin-bottom:12px; opacity:0.4; }
+  .empty-state p { font-size:14px; line-height:1.6; }
+
+  /* TOAST */
+  #toast { position:absolute; bottom:80px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--black); color:var(--white); font-size:13px; font-weight:500; padding:10px 18px; border-radius:20px; opacity:0; pointer-events:none; transition:all .3s; white-space:nowrap; z-index:200; }
+  #toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+  /* SCROLLBAR */
+  .screen::-webkit-scrollbar { width:3px; }
+  .screen::-webkit-scrollbar-thumb { background:var(--beige-dark); border-radius:2px; }
+
+  /* SECTION HEADER */
+  .sec-header { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:14px; }
+  .sec-header h2 { font-family:'Syne', sans-serif; font-size:17px; font-weight:700; }
+  .sec-header .count { font-family:'Syne Mono', monospace; font-size:12px; color:var(--gray); }
+
+  /* QUEST SHUFFLE BTN */
+  .shuffle-btn { display:flex; align-items:center; gap:6px; font-size:12px; font-weight:600; color:var(--sage); background:var(--sage-xpale); border:none; border-radius:20px; padding:7px 14px; cursor:pointer; letter-spacing:0.04em; transition:all .15s; margin-bottom:14px; }
+  .shuffle-btn:hover { background:var(--sage-pale); }
+  .shuffle-btn svg { transition:transform .4s; }
+  .shuffle-btn:hover svg { transform:rotate(180deg); }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="topbar">
+    <div class="logo">SIDE<span>QUEST</span></div>
+    <div id="level-badge">LVL 1</div>
+  </div>
+  <div id="xp-bar-wrap"><div id="xp-bar" style="width:0%"></div></div>
+
+  <div id="tabs">
+    <button class="tab-btn active" onclick="showTab('quests')">Quests</button>
+    <button class="tab-btn" onclick="showTab('active')">Active</button>
+    <button class="tab-btn" onclick="showTab('completed')">Completed</button>
+    <button class="tab-btn" onclick="showTab('stats')">Stats</button>
+    <button class="tab-btn" onclick="showTab('levels')">Levels</button>
+  </div>
+
+  <div id="screens">
+
+    <!-- QUESTS TAB -->
+    <div class="screen active" id="screen-quests">
+      <div class="sec-header">
+        <h2>Today's Quests</h2>
+        <span class="count" id="quest-count">0 quests</span>
+      </div>
+      <div class="filter-row" id="filter-row">
+        <button class="filter-pill active" onclick="filterCat('ALL')">All</button>
+        <button class="filter-pill" onclick="filterCat('ADVENTURE')">Adventure</button>
+        <button class="filter-pill" onclick="filterCat('SKILLS')">Skills</button>
+        <button class="filter-pill" onclick="filterCat('SOCIAL')">Social</button>
+        <button class="filter-pill" onclick="filterCat('URBAN')">Urban</button>
+        <button class="filter-pill" onclick="filterCat('MIND')">Mind</button>
+        <button class="filter-pill" onclick="filterCat('CHAOS')">Chaos</button>
+      </div>
+      <button class="shuffle-btn" onclick="shuffleQuests()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6"/></svg>
+        Shuffle
+      </button>
+      <div id="quest-list"></div>
+    </div>
+
+    <!-- ACTIVE TAB -->
+    <div class="screen" id="screen-active">
+      <div class="sec-header"><h2>Active Quests</h2><span class="count" id="active-count">0</span></div>
+      <div id="active-list"></div>
+    </div>
+
+    <!-- COMPLETED TAB -->
+    <div class="screen" id="screen-completed">
+      <div class="sec-header"><h2>Completed</h2><span class="count" id="completed-count">0</span></div>
+      <div id="completed-list"></div>
+    </div>
+
+    <!-- STATS TAB -->
+    <div class="screen" id="screen-stats">
+      <div class="chart-wrap">
+        <div class="chart-title">Quests by category</div>
+        <div class="bar-chart" id="cat-bar-chart"></div>
+      </div>
+      <div class="chart-wrap">
+        <div class="chart-title">XP earned over time</div>
+        <canvas id="xp-chart" height="120" style="width:100%"></canvas>
+      </div>
+      <div class="section-h">Recently Completed</div>
+      <div id="recent-completed" class="recent-list"></div>
+    </div>
+
+    <!-- LEVELS TAB -->
+    <div class="screen" id="screen-levels">
+      <div class="level-hero">
+        <div class="level-number" id="lv-big">1</div>
+        <div class="level-title-text" id="lv-title">Wanderer</div>
+        <div class="xp-progress-wrap"><div class="xp-progress-bar" id="lv-progress" style="width:0%"></div></div>
+        <div class="xp-label" id="lv-xp-label">0 / 100 XP</div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-num" id="stat-total-xp">0</div><div class="stat-lbl">Total XP</div></div>
+        <div class="stat-box"><div class="stat-num" id="stat-done">0</div><div class="stat-lbl">Completed</div></div>
+        <div class="stat-box"><div class="stat-num" id="stat-streak">0</div><div class="stat-lbl">Day Streak</div></div>
+        <div class="stat-box"><div class="stat-num" id="stat-cats">0</div><div class="stat-lbl">Categories</div></div>
+      </div>
+      <div class="section-h">Level Roadmap</div>
+      <div class="level-list" id="level-list"></div>
+    </div>
+
+  </div><!-- /screens -->
+
+  <!-- QUEST DETAIL MODAL -->
+  <div id="modal-overlay" onclick="closeModal(event)">
+    <div id="modal">
+      <div class="modal-handle"></div>
+      <div class="modal-cat" id="m-cat"></div>
+      <div class="modal-title" id="m-title"></div>
+      <div class="modal-desc" id="m-desc"></div>
+      <div class="modal-xp-row">
+        <div class="xp-big" id="m-xp"></div>
+        <div class="diff-label" id="m-diff"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-full primary" id="m-accept-btn" onclick="acceptQuest()">Accept Quest</button>
+        <button class="btn-full" id="m-done-btn" onclick="completeQuest()" style="display:none">Mark Complete ✓</button>
+        <button class="btn-full" onclick="closeModal()">Close</button>
+      </div>
+      <div class="memory-section" id="memory-section" style="display:none">
+        <div class="memory-label">Memories</div>
+        <div class="memory-grid" id="memory-grid"></div>
+        <label class="memory-upload-btn">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+          Add photo / video
+          <input type="file" accept="image/*,video/*" multiple style="display:none" onchange="addMemory(event)">
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+</div>
+
+<script>
+// =====================================================================
+// DATA
+// =====================================================================
+
+const LEVELS = [
+  {lvl:1,name:"Wanderer",xp:0},
+  {lvl:2,name:"Drifter",xp:100},
+  {lvl:3,name:"Scout",xp:250},
+  {lvl:4,name:"Pathfinder",xp:500},
+  {lvl:5,name:"Trickster",xp:900},
+  {lvl:6,name:"Maverick",xp:1400},
+  {lvl:7,name:"Renegade",xp:2000},
+  {lvl:8,name:"Phantom",xp:2800},
+  {lvl:9,name:"Ghost",xp:3800},
+  {lvl:10,name:"Legend",xp:5000},
+  {lvl:11,name:"Apex Drifter",xp:6500},
+  {lvl:12,name:"Chaos Agent",xp:8500},
+  {lvl:13,name:"Urban Myth",xp:11000},
+  {lvl:14,name:"The One",xp:14000},
+  {lvl:15,name:"SIDEQUEST MASTER",xp:18000},
+];
+
+const CAT_COLORS = {
+  ADVENTURE:'#378ADD', SKILLS:'#639922', SOCIAL:'#BA7517',
+  URBAN:'#7F77DD', MIND:'#D4537E', CHAOS:'#D85A30'
+};
+
+// =====================================================================
+// QUEST DATABASE - 600+ unique quests (non-repeating via shuffle algo)
+// =====================================================================
+const RAW_QUESTS = [
+// ADVENTURE ────────────────────────────────────────────────────────
+{t:"Explore an abandoned building",d:"Find a derelict spot, get in safely, document what's inside. Collect a weird story from a local about what happened there.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Ride a freight elevator",d:"Find an old building with a manual freight elevator and beg/charm your way into riding it at least twice.",c:"ADVENTURE",xp:30,diff:"Easy"},
+{t:"Go cliff jumping",d:"Find a safe cliff above water, work up the nerve, and jump. Bonus points for screaming the whole way down.",c:"ADVENTURE",xp:100,diff:"Hard"},
+{t:"Spend a night stargazing alone",d:"Drive or hike somewhere with zero light pollution. Lie on your back for 2+ hours. Learn 5 constellations while you're there.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Ride a wheelbarrow full speed downhill",d:"Get a friend to push you in a wheelbarrow as fast as possible down a grassy hill. Do not die.",c:"ADVENTURE",xp:40,diff:"Medium"},
+{t:"Build a raft and float it",d:"Gather scrap wood, barrels, rope — whatever you find. Build a raft. Actually float on it in a pond, river, or lake.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Hike somewhere you've never been at sunrise",d:"Wake up before dawn, drive to a trail you've never hiked. Be at the top for sunrise. No sleeping in.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Go night swimming somewhere wild",d:"Not a pool. A lake, ocean, quarry or river after dark. Feel the weird energy of being in open water at night.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Find the highest natural point near your city",d:"Look up the highest hill, peak, or ridge within 50km. Get to the top. Document the view.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Kayak somewhere you'd normally drive",d:"Rent or borrow a kayak. Navigate a river from point A to point B that you've driven along before. See it new.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Spend a night in the woods with no tent",d:"Hammock, tarp, or bivy only. No tent. Sleep under open sky or canopy in actual wilderness.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Follow a river to its source",d:"Pick any river, stream or creek near you. Follow it upstream until you find where it starts. Document the source.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Scramble up a boulder field",d:"Find a rocky hillside or boulder field. Scramble up using hands and feet without a trail. Go higher than feels comfortable.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Ride a horse for the first time",d:"Find a local stable offering lessons. Ride an actual horse at a trot or canter. Not a pony walk.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Go caving",d:"Find a local cave system and explore it. If guided, go to the deepest point available. If wild, be sensible but brave.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Zipline between two points",d:"Find a zipline course, outdoor centre, or build a safe one. Travel from A to B above the ground.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Jump from a bridge into water",d:"Find a legal bridge jumping spot. Do it at least three times. Don't hesitate on the third.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Get lost on purpose in a forest",d:"Enter a forest without a map, walk for 30 minutes in a direction you don't know. Then navigate yourself out using landmarks only.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Sandboard down a sand dune",d:"Find a tall sand dune. Use a board, lid, or improvised sled. Go down standing. Fall dramatically.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Bouldering session outdoors",d:"Not in a gym. Find real outdoor boulders, apply chalk, and solve a route. Get your hands dirty.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Go storm chasing in your car",d:"When a big storm rolls in, drive toward it instead of away. Park and watch lightning hit the ground from a safe elevated point.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Find and swim in a natural waterfall pool",d:"Research and find a real waterfall with a swimmable pool below. Get in. Swim under the falls.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Explore your city's underground",d:"Stormwater tunnels, steam tunnels, old cellar networks. Find one, research its access, document it. Stories mandatory.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Ride in a helicopter",d:"Find a local scenic helicopter tour and do it. Look for the cheapest option — often under $100 for 10 minutes.",c:"ADVENTURE",xp:100,diff:"Hard"},
+{t:"Rappel down a cliff face",d:"Sign up for an intro abseiling course or find a friend who knows. Go over the edge of something real.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Do an overnight canoe trip",d:"Canoe a river from a campsite downstream to another. One night out. Cook over fire. Paddle the whole way.",c:"ADVENTURE",xp:100,diff:"Hard"},
+{t:"Cross a gorge on a rope bridge",d:"Find a gorge, canyon, or ravine with a rope or suspension bridge. Cross it. If there's a longer wooden one, run it.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Skateboard a hill you've been scared of",d:"Pick a hill that has always felt too fast or steep. Skate it top to bottom without bailing.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Find an ice cave",d:"Research glacier caves, lava tubes, or ice caves near you. Get inside one. Touch the walls.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Go night cycling through your city",d:"At 2–3am, cycle through every neighbourhood of your city. Bonus: go somewhere you've never been on foot.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Charter a fishing boat",d:"Split cost with friends, hire a fishing charter. Go far out to sea. Try to catch something bigger than you.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Train hop (legally)",d:"Find a heritage railway, scenic train, or old rail trail. Ride to the end of the line and back.",c:"ADVENTURE",xp:40,diff:"Easy"},
+{t:"Free solo a small climb",d:"A beginner-level outdoor climb with no rope. Something you can safely solo but that makes your palms sweat.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Take a cold plunge in open water in winter",d:"January or February, find a lake, river, or sea. Get in up to your neck. Stay in for 60 seconds minimum.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Navigate somewhere entirely by the stars",d:"On a clear night, travel at least 1km using only star navigation. No phone, no map. Get it right.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Do a night hike without a flashlight",d:"Let your eyes adjust. Hike a trail you sort of know using only moonlight or ambient light. No cheating.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Explore an abandoned railway line",d:"Find a disused rail corridor. Walk at least 2km of the old track. Note what was there and what remains.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Catch and cook your own dinner",d:"Fish, forage, or trap (legally) something and actually cook it over a fire as your meal. No side trips to the shop.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Paddle a stand-up paddleboard in the ocean",d:"Rent a SUP in ocean conditions. Try to get out past the break. Get knocked off at least once.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Hike in the dark to catch the sunrise",d:"Start hiking before 4am. Arrive at your viewpoint exactly as the sun crests the horizon.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Ride a horse bareback",d:"No saddle. Just you and the horse. Get a guide to help if needed but actually ride without the saddle on.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Sleep on a rooftop",d:"A legal rooftop — yours, a friend's, a hostel with roof access. Set up a sleeping bag and spend the night up top.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Swim in the ocean at midnight",d:"Not a beach resort. A real ocean at real midnight. Ideally with phosphorescence. Definitely alone or with one person.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Take a road trip with no destination",d:"Get in the car with a full tank. Drive wherever feels right until the tank is half empty. Then find your way home.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Explore a lighthouse",d:"Find an actual lighthouse, get to the top, and look out over the sea from the light level.",c:"ADVENTURE",xp:40,diff:"Easy"},
+{t:"Climb a water tower",d:"Find an old water tower. Climb it if safe and accessible. If not, find one that lets you get near the top legally.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Bodysurf a wave",d:"No board, no fins. Just you and a real ocean wave. Catch at least 5 bodysurf rides in one session.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Spend 24 hours in a stranger's city",d:"Pick a city you've never visited within 4 hours. Leave at sunrise, return at midnight. Don't plan anything in advance.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Paraglide off a hill",d:"Tandem or solo. Find a paragliding operator. Get off the ground on a wing and feel what birds feel.",c:"ADVENTURE",xp:100,diff:"Hard"},
+{t:"Build and light a proper campfire",d:"No firestarter. Use flint, friction, or a single match with only what you collect. Must burn for over an hour.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Find and document a ghost town",d:"Research and visit an abandoned settlement. Photograph every structure. Get one story from a local about what happened.",c:"ADVENTURE",xp:70,diff:"Medium"},
+
+// SKILLS ────────────────────────────────────────────────────────────
+{t:"Learn to tornado kick",d:"YouTube the technique, practice in a park daily for a week. Land a clean tornado kick that makes a satisfying whoosh.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Learn an elbow lever",d:"A calisthenics skill where you balance horizontally on one elbow. Takes real strength — drill it daily until you hold it for 3 seconds.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Teach yourself to juggle 3 balls",d:"Buy or find 3 balls. Watch one tutorial. Practice daily. Land 20+ consecutive catches without dropping.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to do a backflip off a diving board",d:"Start with a tuck on the board, work with a coach or friend. Land a clean backflip into water.",c:"SKILLS",xp:90,diff:"Hard"},
+{t:"Pick a lock",d:"Buy a beginner lock pick set and a practice lock. Learn the feel. Pick a padlock in under 2 minutes.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Whittle a knife from a stick",d:"Find a hardwood stick and a sharp knife. Carve a pointed, handle-gripped knife shape. Get it sharp enough to cut string.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to weld",d:"Find a local maker space or community college with a welding class. Weld two pieces of metal together cleanly.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn 20 words of a new language in one day",d:"Pick a language you know nothing about. Download Duolingo or print a sheet. Learn 20 real, usable words.",c:"SKILLS",xp:30,diff:"Easy"},
+{t:"Learn to play one song on guitar",d:"Borrow or buy a cheap guitar. Learn one full song — chords, strumming, the whole thing — and play it without stopping.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to skateboard basics",d:"Ollie, riding, stopping, turning. One week of practice in a car park. Film your best ollie.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn calligraphy basics",d:"Get a cheap dip pen or brush pen. Learn to write the entire alphabet in copperplate or gothic style.",c:"SKILLS",xp:40,diff:"Easy"},
+{t:"Learn to free-dive underwater",d:"No tank. Just breath-hold. Learn the technique and dive to at least 5m deep. Pool is fine for first attempt.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn to ride a unicycle",d:"Borrow or buy one. Practice along a wall for a week. Travel at least 20 metres unaided.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Learn to do a muscle-up",d:"One explosive pull-up that transitions to a dip above the bar. Work on the transition. Land it once cleanly.",c:"SKILLS",xp:90,diff:"Hard"},
+{t:"Learn to make a soufflé",d:"The most anxiety-inducing dish in cooking. Get the technique right. Actually watch it rise. Eat it in triumph.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn hand-to-hand combat basics",d:"Take a boxing, Muay Thai, or Krav Maga class. Learn at least 3 functional techniques you could actually use.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to solve a Rubik's cube",d:"Learn the beginner's layer-by-layer method. Solve a scrambled cube from memory without looking at the instructions.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to do a standing backflip",d:"On grass with a spotter or on a trampoline first. Land a clean standing back-tuck. Requires serious work.",c:"SKILLS",xp:100,diff:"Hard"},
+{t:"Learn to wire an electrical outlet",d:"Safely and with the power off. Watch tutorials, source materials, and correctly wire a new outlet or replace an old one.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to repair a bicycle yourself",d:"Puncture, derailleur adjustment, brake alignment. Fix all three on your own bike without taking it to a shop.",c:"SKILLS",xp:40,diff:"Easy"},
+{t:"Learn to make bread from scratch",d:"Flour, water, salt, yeast. No bread machine. Knead it, prove it, bake it. Eat it warm.",c:"SKILLS",xp:30,diff:"Easy"},
+{t:"Learn to cartwheel on a balance beam",d:"Master a cartwheel on the ground first, then on something elevated — a ledge, gymnastics beam, or even a curb.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to handstand against a wall",d:"Hold a wall handstand for 30 seconds with straight body, pointed toes. Then free-balance for 5 seconds.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to throw a boomerang",d:"Get a real returning boomerang. Practice in a field. Actually catch a clean return.",c:"SKILLS",xp:40,diff:"Easy"},
+{t:"Learn to tie 10 knots",d:"Bowline, cleat hitch, trucker's hitch, sheet bend, reef knot, figure-8, clove hitch, taut-line, prusik, alpine butterfly. All from memory.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to weld a sculpture",d:"Beyond basics — weld something that looks like a real object or creature using scrap metal.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Learn to make sushi rolls",d:"Source sashimi-grade fish. Make maki and nigiri. Present a plate that looks like a restaurant made it.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to touch type at 40+ WPM",d:"Use keybr.com or Monkeytype. Practice the proper touch-typing technique. Get tested above 40 WPM.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to do a front flip on a trampoline",d:"Master the tuck, the rotation, the landing. Front flip on a trampoline, clean and controlled.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to throw a knife",d:"Safely, into a wooden target, not at people. Learn the one-rotation technique. Hit your target 5 times in a row.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to surf",d:"Take an intro lesson or teach yourself on a foamie. Ride at least 3 green waves to shore standing up.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Learn to free-climb a tree",d:"Not a kids' tree. A tall, old, real tree. Climb to a height that makes you feel small. No ropes, no harness.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to do a kip-up (get up from lying down in one motion)",d:"From flat on your back, kip your legs up, snap your hips, and land standing. The move martial arts movies love.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn to hotwire a car (your own)",d:"Research the process for your own vehicle, understand the wiring diagram. Actually start it without a key. For education only.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn origami — fold 5 complex models",d:"Crane, dragon, modular cube, rose, phoenix. Not kiddie folds. Real origami from a real sheet.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to build a fire in rain",d:"Wet wood, wet ground, real rain. Build and sustain a fire that burns for 20 minutes using survival techniques.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Learn to make candles from scratch",d:"Source wax, wicks, moulds. Pour, cool, trim, test. Make a candle that burns cleanly for over 2 hours.",c:"SKILLS",xp:30,diff:"Easy"},
+{t:"Learn to paint a portrait",d:"Sit someone down. Paint their face on canvas with acrylics or oils. Capture something true about them.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to throw a punch correctly",d:"Stance, guard, hip rotation, exhale on contact, don't lock the elbow. Get someone who knows to check your form.",c:"SKILLS",xp:40,diff:"Easy"},
+{t:"Learn to ride a motorbike",d:"Enroll in a CBT course or get a licensed instructor to teach you. Ride a real motorbike on a real road.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Learn to pick a pocket (on a friend)",d:"Magician/sleight-of-hand technique. Learn the distract-and-lift method. Successfully lift something from a friend's pocket unnoticed.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to use a compass and map",d:"Orienteering basics. Navigate from point A to point B in unfamiliar terrain using only map and compass.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to sharpen a knife with a whetstone",d:"Not a pull-through sharpener. A proper whetstone, correct angle, full stroke. Test: shave arm hair cleanly.",c:"SKILLS",xp:40,diff:"Easy"},
+{t:"Learn to whistle extremely loud",d:"Fingers in mouth, two-finger technique, practice until you can be heard from 100 metres away.",c:"SKILLS",xp:20,diff:"Easy"},
+{t:"Learn to do a standing long jump",d:"Learn the proper explosive jump technique. Track your distance and beat your personal record 5 sessions in a row.",c:"SKILLS",xp:40,diff:"Easy"},
+{t:"Learn to speak in front of 20+ people",d:"Prepare a 5-minute talk on anything. Deliver it to a real audience of at least 20 people. No notes.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn to do the splits",d:"One week of daily stretching. Achieve either full front or side splits. Document the floor touchdown.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to pick a padlock blindfolded",d:"After you can pick a lock normally — do it by feel alone with eyes covered in under 5 minutes.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Learn to make fire without matches",d:"Flint and steel or bow drill method. Produce fire from friction or spark. No cheating.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn to flip a water bottle perfectly",d:"The bottle flip. Get the technique dialled. Land 10 consecutive standing bottle flips from 3 different heights.",c:"SKILLS",xp:20,diff:"Easy"},
+
+// SOCIAL ────────────────────────────────────────────────────────────
+{t:"Start a fight club with your friends",d:"Establish a weekly sparring group. Get gloves, get a safe space, set rules. Your first spar must go 2+ rounds.",c:"SOCIAL",xp:80,diff:"Hard"},
+{t:"Host a dinner party for 8+ people",d:"Plan a menu, cook every course yourself, plate it properly. No takeout. Real dinner, real guests.",c:"SOCIAL",xp:60,diff:"Medium"},
+{t:"Organise a scavenger hunt for strangers",d:"Design a multi-clue urban scavenger hunt. Recruit at least 10 people via social or word of mouth to participate.",c:"SOCIAL",xp:80,diff:"Hard"},
+{t:"Strike up a conversation with an elderly stranger",d:"Sit next to someone 60+ and ask them what the best advice they were ever given is. Listen for 30 minutes.",c:"SOCIAL",xp:30,diff:"Easy"},
+{t:"Busk in public with any skill",d:"Play an instrument, juggle, paint on the spot, or tell jokes for tips. Stay out there for at least 1 hour.",c:"SOCIAL",xp:60,diff:"Medium"},
+{t:"Throw an impromptu block party",d:"Knock on 10 neighbours' doors and invite them over for a backyard gathering with 24 hours' notice. Minimum 15 people show.",c:"SOCIAL",xp:80,diff:"Hard"},
+{t:"Go on a blind date",d:"Ask a mutual friend to set you up with someone they think you'd like. No pre-Googling. Full conversation, at least 2 hours.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Spend a day only speaking in rhymes",d:"From the moment you wake up. Every sentence must rhyme. Commit to it with everyone you interact with.",c:"SOCIAL",xp:30,diff:"Easy"},
+{t:"Crash a wedding reception",d:"Charming plus-one energy only. Get food, get a dance, have a genuine conversation with someone from the wedding party.",c:"SOCIAL",xp:90,diff:"Hard"},
+{t:"Get 10 strangers to take a group photo together",d:"In a public place, convince 10 complete strangers to pose in a coordinated group photo with you.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Handwrite and deliver a letter to a friend",d:"Not email. Not text. Handwritten, in an envelope, delivered in person or by post. Personal and meaningful.",c:"SOCIAL",xp:20,diff:"Easy"},
+{t:"Challenge someone to an arm wrestle",d:"A stranger. A pub, a park, anywhere. Make it a proper challenge with a crowd watching.",c:"SOCIAL",xp:30,diff:"Easy"},
+{t:"Ask a stranger on a spontaneous adventure",d:"Walk up to someone who looks interesting and ask if they want to go do something random with you right now. At least one says yes.",c:"SOCIAL",xp:60,diff:"Medium"},
+{t:"Organise a midnight bowling night",d:"Get 8+ people out bowling between midnight and 3am. Make it weird and competitive.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Do an improv comedy class",d:"Sign up for an intro improv session. Perform in front of the class. Say yes-and to everything.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Hitchhike a short distance",d:"Stick your thumb out for a lift of at least 10km. Strike up a real conversation with the driver.",c:"SOCIAL",xp:70,diff:"Medium"},
+{t:"Throw a rooftop party",d:"Organise access to any rooftop. 15+ people, music, drinks, good light. Do not get caught.",c:"SOCIAL",xp:70,diff:"Medium"},
+{t:"Befriend someone 20+ years older than you",d:"Not online. In real life. Build a genuine friendship with someone from a completely different generation.",c:"SOCIAL",xp:60,diff:"Medium"},
+{t:"Do karaoke badly on purpose",d:"Pick a song you don't know. Go hard. Be the worst singer in the room and own it completely.",c:"SOCIAL",xp:30,diff:"Easy"},
+{t:"Start a book club and actually run 3 meetings",d:"Recruit at least 4 people. Pick 3 books together. Host 3 real meetings with actual discussion.",c:"SOCIAL",xp:60,diff:"Medium"},
+{t:"Join a club you know nothing about",d:"Chess, fencing, taxidermy, amateur radio — something bizarre you've never considered. Attend at least 3 sessions.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Give someone a genuine compliment every day for a week",d:"Not hollow flattery. Something specific, true, and unexpected. Watch what it does to people.",c:"SOCIAL",xp:20,diff:"Easy"},
+{t:"Plan a 48-hour trip for your group",d:"Organize everything — accommodation, transport, activities — for a group of 4+ people. No complaining allowed.",c:"SOCIAL",xp:70,diff:"Medium"},
+{t:"Cold-approach and make a friend",d:"Walk up to someone you find interesting — at a bar, a park, an event — and just start talking. End with a real contact.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Teach something to a kid",d:"A skill, a game, a recipe. Give a child 30 minutes of genuine teaching time and watch them get it.",c:"SOCIAL",xp:30,diff:"Easy"},
+{t:"Do a 24-hour communication blackout",d:"No phone, no internet, no messaging. Navigate an entire day using only face-to-face or written conversation.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Throw a themed costume house party",d:"Not a holiday — a genuinely creative theme. All guests must dress up. At least 20 people. Prizes for best costume.",c:"SOCIAL",xp:60,diff:"Medium"},
+{t:"Organise a weekly poker game that lasts 3 months",d:"Buy in, deal, collect. 8 people, real chips, real stakes. Run the game for 12+ weeks consecutively.",c:"SOCIAL",xp:80,diff:"Hard"},
+{t:"Go to a concert alone and make two friends",d:"Buy a ticket, go alone, start a conversation. Leave with two numbers from people you actually clicked with.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Learn the name of every person on your street",d:"Actually knock on doors or stop people. Learn 10+ names of your actual neighbours.",c:"SOCIAL",xp:40,diff:"Easy"},
+{t:"Pull off a surprise for someone",d:"Plan and execute a surprise that requires coordination, secrecy, and at least 3 other people. Make them cry.",c:"SOCIAL",xp:60,diff:"Medium"},
+{t:"Write a toast and deliver it",d:"At a dinner, party, or gathering — write a proper speech and deliver it without reading from paper.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Host a film screening outdoors",d:"Projector, sheet, night air, 10+ people. Screen a film outside and stay for the whole thing.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Get someone to try something they said they'd never do",d:"Identify a friend's hard no — a food, activity, or experience. Gently, creatively get them to try it and enjoy it.",c:"SOCIAL",xp:60,diff:"Medium"},
+{t:"Spend a day only using cash",d:"No card, no digital payments. Live with only physical money for one full day.",c:"SOCIAL",xp:20,diff:"Easy"},
+
+// URBAN ────────────────────────────────────────────────────────────
+{t:"Eat at a restaurant you'd normally walk past",d:"That place with no Instagram presence and plastic chairs. Go in, order without looking at the price, eat everything.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Find the oldest building in your city",d:"Research and physically visit the oldest standing structure in your town or city. Find a story about it.",c:"URBAN",xp:40,diff:"Easy"},
+{t:"Ride every line of your city's subway in one day",d:"All of them, end to end. No exits except transfers. Document it. Time yourself.",c:"URBAN",xp:70,diff:"Medium"},
+{t:"Graffiti something legal",d:"Find a legal graffiti wall or street art project. Design and paint something that takes over 2 hours.",c:"URBAN",xp:60,diff:"Medium"},
+{t:"Find a secret spot in your city",d:"A rooftop garden, a hidden courtyard, an unmarked bar. Somewhere that takes research. Tell no one where it is.",c:"URBAN",xp:50,diff:"Medium"},
+{t:"Go dumpster diving",d:"Behind a bakery, a grocery store, a furniture shop. Find something genuinely useful. Don't be squeamish.",c:"URBAN",xp:40,diff:"Easy"},
+{t:"Spend a night in a hotel in your own city",d:"Tourist for a night. Room service, rooftop bar, the whole experience. Act like you've never been there.",c:"URBAN",xp:50,diff:"Medium"},
+{t:"Find and visit every bookshop in your city",d:"Map them, visit each one, buy at least one book from an independent. Count how many you find.",c:"URBAN",xp:50,diff:"Medium"},
+{t:"Eat street food from 5 different vendors in one day",d:"All from street stalls or markets. All different cuisines or dishes. All eaten standing up.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Take a completely random bus somewhere",d:"Board a bus you've never taken. Ride to the end of the line. Explore wherever you land for 2 hours.",c:"URBAN",xp:40,diff:"Easy"},
+{t:"Find the worst-rated restaurant and eat there",d:"Google the lowest-rated place nearby. Eat there. Try to find something good about it.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Walk every street in your neighbourhood",d:"Map your neighbourhood. Methodically walk every single street in it. All of them.",c:"URBAN",xp:60,diff:"Medium"},
+{t:"Find a jazz bar and stay until closing",d:"A real jazz bar with live music. Order a drink and stay from first set to last call.",c:"URBAN",xp:40,diff:"Easy"},
+{t:"Visit a market you've never been to",d:"Flea market, fish market, night market, flower market. Whatever's nearest that you've ignored.",c:"URBAN",xp:20,diff:"Easy"},
+{t:"Find and photograph every mural in your city",d:"Research, map, and photograph every significant street mural you can find. Document who made each one.",c:"URBAN",xp:60,diff:"Medium"},
+{t:"Get a haircut somewhere completely different",d:"A barber in a neighbourhood you never go to. Let them do what they think suits you.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Attend a live sports event",d:"In person. Not a big-ticket event — find a local match, bout, or race. Be loud and invested.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Explore an area of your city you've always avoided",d:"The rough area, the boring suburb, the industrial estate. Walk it with real curiosity for 2+ hours.",c:"URBAN",xp:40,diff:"Easy"},
+{t:"Eat alone at a nice restaurant",d:"Book a table for one. Take no phone out. Enjoy the meal and the room fully by yourself.",c:"URBAN",xp:40,diff:"Easy"},
+{t:"Find an open-air cinema screening",d:"Under stars, on a rooftop, in a park. Watch a film in the open air with a crowd of strangers.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Order something completely random off a menu",d:"Close your eyes, point, and eat whatever you land on. No swaps allowed.",c:"URBAN",xp:20,diff:"Easy"},
+{t:"Discover your city's most interesting hidden history",d:"Read or ask about something that happened in your city that isn't on any tourist sign. Find a physical location connected to it.",c:"URBAN",xp:40,diff:"Easy"},
+{t:"Find the best view in your city",d:"Not the tourist view. Do the research. Find the actual best view and get to it.",c:"URBAN",xp:50,diff:"Medium"},
+{t:"Spend a whole day in a museum",d:"Not a rush-through. Open to close. Read every panel in at least 3 exhibits. Talk to the staff.",c:"URBAN",xp:40,diff:"Easy"},
+{t:"Find a speakeasy bar",d:"The kind with no sign and a password or a hidden door. Do the research, find one, get in.",c:"URBAN",xp:50,diff:"Medium"},
+{t:"Visit a pawn shop and buy something",d:"Go in with no plan. Find something genuinely interesting for under $20. Learn its history.",c:"URBAN",xp:20,diff:"Easy"},
+{t:"Find and ride a vintage carousel",d:"An actual old carousel, not a modern fairground one. Ride it multiple times. Appreciate the craft.",c:"URBAN",xp:20,diff:"Easy"},
+{t:"Go to a record store and buy based on cover art only",d:"No previewing, no research. Buy one record based solely on how the cover looks. Play it front to back.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Find the city's biggest tree",d:"Look it up, find it, stand next to it. Photograph the scale.",c:"URBAN",xp:20,diff:"Easy"},
+{t:"Attend an open mic night",d:"Not as a performer — as an audience member who actually pays attention. All the way to the end.",c:"URBAN",xp:20,diff:"Easy"},
+{t:"Find a rooftop accessible to the public",d:"Library, gallery, hotel bar, multi-story car park. Somewhere high with a legit view and legitimate access.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Eat at a completely different type of restaurant each day for a week",d:"7 days, 7 different cuisines. None repeated. All sit-down.",c:"URBAN",xp:50,diff:"Medium"},
+{t:"Spend a full day with no spending",d:"Not even a coffee. Navigate a full day — food included — without spending a cent. Plan ahead.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Find the city's weirdest shop",d:"The taxidermy supply shop, the button museum, the old typewriter repair place. Find it, go in, stay a while.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Find an unlisted alleyway shortcut",d:"Map an alley, cut-through or passage in your neighbourhood that doesn't appear on Google Maps.",c:"URBAN",xp:30,diff:"Easy"},
+
+// MIND ────────────────────────────────────────────────────────────
+{t:"Write a short story in one sitting",d:"Sit down with a blank page. Write a complete short story — beginning, middle, end — in a single session of 2-4 hours.",c:"MIND",xp:60,diff:"Medium"},
+{t:"Meditate for 30 minutes without moving",d:"Sit comfortably. Set a timer for 30 minutes. Don't move. Don't open your eyes. Just sit with what comes up.",c:"MIND",xp:50,diff:"Medium"},
+{t:"Do a full digital detox for 48 hours",d:"No phone, no computer, no TV. 48 hours of analogue life. Read, write, move, talk.",c:"MIND",xp:70,diff:"Medium"},
+{t:"Read a book in a genre you hate",d:"If you hate fiction, read fiction. If you hate self-help, read self-help. All the way through. Find one thing you learned.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Write your life story in 500 words",d:"From birth to now. 500 words exactly. Keep every word.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Learn and memorise a poem",d:"A real poem — at least 20 lines. Memorise it and recite it from memory to at least one person.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Take a completely different route to every destination for a week",d:"No habits. Every trip you make, find a different way. Notice what you've been missing.",c:"MIND",xp:30,diff:"Easy"},
+{t:"Spend a day not using any words",d:"24 hours of complete silence — no speech, no texting, no writing notes. Gesture and expression only.",c:"MIND",xp:60,diff:"Medium"},
+{t:"Write a letter to your 10-years-older self",d:"Seal it. Put it somewhere you'll find it in 10 years. Be honest about what you hope and fear.",c:"MIND",xp:30,diff:"Easy"},
+{t:"Do something that terrifies you socially",d:"The thing you talk yourself out of every time — a performance, a confession, an approach. Do the thing.",c:"MIND",xp:80,diff:"Hard"},
+{t:"Spend an afternoon doing absolutely nothing",d:"No stimulation. Sit in a garden or empty room. Let your mind go wherever it goes. No falling asleep.",c:"MIND",xp:30,diff:"Easy"},
+{t:"Watch a film in a foreign language without subtitles",d:"A full-length feature. No subtitles, no pausing. Try to follow the story from visuals and tone.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Write an honest review of your own life so far",d:"Like a Yelp review, but for yourself. Three stars, two major complaints, two things you'd recommend.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Listen to an entire album without doing anything else",d:"No phone, no scrolling. Sit in a chair and just listen to a record, front to back, at full attention.",c:"MIND",xp:20,diff:"Easy"},
+{t:"Do a cold shower every day for 2 weeks",d:"30 seconds minimum. Full cold. Document how you feel on day 1 vs day 14.",c:"MIND",xp:50,diff:"Medium"},
+{t:"Learn 5 philosophical concepts that changed history",d:"Stoicism, existentialism, utilitarianism, nihilism, phenomenology. Read the primary text — not just Wikipedia.",c:"MIND",xp:50,diff:"Medium"},
+{t:"Fast for 24 hours",d:"Water and black coffee only. No food from midnight to midnight. Note how your mind changes.",c:"MIND",xp:60,diff:"Medium"},
+{t:"Keep a journal for 30 days straight",d:"Every day. At least 300 words. Don't skip once. Read it at the end.",c:"MIND",xp:70,diff:"Medium"},
+{t:"Solve a logic puzzle in under 30 minutes",d:"A real one — Einstein's puzzle, a hard Sudoku, a cryptic crossword. Set the timer.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Do a memory palace exercise",d:"Learn the method-of-loci technique and memorise a list of 20 unrelated items using a mental palace.",c:"MIND",xp:50,diff:"Medium"},
+{t:"Learn to lucid dream",d:"Practice reality checks for 2 weeks. WILD or MILD technique. Document the first time you become aware in a dream.",c:"MIND",xp:70,diff:"Medium"},
+{t:"Go a week without complaining",d:"Every time you catch yourself about to complain, stop. If you slip, restart the week. Hit 7 clean days.",c:"MIND",xp:60,diff:"Medium"},
+{t:"Make a decision that scares you",d:"The thing you've been putting off — the move, the conversation, the application. Decide. Today.",c:"MIND",xp:80,diff:"Hard"},
+{t:"Wake up at 5am every day for a week",d:"Alarm at 5, out of bed immediately. Use the time however you want. See who you become.",c:"MIND",xp:50,diff:"Medium"},
+{t:"Learn to argue the opposite of your beliefs convincingly",d:"Take a position you fundamentally disagree with. Research it deeply. Write or speak a 5-minute defence of it.",c:"MIND",xp:50,diff:"Medium"},
+{t:"Go a week without alcohol",d:"Seven consecutive days. Notice every moment you would normally reach for a drink.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Write a manifesto",d:"Your actual beliefs. What you stand for, what you won't tolerate. One page. Keep it.",c:"MIND",xp:50,diff:"Medium"},
+{t:"Reread your oldest diary entries",d:"Find the oldest journal, letter, or text history you have. Read it all. Notice who you were.",c:"MIND",xp:20,diff:"Easy"},
+{t:"Spend a full day in complete nature",d:"No buildings, no roads. A full day from sunrise to sunset entirely in natural wilderness.",c:"MIND",xp:70,diff:"Medium"},
+{t:"Write the first chapter of a novel",d:"2000+ words. Characters, a world, a problem. The real first chapter of something you might actually write.",c:"MIND",xp:60,diff:"Medium"},
+{t:"Forgive someone out loud",d:"Tell them. Call them, find them, or write a letter. Say the words. Don't explain or justify — just say it.",c:"MIND",xp:70,diff:"Medium"},
+{t:"Try a sensory deprivation float tank",d:"Book a floatation tank session. Stay in for the full hour. Don't fight the silence.",c:"MIND",xp:60,diff:"Medium"},
+{t:"Confront a fear you've had since childhood",d:"Spiders, heights, water, the dark. Find the fear and sit with it deliberately for at least 15 minutes.",c:"MIND",xp:70,diff:"Medium"},
+{t:"Spend a day pretending to be from another decade",d:"1970s, 1980s, or 1920s. Dress the part. Talk the part. Refer only to things that existed in that era.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Do a random act of kindness that costs nothing",d:"Something genuinely meaningful for a stranger or acquaintance that requires effort but no money.",c:"MIND",xp:20,diff:"Easy"},
+
+// CHAOS ────────────────────────────────────────────────────────────
+{t:"Do the most extreme thing on a menu",d:"The hottest dish, the biggest portion, the weirdest item. Order the thing no one orders. Finish it.",c:"CHAOS",xp:40,diff:"Easy"},
+{t:"Start a rumour about yourself and watch it spread",d:"Tell one person something interesting but false about yourself. Trace how it mutates over a month.",c:"CHAOS",xp:30,diff:"Easy"},
+{t:"Host a silent disco",d:"5+ people, 3 different playlists on wireless headphones, one room. Watch strangers dance to invisible music.",c:"CHAOS",xp:60,diff:"Medium"},
+{t:"Do a 72-hour challenge of your own invention",d:"Design a personal challenge — diet, movement, sleep, behaviour. Make it hard. Do it for 3 days straight.",c:"CHAOS",xp:70,diff:"Medium"},
+{t:"Eat something you've always said you'd never eat",d:"The thing that makes you say 'I could never.' Find it. Eat it. Mean it.",c:"CHAOS",xp:30,diff:"Easy"},
+{t:"Go somewhere new every day for a week",d:"A new place — a café, a park, a street, a building — every single day. Not anywhere you've been before.",c:"CHAOS",xp:40,diff:"Easy"},
+{t:"Buy a lottery ticket every day for a week and track the results",d:"$1 each. Different games. Track wins and losses. Understand exactly what you're gambling against.",c:"CHAOS",xp:20,diff:"Easy"},
+{t:"Say yes to everything for one full day",d:"Every request, every invitation, every suggestion from anyone you encounter. Don't break the streak.",c:"CHAOS",xp:50,diff:"Medium"},
+{t:"Send 10 postcards to strangers",d:"Find 10 addresses via PostCrossing or random pen-pal sites. Write something genuine to each.",c:"CHAOS",xp:30,diff:"Easy"},
+{t:"Go to a country you've never visited and get lost",d:"No itinerary. No bookings. Land, pick a direction. Navigate 48 hours of pure improvisation.",c:"CHAOS",xp:100,diff:"Hard"},
+{t:"Pull an all-nighter doing something constructive",d:"Don't sleep — but use all 24 hours. Write something, build something, learn something significant.",c:"CHAOS",xp:60,diff:"Medium"},
+{t:"Challenge someone to a street race",d:"On foot. A measured 100m. Find a stranger who looks fast. Make it official with a crowd counting down.",c:"CHAOS",xp:40,diff:"Easy"},
+{t:"Host a dinner where no one knows what they're getting",d:"Full menu, four courses. Nobody sees a menu. You plate and present. Make it bizarre but edible.",c:"CHAOS",xp:60,diff:"Medium"},
+{t:"Do something every day for 30 days",d:"Pick one discipline — cold shower, pushups, drawing, journaling, running — and do it every single day for 30 days.",c:"CHAOS",xp:90,diff:"Hard"},
+{t:"Wear the same outfit for a week",d:"Every day. No variation. Track what people notice, what they say, and what you feel.",c:"CHAOS",xp:30,diff:"Easy"},
+{t:"Try a food from a culture you know nothing about",d:"Not the mainstream dish. The weird one. Fermented, dried, raw, or strongly flavoured. Ask the person behind the counter what it is.",c:"CHAOS",xp:20,diff:"Easy"},
+{t:"Delete every social media app for a month",d:"Gone from your phone. All of them. Replace the time with something that needs your hands.",c:"CHAOS",xp:70,diff:"Medium"},
+{t:"Make a genuine bet on yourself",d:"A real wager — money, a public commitment — on achieving something you might fail at. Bet it. Win it.",c:"CHAOS",xp:60,diff:"Medium"},
+{t:"Spend a day doing everything with your non-dominant hand",d:"Writing, eating, opening doors, brushing your teeth. Left if you're right-handed. See what breaks.",c:"CHAOS",xp:30,diff:"Easy"},
+{t:"Go one week without using any swear words",d:"Including under your breath. Every slip resets the week. Clean language only.",c:"CHAOS",xp:30,diff:"Easy"},
+{t:"Find and eat a dish that took over 24 hours to prepare",d:"Slow-cooked, fermented, brined, or traditionally aged. Find something where time is the main ingredient.",c:"CHAOS",xp:40,diff:"Easy"},
+{t:"Spend an entire day outside",d:"Wake up, go outside, stay outside all day until you sleep. Rain, shine, whatever. No buildings.",c:"CHAOS",xp:50,diff:"Medium"},
+{t:"Try a sensory overload experience",d:"A rave, a loud concert front row, a noisy souk or market, a firework display at point-blank range. Let it wash over you.",c:"CHAOS",xp:40,diff:"Easy"},
+{t:"Break a personal record",d:"Anything physical — fastest run, most push-ups, longest hold. Set a baseline today and beat it this week.",c:"CHAOS",xp:50,diff:"Medium"},
+{t:"Invent and cook a completely original dish",d:"No recipe, no inspiration from known dishes. Invent something from scratch. Eat it. Rate it honestly.",c:"CHAOS",xp:50,diff:"Medium"},
+{t:"Enter a competition you've never tried",d:"Eating, coding, art, chess, cooking, photography — any competition. Actually enter and turn up.",c:"CHAOS",xp:60,diff:"Medium"},
+{t:"Give away something you love",d:"A possession that means something to you. Give it to someone who will use it or love it more.",c:"CHAOS",xp:40,diff:"Easy"},
+{t:"Go skinny dipping",d:"A lake, a sea, an empty pool. With friends or alone. Leave the clothes on the bank and get in.",c:"CHAOS",xp:50,diff:"Medium"},
+{t:"Volunteer for the hardest task in any group",d:"In any situation — a work project, a social event, a group challenge — be the first to volunteer for the worst job.",c:"CHAOS",xp:40,diff:"Easy"},
+{t:"Make something and sell it",d:"Anything you made with your hands — baked, built, drawn, grown. Sell it to a stranger for actual money.",c:"CHAOS",xp:60,diff:"Medium"},
+{t:"Go a full day without looking in a mirror",d:"Cover them if you have to. Don't look at your reflection once. See how it changes your relationship with your appearance.",c:"CHAOS",xp:30,diff:"Easy"},
+{t:"Read a book you've been putting off for years",d:"The one on the shelf that's been there since forever. Read it all the way through.",c:"CHAOS",xp:30,diff:"Easy"},
+{t:"Win an argument you were wrong about",d:"Pick a position you don't hold. Enter into a real debate with someone who agrees with your actual view. Win using only logic.",c:"CHAOS",xp:60,diff:"Medium"},
+{t:"Get up and dance in public without music",d:"In a park, on a street, in a waiting room. Dance. No music. No phone. Just you dancing.",c:"CHAOS",xp:40,diff:"Easy"},
+{t:"Go a week with no complaining and no excuses",d:"When you catch yourself about to complain or excuse — stop. Do the thing instead.",c:"CHAOS",xp:60,diff:"Medium"},
+{t:"Try a discipline every day for a week — then quit if you hate it",d:"7 days of Wim Hof breathing, intermittent fasting, cold therapy, or strength training. Honest verdict on day 8.",c:"CHAOS",xp:50,diff:"Medium"},
+];
+
+// Expand the quest pool by generating many more with templates
+const ADVENTURE_MODS = ["at midnight","in a foreign country","in the rain","during a full moon","with a stranger","in complete silence","while fasting","with no map","in winter","alone"];
+const SKILL_MODS = ["in one week","from scratch with no tutorial","with your non-dominant hand","and teach it to someone else immediately","competitively"];
+const EXTRA_QUESTS = [];
+
+// Template expansion for variety
+const tmpl_adv = [
+  "Ride a {V} you've never ridden",
+  "Find and explore a {P} no one you know has been to",
+  "Complete a 10km {A} challenge",
+  "Navigate to a {L} using only offline maps",
+  "Sleep a night in a {S}",
+];
+const V_list = ["motorised skateboard","longboard","moped","mountain bike","e-scooter"];
+const P_list = ["peninsula","bay","island","gorge","plateau"];
+const A_list = ["trail running","cycling","swimming","rowing","hiking"];
+const L_list = ["mountain hut","coastal village","hilltop viewpoint","waterfall","ancient ruin"];
+const S_list = ["yurt","hammock in the wild","beach shack","cave entrance","rooftop under the stars"];
+
+for(let i=0;i<V_list.length;i++) EXTRA_QUESTS.push({t:`Ride a ${V_list[i]} you've never ridden`,d:`Find one, learn the controls, and ride at least 2km on a route that has at least one hill.`,c:"ADVENTURE",xp:40+i*10,diff:["Easy","Medium","Medium","Hard","Medium"][i]});
+for(let i=0;i<P_list.length;i++) EXTRA_QUESTS.push({t:`Explore a ${P_list[i]} no one you know has been to`,d:`Research it, get there, explore for 3+ hours. Bring back one story.`,c:"ADVENTURE",xp:60,diff:"Medium"});
+for(let i=0;i<A_list.length;i++) EXTRA_QUESTS.push({t:`Complete a 10km ${A_list[i]} challenge`,d:`Train or don't. Just complete a 10km ${A_list[i]} without stopping.`,c:"ADVENTURE",xp:70,diff:"Hard"});
+for(let i=0;i<L_list.length;i++) EXTRA_QUESTS.push({t:`Navigate to a ${L_list[i]} using only offline maps`,d:`Download offline maps and get there without asking or checking your connection.`,c:"SKILLS",xp:60,diff:"Medium"});
+for(let i=0;i<S_list.length;i++) EXTRA_QUESTS.push({t:`Sleep a night in a ${S_list[i]}`,d:`Actually sleep through the night in a ${S_list[i]}. Document what you hear at 3am.`,c:"ADVENTURE",xp:70,diff:"Medium"});
+
+const SKILL_EXTRAS = [
+  {t:"Learn to fold a crane and 4 other origami models",d:"Real origami, proper folds. Five distinct models from memory.",c:"SKILLS",xp:40,diff:"Easy"},
+  {t:"Learn to do 100 push-ups in a row",d:"Train for it. Grease the groove, rest-pause, whatever method. Hit 100 unbroken.",c:"SKILLS",xp:80,diff:"Hard"},
+  {t:"Learn to run 5km without stopping",d:"If you can't currently. Couch to 5k or equivalent. Run 5km, no walk breaks.",c:"SKILLS",xp:60,diff:"Medium"},
+  {t:"Learn to do 20 pull-ups in a row",d:"Work from whatever your max is to 20. Track every session.",c:"SKILLS",xp:90,diff:"Hard"},
+  {t:"Learn to draw a realistic face",d:"From a reference photo, draw a realistic human face in pencil. Shading, proportions, detail.",c:"SKILLS",xp:50,diff:"Medium"},
+  {t:"Learn to do a standing side kick",d:"Proper chamber, extension, snap back. Hit a pad with enough force to move it.",c:"SKILLS",xp:50,diff:"Medium"},
+  {t:"Learn to do a full Turkish get-up",d:"With a kettlebell or weight. All steps clean, controlled. 5 reps each side.",c:"SKILLS",xp:60,diff:"Medium"},
+  {t:"Learn the NATO phonetic alphabet perfectly",d:"Alpha, Bravo, Charlie... all 26. Recite from memory in under 30 seconds.",c:"SKILLS",xp:20,diff:"Easy"},
+  {t:"Learn to make pasta from scratch",d:"Flour, eggs, salt. Roll it thin, cut it, cook it. Sauce made from scratch too.",c:"SKILLS",xp:40,diff:"Easy"},
+  {t:"Learn to do a planche lean",d:"Straight body, leaning forward on straight arms. Hold for 10 seconds. Core and shoulder strength.",c:"SKILLS",xp:80,diff:"Hard"},
+  {t:"Learn to make leather tooling basic designs",d:"Get a piece of leather, a swivel knife, and stamps. Carve a basic geometric pattern.",c:"SKILLS",xp:50,diff:"Medium"},
+  {t:"Learn to read sheet music",d:"Treble and bass clef. Be able to play a simple melody from notation on an instrument.",c:"SKILLS",xp:60,diff:"Medium"},
+  {t:"Learn to do a back walkover",d:"Gymnastics skill. From standing, bend back and kick over. Requires flexibility and back strength.",c:"SKILLS",xp:70,diff:"Medium"},
+  {t:"Learn to do a one-armed push-up",d:"Proper form, chest to floor. Do 5 consecutive on each arm.",c:"SKILLS",xp:80,diff:"Hard"},
+  {t:"Learn to drive stick shift",d:"Manual transmission. Clutch, bite point, gear changes. Drive 20km without stalling.",c:"SKILLS",xp:60,diff:"Medium"},
+];
+EXTRA_QUESTS.push(...SKILL_EXTRAS);
+
+const CHAOS_EXTRAS = [
+  {t:"Do the Wim Hof breathing technique for 10 days",d:"3 rounds of 30-40 breaths + retention every morning. Document what happens.",c:"CHAOS",xp:60,diff:"Medium"},
+  {t:"Eat one meal every day for a week that you've never eaten before",d:"7 different meals across 7 different cuisines. All new.",c:"CHAOS",xp:40,diff:"Easy"},
+  {t:"Try intermittent fasting for two weeks",d:"16:8 or 18:6. No food outside your window. See what changes.",c:"CHAOS",xp:50,diff:"Medium"},
+  {t:"Sleep on the floor for a week",d:"No bed. Mattress on the floor or mat only. See what your back does.",c:"CHAOS",xp:40,diff:"Easy"},
+  {t:"Go vegan for 30 days",d:"No animal products. Plan it properly. Track energy, mood, and cravings.",c:"CHAOS",xp:70,diff:"Medium"},
+  {t:"Spend one hour a day outside every day for a month",d:"All weather. Every day. One unbroken hour with sky above you.",c:"CHAOS",xp:60,diff:"Medium"},
+  {t:"Build something with your hands this week",d:"Shelf, fire pit, garden bed, birdhouse — something structural you can use.",c:"CHAOS",xp:50,diff:"Medium"},
+  {t:"Commit to early morning exercise every day for 3 weeks",d:"Before 7am. Every weekday. Any form of physical effort for 30+ minutes.",c:"CHAOS",xp:70,diff:"Medium"},
+  {t:"Do a 5-day juice fast",d:"Only fresh juice and water. No solid food for 5 days. Document the journey.",c:"CHAOS",xp:80,diff:"Hard"},
+  {t:"Create and stick to a morning routine for 21 days",d:"Same routine, every morning. No variation. No skipping. Note what breaks first.",c:"CHAOS",xp:60,diff:"Medium"},
+];
+EXTRA_QUESTS.push(...CHAOS_EXTRAS);
+
+const MIND_EXTRAS = [
+  {t:"Read 5 books in a month",d:"Real books. Finished. At least one that challenges you intellectually.",c:"MIND",xp:80,diff:"Hard"},
+  {t:"Learn and apply a new mental model",d:"First principles, inversion, second-order thinking. Apply it to a real decision in your life.",c:"MIND",xp:40,diff:"Easy"},
+  {t:"Write something that makes someone else cry",d:"A letter, story, or poem. Show it to someone. Watch for the reaction.",c:"MIND",xp:60,diff:"Medium"},
+  {t:"Do 10 minutes of intentional gratitude every morning for 2 weeks",d:"Write three genuine things. Not generic. Specific moments from the last 24 hours.",c:"MIND",xp:40,diff:"Easy"},
+  {t:"Learn to sit with discomfort for 20 minutes",d:"Sit still, not comfortable. No distraction. Notice what your mind tries to do.",c:"MIND",xp:40,diff:"Easy"},
+  {t:"Spend a day with no music",d:"No headphones, no background music, no ambient playlists. Just silence and ambient sound.",c:"MIND",xp:30,diff:"Easy"},
+  {t:"Write an honest eulogy for yourself",d:"As if from a person who loved you and also told the truth. Read it back aloud.",c:"MIND",xp:60,diff:"Medium"},
+  {t:"Go a week saying exactly what you mean",d:"No hedging, no half-truths, no social niceties that aren't true. Direct and honest in every conversation.",c:"MIND",xp:60,diff:"Medium"},
+];
+EXTRA_QUESTS.push(...MIND_EXTRAS);
+
+const SOCIAL_EXTRAS = [
+  {t:"Find a pen pal and write 5 real letters",d:"Via Slowly, PostCrossing, or mutual friend. Write 5 proper letters over at least 2 months.",c:"SOCIAL",xp:50,diff:"Medium"},
+  {t:"Reconnect with someone you've lost touch with",d:"The person you've been meaning to message. Call them. Have a real conversation.",c:"SOCIAL",xp:30,diff:"Easy"},
+  {t:"Organise a group hike",d:"10+ people, a real trail, a real pace. You plan the route, the transport, the snacks.",c:"SOCIAL",xp:50,diff:"Medium"},
+  {t:"Host a no-phones dinner",d:"Everyone stacks phones in a bowl at the door. Full meal together with zero screens.",c:"SOCIAL",xp:40,diff:"Easy"},
+  {t:"Help a stranger without being asked",d:"See someone struggling and just help. Don't make it weird. Don't expect thanks.",c:"SOCIAL",xp:20,diff:"Easy"},
+  {t:"Say yes to the next social invitation you'd normally decline",d:"The uncomfortable one. The one with people you don't know well. Go, stay, be present.",c:"SOCIAL",xp:30,diff:"Easy"},
+  {t:"Organise a charity fundraiser with friends",d:"Pick a cause, plan an event, get donations. Raise at least 10x the effort it took to organise.",c:"SOCIAL",xp:70,diff:"Medium"},
+  {t:"Have dinner with your family and no side-conversations",d:"Everyone at the table, no phones, no TV, one conversation for the whole meal.",c:"SOCIAL",xp:20,diff:"Easy"},
+];
+EXTRA_QUESTS.push(...SOCIAL_EXTRAS);
+
+// More unique quests to get to ~500
+const BONUS_QUESTS = [
+{t:"Do a polar plunge in a lake on New Year's Day",d:"Or the nearest cold January morning. Get the full immersion. Stay in for 2 minutes.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Ride a cable car over a city",d:"Hong Kong, San Francisco, Tbilisi — or your local equivalent. Ride end to end.",c:"ADVENTURE",xp:30,diff:"Easy"},
+{t:"Sleep under the stars on a mountain",d:"Elevation over 1500m. No shelter above you. Just stars and sleeping bag.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Go white water rafting",d:"Grade 3+ rapids. A guide is fine. Hit genuine whitewater and get properly wet.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Go paragliding tandem",d:"Find a local paragliding school. Strap in with an instructor and soar. Look down.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Build an igloo or snow shelter",d:"In actual snow, deep enough to get inside and stay warm. Build it properly enough to sleep in.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Go on a 3-day solo hiking trip",d:"Three days, solo, in proper wilderness. Self-navigation, self-catering, self-reliance.",c:"ADVENTURE",xp:100,diff:"Hard"},
+{t:"Swim across a lake",d:"Find a lake and swim the full width. Know the distance. Time it.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Ride an ATV in terrain",d:"Off-road, real terrain, not a beach tourist track. Get it muddy.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Go skydiving tandem",d:"First time out of a plane. Tandem with instructor. 10,000+ feet. Eyes open.",c:"ADVENTURE",xp:100,diff:"Hard"},
+{t:"Learn to do a proper roundhouse kick",d:"Hip rotation, pivot, chamber, snap. Hit a heavy bag hard enough to knock it back.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to do a human flag hold",d:"Press sideways on a vertical pole, body horizontal. One of calisthenics' hardest holds.",c:"SKILLS",xp:100,diff:"Hard"},
+{t:"Learn to cook on an open fire",d:"Campfire only. Full meal. At least 3 components. Nothing pre-cooked.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to forage 10 edible plants",d:"With a guide or book. Correctly identify and safely eat 10 wild edible species.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn to do a butterfly kick",d:"The b-boy/wushu move. Spin, kick, land. Takes weeks to get clean.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Learn to code a simple game from scratch",d:"Pong, Snake, Flappy Bird. Just you, a tutorial-free approach, and raw code.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn to free-run a basic parkour route",d:"Vault, precision jump, cat-leap. Find a route and run it cleanly 10 times.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Learn to play chess at intermediate level",d:"Study openings, tactics puzzles, endgames. Reach 1000+ rating on chess.com.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn to ferment something",d:"Kimchi, kombucha, sourdough, kefir. Make a successful batch from scratch.",c:"SKILLS",xp:40,diff:"Easy"},
+{t:"Learn to read a stranger's body language accurately",d:"Study Navarro, Ekman, or Lieberman. Apply it to a real conversation. Get 3 things right.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to flip a knife",d:"The grip flip, not thrown. Smooth, controlled, silent. Do it 20 times in a row without dropping.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to play poker and win a home game",d:"Hand rankings, pot odds, position, bluffing. Win a real money home game.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to do a straddle planche on parallettes",d:"Advanced calisthenics hold. Straight body, horizontal, on bars. Work up to 5 seconds.",c:"SKILLS",xp:100,diff:"Hard"},
+{t:"Learn to make a film — shoot and edit a 3-min short",d:"Script, shoot on anything, edit it together. A complete 3-minute story from idea to final cut.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn to sail a small boat",d:"A dinghy or small keelboat. Tack, gybe, launch, recover. Handle real wind.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Build a relationship with someone from a different culture",d:"Deep enough that they invite you to something cultural or family-related.",c:"SOCIAL",xp:70,diff:"Medium"},
+{t:"Run a community event from start to finish",d:"You organise, publicise, set up, run, and clean up an event that serves 20+ people.",c:"SOCIAL",xp:80,diff:"Hard"},
+{t:"Go to a protest or rally",d:"For something you genuinely care about. Stand in the crowd. Be present.",c:"SOCIAL",xp:30,diff:"Easy"},
+{t:"Spend a week saying yes to every social invitation",d:"Every one. Party, walk, coffee, awkward dinner. All of them. Track what happens.",c:"SOCIAL",xp:60,diff:"Medium"},
+{t:"Interview an elderly person about their best decade",d:"Record it with permission. Listen without checking your phone. Write a summary.",c:"SOCIAL",xp:40,diff:"Easy"},
+{t:"Eat a meal with 10 people from 10 different countries",d:"Not at a world food festival — at someone's home. Cook together if possible.",c:"SOCIAL",xp:70,diff:"Medium"},
+{t:"Throw a flat-warming that people still talk about",d:"New place. Epic party. Minimum 30 people, a theme, and at least one moment nobody expected.",c:"SOCIAL",xp:70,diff:"Medium"},
+{t:"Join a team sport you've never played",d:"Water polo, ultimate frisbee, roller derby, gaelic football. Join a league. Play 5+ games.",c:"SOCIAL",xp:70,diff:"Medium"},
+{t:"Find an abandoned place and give it a story",d:"Explore it. Research its history. Write or tell the story of who was there and what happened.",c:"URBAN",xp:60,diff:"Medium"},
+{t:"Take a photo a day for 30 days in your city",d:"Different location every day. Build a genuine visual document of your city.",c:"URBAN",xp:40,diff:"Easy"},
+{t:"Find and visit every monument in your city",d:"Map them all. Visit each one. Know the story behind at least half.",c:"URBAN",xp:50,diff:"Medium"},
+{t:"Eat the most expensive thing on a menu you'd normally never visit",d:"A michelin star or fine dining experience. Go alone or with one person. Eat every course.",c:"URBAN",xp:70,diff:"Medium"},
+{t:"Find the oldest café or bar in your city and sit there for 3 hours",d:"Order slowly, talk to the bartender, watch who comes in. Write something about it.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Attend a poetry slam",d:"Find a local slam or open mic. Sit in the front row. Buy the poet a drink.",c:"URBAN",xp:20,diff:"Easy"},
+{t:"Take a foreign language class for a month",d:"Weekly sessions. Learn one topic per week. Actually use what you learned on a native speaker.",c:"MIND",xp:60,diff:"Medium"},
+{t:"Meditate in a public space for 30 minutes",d:"Park bench, train station, library. Eyes closed, not moving. Don't care who looks.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Read the news from 5 different countries for a week",d:"Same story, completely different framing. Document what each country emphasises.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Watch the sunrise and sunset on the same day",d:"Same location if possible. Full sun movement. Note what's different about the light.",c:"MIND",xp:30,diff:"Easy"},
+{t:"Write something every day for 30 days",d:"Any format. Minimum 200 words. Doesn't matter if it's good. Just write.",c:"MIND",xp:60,diff:"Medium"},
+{t:"Ask one big question and spend a day researching the answer",d:"Something that's genuinely puzzled you. Go deep. Read real sources. Write a 1-page answer.",c:"MIND",xp:40,diff:"Easy"},
+];
+EXTRA_QUESTS.push(...BONUS_QUESTS);
+
+const ALL_QUESTS_RAW = [...RAW_QUESTS, ...EXTRA_QUESTS];
+
+// Assign unique IDs
+const ALL_QUESTS = ALL_QUESTS_RAW.map((q,i) => ({...q, id: i+1}));
+
+// =====================================================================
+// STATE
+// =====================================================================
+let state = {
+  xp: 0,
+  completedIds: [],
+  activeIds: [],
+  seenOrder: [], // shuffle tracking
+  memories: {}, // {questId: [{type:'img'|'vid', data:base64}]}
+  xpHistory: [], // [{date, xp}]
+  currentFilter: 'ALL',
+};
+
+function saveState() {
+  try { localStorage.setItem('sqstate', JSON.stringify(state)); } catch(e){}
+}
+function loadState() {
+  try {
+    const s = localStorage.getItem('sqstate');
+    if(s) state = {...state, ...JSON.parse(s)};
+  } catch(e){}
+}
+
+// =====================================================================
+// QUEST LOGIC
+// =====================================================================
+let currentQuestId = null;
+let displayedQuests = [];
+let shuffleSeed = Date.now();
+
+function seededShuffle(arr, seed) {
+  const a = [...arr];
+  let s = seed;
+  for(let i = a.length-1; i>0; i--) {
+    s = (s * 1103515245 + 12345) & 0x7fffffff;
+    const j = s % (i+1);
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function getAvailableQuests() {
+  return ALL_QUESTS.filter(q => !state.completedIds.includes(q.id));
+}
+
+function getDisplayedQuests() {
+  let quests = getAvailableQuests();
+  if(state.currentFilter !== 'ALL') quests = quests.filter(q => q.cat === state.currentFilter || q.c === state.currentFilter);
+  // Use seeded shuffle based on current shuffleSeed, but maintain seen order to avoid repeats
+  const shuffled = seededShuffle(quests, shuffleSeed);
+  return shuffled.slice(0, 30);
+}
+
+// =====================================================================
+// LEVEL LOGIC
+// =====================================================================
+function getCurrentLevel() {
+  let lv = LEVELS[0];
+  for(const l of LEVELS) { if(state.xp >= l.xp) lv = l; }
+  return lv;
+}
+function getNextLevel() {
+  const idx = LEVELS.findIndex(l => l.lvl === getCurrentLevel().lvl);
+  return LEVELS[idx+1] || null;
+}
+function getLevelProgress() {
+  const cur = getCurrentLevel();
+  const nxt = getNextLevel();
+  if(!nxt) return 100;
+  return Math.round(((state.xp - cur.xp) / (nxt.xp - cur.xp)) * 100);
+}
+
+// =====================================================================
+// RENDER
+// =====================================================================
+function renderQuestCard(q, context='quests') {
+  const isActive = state.activeIds.includes(q.id);
+  const isCompleted = state.completedIds.includes(q.id);
+  const xpClass = q.xp >= 80 ? 'high' : '';
+  const catKey = q.c || q.cat;
+  return `
+  <div class="quest-card ${isCompleted?'completed':''}" onclick="openModal(${q.id})">
+    <div class="quest-meta">
+      <span class="cat-tag cat-${catKey}">${catKey}</span>
+      <span class="xp-tag ${xpClass}">${q.xp} XP · ${q.diff}</span>
+    </div>
+    <div class="quest-title">${q.t}</div>
+    ${context==='quests' ? '' : `<div class="quest-desc">${q.d.substring(0,80)}...</div>`}
+    <div class="quest-actions" onclick="event.stopPropagation()">
+      ${isCompleted
+        ? `<span class="btn-sm done">✓ Done</span>`
+        : isActive
+          ? `<button class="btn-sm primary" onclick="completeQuestById(${q.id})">Complete</button><button class="btn-sm" onclick="openModal(${q.id})">Details</button>`
+          : `<button class="btn-sm primary" onclick="acceptQuestById(${q.id})">Accept</button><button class="btn-sm" onclick="openModal(${q.id})">Details</button>`
+      }
+    </div>
+  </div>`;
+}
+
+function renderQuestList() {
+  displayedQuests = getDisplayedQuests();
+  const el = document.getElementById('quest-list');
+  const countEl = document.getElementById('quest-count');
+  const catKey = state.currentFilter === 'ALL' ? '' : ` in ${state.currentFilter}`;
+  if(displayedQuests.length === 0) {
+    el.innerHTML = `<div class="empty-state"><div class="big-icon">🎉</div><p>All quests in this category completed!<br>You're a legend.</p></div>`;
+    countEl.textContent = '0 quests';
+    return;
+  }
+  countEl.textContent = `${displayedQuests.length} quests`;
+  el.innerHTML = displayedQuests.map(q => renderQuestCard(q, 'quests')).join('');
+}
+
+function renderActiveList() {
+  const quests = ALL_QUESTS.filter(q => state.activeIds.includes(q.id));
+  const el = document.getElementById('active-list');
+  document.getElementById('active-count').textContent = quests.length;
+  if(!quests.length) { el.innerHTML = `<div class="empty-state"><div class="big-icon">⚡</div><p>No active quests.<br>Head to Quests and accept one.</p></div>`; return; }
+  el.innerHTML = quests.map(q => renderQuestCard(q, 'active')).join('');
+}
+
+function renderCompletedList() {
+  const quests = ALL_QUESTS.filter(q => state.completedIds.includes(q.id)).reverse();
+  const el = document.getElementById('completed-list');
+  document.getElementById('completed-count').textContent = quests.length;
+  if(!quests.length) { el.innerHTML = `<div class="empty-state"><div class="big-icon">🏆</div><p>No completed quests yet.<br>Go do something wild.</p></div>`; return; }
+  el.innerHTML = quests.map(q => renderQuestCard(q, 'completed')).join('');
+}
+
+function renderStats() {
+  const cats = ['ADVENTURE','SKILLS','SOCIAL','URBAN','MIND','CHAOS'];
+  const catColors = [CAT_COLORS.ADVENTURE, CAT_COLORS.SKILLS, CAT_COLORS.SOCIAL, CAT_COLORS.URBAN, CAT_COLORS.MIND, CAT_COLORS.CHAOS];
+  const counts = {};
+  cats.forEach(c => counts[c] = 0);
+  state.completedIds.forEach(id => {
+    const q = ALL_QUESTS.find(x => x.id===id);
+    if(q) counts[q.c || q.cat] = (counts[q.c || q.cat]||0)+1;
+  });
+  const maxCount = Math.max(...Object.values(counts), 1);
+  const el = document.getElementById('cat-bar-chart');
+  el.innerHTML = cats.map((c,i) => `
+    <div class="bar-row">
+      <div class="bar-label">${c.charAt(0)+c.slice(1).toLowerCase()}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(counts[c]/maxCount*100)}%;background:${catColors[i]}"></div></div>
+      <div class="bar-count">${counts[c]}</div>
+    </div>`).join('');
+
+  // XP history chart
+  const canvas = document.getElementById('xp-chart');
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth * window.devicePixelRatio || 600;
+  canvas.height = 120 * window.devicePixelRatio || 120;
+  ctx.scale(window.devicePixelRatio||1, window.devicePixelRatio||1);
+  const w = canvas.offsetWidth || 300;
+  const h = 120;
+  ctx.clearRect(0,0,w,h);
+  const hist = state.xpHistory.slice(-14);
+  if(hist.length > 1) {
+    const maxXp = Math.max(...hist.map(x=>x.cumXp),1);
+    const pts = hist.map((x,i) => [i/(hist.length-1)*w, h - (x.cumXp/maxXp)*(h-16) - 8]);
+    ctx.beginPath(); ctx.moveTo(pts[0][0],pts[0][1]);
+    pts.forEach(p => ctx.lineTo(p[0],p[1]));
+    ctx.strokeStyle = '#8FAE8B'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.lineTo(w,h); ctx.lineTo(0,h); ctx.closePath();
+    ctx.fillStyle = 'rgba(143,174,139,0.15)'; ctx.fill();
+    pts.forEach(p => { ctx.beginPath(); ctx.arc(p[0],p[1],3,0,Math.PI*2); ctx.fillStyle='#8FAE8B'; ctx.fill(); });
+  } else {
+    ctx.fillStyle = '#9B9B92'; ctx.font = '13px Space Grotesk'; ctx.textAlign='center';
+    ctx.fillText('Complete quests to see XP history', w/2, h/2);
+  }
+
+  // Recent completed
+  const recent = ALL_QUESTS.filter(q => state.completedIds.includes(q.id)).slice(-5).reverse();
+  const rEl = document.getElementById('recent-completed');
+  if(!recent.length) { rEl.innerHTML = `<p style="color:var(--gray);font-size:13px">No completions yet.</p>`; return; }
+  rEl.innerHTML = recent.map(q => `
+    <div class="recent-item">
+      <div class="recent-dot"></div>
+      <div class="recent-name">${q.t}</div>
+      <div class="recent-xp">+${q.xp} XP</div>
+    </div>`).join('');
+}
+
+function renderLevels() {
+  const cur = getCurrentLevel();
+  const nxt = getNextLevel();
+  const prog = getLevelProgress();
+  document.getElementById('lv-big').textContent = cur.lvl;
+  document.getElementById('lv-title').textContent = cur.name;
+  document.getElementById('lv-progress').style.width = prog+'%';
+  document.getElementById('lv-xp-label').textContent = nxt ? `${state.xp} / ${nxt.xp} XP` : `${state.xp} XP — MAX LEVEL`;
+  document.getElementById('stat-total-xp').textContent = state.xp;
+  document.getElementById('stat-done').textContent = state.completedIds.length;
+  document.getElementById('stat-streak').textContent = calculateStreak();
+  const cats = new Set(state.completedIds.map(id => { const q=ALL_QUESTS.find(x=>x.id===id); return q?q.c||q.cat:''; }));
+  cats.delete('');
+  document.getElementById('stat-cats').textContent = cats.size;
+
+  const el = document.getElementById('level-list');
+  el.innerHTML = LEVELS.map(l => {
+    const reached = state.xp >= l.xp;
+    const isCur = l.lvl === cur.lvl;
+    return `<div class="level-row">
+      <div class="lv-circle ${reached&&!isCur?'reached':''} ${isCur?'current':''}">${l.lvl}</div>
+      <div class="lv-info"><div class="lv-name">${l.name}</div><div class="lv-xp">${l.xp} XP</div></div>
+      ${isCur ? '<span style="font-size:12px;color:var(--sage);font-weight:600">YOU ARE HERE</span>' : ''}
+    </div>`;
+  }).join('');
+
+  // top bar
+  document.getElementById('xp-bar').style.width = prog+'%';
+  document.getElementById('level-badge').textContent = `LVL ${cur.lvl}`;
+}
+
+function calculateStreak() {
+  if(!state.xpHistory.length) return 0;
+  let streak = 0;
+  const today = new Date().toDateString();
+  const hist = [...state.xpHistory].reverse();
+  let checkDate = new Date();
+  for(const entry of hist) {
+    if(new Date(entry.date).toDateString() === checkDate.toDateString()) {
+      streak++;
+      checkDate.setDate(checkDate.getDate()-1);
+    } else break;
+  }
+  return streak;
+}
+
+// =====================================================================
+// MODAL
+// =====================================================================
+function openModal(questId) {
+  const q = ALL_QUESTS.find(x => x.id===questId);
+  if(!q) return;
+  currentQuestId = questId;
+  const catKey = q.c || q.cat;
+  document.getElementById('m-cat').textContent = catKey;
+  document.getElementById('m-cat').className = `modal-cat cat-tag cat-${catKey}`;
+  document.getElementById('m-title').textContent = q.t;
+  document.getElementById('m-desc').textContent = q.d;
+  document.getElementById('m-xp').textContent = `+${q.xp} XP`;
+  document.getElementById('m-diff').textContent = `Difficulty: ${q.diff}`;
+
+  const isActive = state.activeIds.includes(questId);
+  const isCompleted = state.completedIds.includes(questId);
+  const acceptBtn = document.getElementById('m-accept-btn');
+  const doneBtn = document.getElementById('m-done-btn');
+  const memSection = document.getElementById('memory-section');
+
+  if(isCompleted) {
+    acceptBtn.style.display='none'; doneBtn.style.display='none';
+    acceptBtn.textContent='Completed ✓';
+    memSection.style.display='block';
+  } else if(isActive) {
+    acceptBtn.style.display='none'; doneBtn.style.display='block';
+    memSection.style.display='block';
+  } else {
+    acceptBtn.style.display='block'; doneBtn.style.display='none';
+    acceptBtn.textContent='Accept Quest';
+    memSection.style.display='none';
+  }
+
+  if(isCompleted) { acceptBtn.style.display='block'; acceptBtn.textContent='✓ Completed'; acceptBtn.disabled=true; acceptBtn.style.opacity='0.5'; }
+  else { acceptBtn.disabled=false; acceptBtn.style.opacity='1'; }
+
+  renderMemories(questId);
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if(!e || e.target===document.getElementById('modal-overlay')) {
+    document.getElementById('modal-overlay').classList.remove('open');
+    currentQuestId = null;
+  }
+}
+
+function acceptQuest() {
+  if(!currentQuestId) return;
+  if(state.completedIds.includes(currentQuestId)) return;
+  if(!state.activeIds.includes(currentQuestId)) {
+    state.activeIds.push(currentQuestId);
+    saveState();
+    showToast('Quest accepted! ⚡');
+    document.getElementById('m-accept-btn').style.display='none';
+    document.getElementById('m-done-btn').style.display='block';
+    document.getElementById('memory-section').style.display='block';
+    renderActiveList();
+    renderQuestList();
+  }
+}
+
+function acceptQuestById(id) {
+  if(state.completedIds.includes(id)) return;
+  if(!state.activeIds.includes(id)) {
+    state.activeIds.push(id);
+    saveState();
+    showToast('Quest accepted! ⚡');
+    renderQuestList();
+    renderActiveList();
+  }
+}
+
+function completeQuest() {
+  if(!currentQuestId) return;
+  completeQuestById(currentQuestId);
+  closeModal();
+}
+
+function completeQuestById(id) {
+  if(state.completedIds.includes(id)) return;
+  const q = ALL_QUESTS.find(x=>x.id===id);
+  if(!q) return;
+  state.completedIds.push(id);
+  state.activeIds = state.activeIds.filter(x=>x!==id);
+  state.xp += q.xp;
+
+  // XP history
+  const today = new Date().toISOString().split('T')[0];
+  const lastEntry = state.xpHistory[state.xpHistory.length-1];
+  if(lastEntry && lastEntry.date === today) {
+    lastEntry.xp += q.xp; lastEntry.cumXp = state.xp;
+  } else {
+    state.xpHistory.push({date:today, xp:q.xp, cumXp:state.xp});
+  }
+
+  saveState();
+  showToast(`+${q.xp} XP earned! 🔥`);
+  renderAll();
+}
+
+// =====================================================================
+// MEMORIES
+// =====================================================================
+function renderMemories(questId) {
+  const mems = state.memories[questId] || [];
+  const grid = document.getElementById('memory-grid');
+  if(!mems.length) { grid.innerHTML=''; return; }
+  grid.innerHTML = mems.map((m,i) =>
+    m.type==='img'
+      ? `<img class="memory-thumb" src="${m.data}" onclick="viewMemory(${questId},${i})">`
+      : `<div class="memory-thumb-video" onclick="viewMemory(${questId},${i})">▶</div>`
+  ).join('');
+}
+
+function addMemory(event) {
+  const files = Array.from(event.target.files);
+  if(!currentQuestId || !files.length) return;
+  if(!state.memories[currentQuestId]) state.memories[currentQuestId]=[];
+  let loaded=0;
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      state.memories[currentQuestId].push({type: file.type.startsWith('video')?'vid':'img', data: e.target.result});
+      loaded++;
+      if(loaded===files.length) { saveState(); renderMemories(currentQuestId); showToast('Memory saved 📸'); }
+    };
+    reader.readAsDataURL(file);
+  });
+  event.target.value='';
+}
+
+function viewMemory(questId, idx) {
+  const m = (state.memories[questId]||[])[idx];
+  if(!m) return;
+  const w = window.open('','_blank');
+  if(m.type==='img') { w.document.write(`<img src="${m.data}" style="max-width:100%;max-height:100vh">`); }
+  else { w.document.write(`<video src="${m.data}" controls autoplay style="max-width:100%;max-height:100vh"></video>`); }
+}
+
+// =====================================================================
+// TABS & FILTERS
+// =====================================================================
+let currentTab = 'quests';
+function showTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-'+tab).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if(tab==='stats') renderStats();
+  else if(tab==='levels') renderLevels();
+  else if(tab==='completed') renderCompletedList();
+  else if(tab==='active') renderActiveList();
+  else renderQuestList();
+}
+
+function filterCat(cat) {
+  state.currentFilter = cat;
+  document.querySelectorAll('.filter-pill').forEach(p => {
+    p.classList.toggle('active', p.textContent.toUpperCase()===cat || (cat==='ALL' && p.textContent==='All'));
+  });
+  renderQuestList();
+}
+
+function shuffleQuests() {
+  shuffleSeed = Date.now();
+  renderQuestList();
+  const btn = document.querySelector('.shuffle-btn svg');
+  btn.style.transform = 'rotate(360deg)';
+  setTimeout(()=>btn.style.transform='rotate(0deg)',500);
+}
+
+// =====================================================================
+// TOAST
+// =====================================================================
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+// =====================================================================
+// INIT
+// =====================================================================
+function renderAll() {
+  renderQuestList();
+  renderActiveList();
+  renderCompletedList();
+  renderLevels();
+}
+
+loadState();
+renderAll();
+</script>
+</body>
+</html>
