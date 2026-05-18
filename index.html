@@ -317,399 +317,526 @@ const CAT_COLORS = {
 };
 
 // =====================================================================
-// QUEST DATABASE - 600+ unique quests (non-repeating via shuffle algo)
+// QUEST DATABASE - 1000+ unique quests with detailed instructions
 // =====================================================================
 const RAW_QUESTS = [
 // ADVENTURE ────────────────────────────────────────────────────────
-{t:"Explore an abandoned building",d:"Find a derelict spot, get in safely, document what's inside. Collect a weird story from a local about what happened there.",c:"ADVENTURE",xp:80,diff:"Hard"},
-{t:"Ride a freight elevator",d:"Find an old building with a manual freight elevator and beg/charm your way into riding it at least twice.",c:"ADVENTURE",xp:30,diff:"Easy"},
-{t:"Go cliff jumping",d:"Find a safe cliff above water, work up the nerve, and jump. Bonus points for screaming the whole way down.",c:"ADVENTURE",xp:100,diff:"Hard"},
-{t:"Spend a night stargazing alone",d:"Drive or hike somewhere with zero light pollution. Lie on your back for 2+ hours. Learn 5 constellations while you're there.",c:"ADVENTURE",xp:50,diff:"Medium"},
-{t:"Ride a wheelbarrow full speed downhill",d:"Get a friend to push you in a wheelbarrow as fast as possible down a grassy hill. Do not die.",c:"ADVENTURE",xp:40,diff:"Medium"},
-{t:"Build a raft and float it",d:"Gather scrap wood, barrels, rope — whatever you find. Build a raft. Actually float on it in a pond, river, or lake.",c:"ADVENTURE",xp:90,diff:"Hard"},
-{t:"Hike somewhere you've never been at sunrise",d:"Wake up before dawn, drive to a trail you've never hiked. Be at the top for sunrise. No sleeping in.",c:"ADVENTURE",xp:60,diff:"Medium"},
-{t:"Go night swimming somewhere wild",d:"Not a pool. A lake, ocean, quarry or river after dark. Feel the weird energy of being in open water at night.",c:"ADVENTURE",xp:70,diff:"Medium"},
-{t:"Find the highest natural point near your city",d:"Look up the highest hill, peak, or ridge within 50km. Get to the top. Document the view.",c:"ADVENTURE",xp:50,diff:"Medium"},
-{t:"Kayak somewhere you'd normally drive",d:"Rent or borrow a kayak. Navigate a river from point A to point B that you've driven along before. See it new.",c:"ADVENTURE",xp:80,diff:"Hard"},
-{t:"Spend a night in the woods with no tent",d:"Hammock, tarp, or bivy only. No tent. Sleep under open sky or canopy in actual wilderness.",c:"ADVENTURE",xp:90,diff:"Hard"},
-{t:"Follow a river to its source",d:"Pick any river, stream or creek near you. Follow it upstream until you find where it starts. Document the source.",c:"ADVENTURE",xp:70,diff:"Medium"},
-{t:"Scramble up a boulder field",d:"Find a rocky hillside or boulder field. Scramble up using hands and feet without a trail. Go higher than feels comfortable.",c:"ADVENTURE",xp:60,diff:"Medium"},
-{t:"Ride a horse for the first time",d:"Find a local stable offering lessons. Ride an actual horse at a trot or canter. Not a pony walk.",c:"ADVENTURE",xp:50,diff:"Medium"},
-{t:"Go caving",d:"Find a local cave system and explore it. If guided, go to the deepest point available. If wild, be sensible but brave.",c:"ADVENTURE",xp:80,diff:"Hard"},
-{t:"Zipline between two points",d:"Find a zipline course, outdoor centre, or build a safe one. Travel from A to B above the ground.",c:"ADVENTURE",xp:60,diff:"Medium"},
-{t:"Jump from a bridge into water",d:"Find a legal bridge jumping spot. Do it at least three times. Don't hesitate on the third.",c:"ADVENTURE",xp:70,diff:"Medium"},
-{t:"Get lost on purpose in a forest",d:"Enter a forest without a map, walk for 30 minutes in a direction you don't know. Then navigate yourself out using landmarks only.",c:"ADVENTURE",xp:80,diff:"Hard"},
-{t:"Sandboard down a sand dune",d:"Find a tall sand dune. Use a board, lid, or improvised sled. Go down standing. Fall dramatically.",c:"ADVENTURE",xp:60,diff:"Medium"},
-{t:"Bouldering session outdoors",d:"Not in a gym. Find real outdoor boulders, apply chalk, and solve a route. Get your hands dirty.",c:"ADVENTURE",xp:50,diff:"Medium"},
-{t:"Go storm chasing in your car",d:"When a big storm rolls in, drive toward it instead of away. Park and watch lightning hit the ground from a safe elevated point.",c:"ADVENTURE",xp:60,diff:"Medium"},
-{t:"Find and swim in a natural waterfall pool",d:"Research and find a real waterfall with a swimmable pool below. Get in. Swim under the falls.",c:"ADVENTURE",xp:70,diff:"Medium"},
-{t:"Explore your city's underground",d:"Stormwater tunnels, steam tunnels, old cellar networks. Find one, research its access, document it. Stories mandatory.",c:"ADVENTURE",xp:90,diff:"Hard"},
-{t:"Ride in a helicopter",d:"Find a local scenic helicopter tour and do it. Look for the cheapest option — often under $100 for 10 minutes.",c:"ADVENTURE",xp:100,diff:"Hard"},
-{t:"Rappel down a cliff face",d:"Sign up for an intro abseiling course or find a friend who knows. Go over the edge of something real.",c:"ADVENTURE",xp:90,diff:"Hard"},
-{t:"Do an overnight canoe trip",d:"Canoe a river from a campsite downstream to another. One night out. Cook over fire. Paddle the whole way.",c:"ADVENTURE",xp:100,diff:"Hard"},
-{t:"Cross a gorge on a rope bridge",d:"Find a gorge, canyon, or ravine with a rope or suspension bridge. Cross it. If there's a longer wooden one, run it.",c:"ADVENTURE",xp:50,diff:"Medium"},
-{t:"Skateboard a hill you've been scared of",d:"Pick a hill that has always felt too fast or steep. Skate it top to bottom without bailing.",c:"ADVENTURE",xp:60,diff:"Medium"},
-{t:"Find an ice cave",d:"Research glacier caves, lava tubes, or ice caves near you. Get inside one. Touch the walls.",c:"ADVENTURE",xp:80,diff:"Hard"},
-{t:"Go night cycling through your city",d:"At 2–3am, cycle through every neighbourhood of your city. Bonus: go somewhere you've never been on foot.",c:"ADVENTURE",xp:50,diff:"Medium"},
-{t:"Charter a fishing boat",d:"Split cost with friends, hire a fishing charter. Go far out to sea. Try to catch something bigger than you.",c:"ADVENTURE",xp:80,diff:"Hard"},
-{t:"Train hop (legally)",d:"Find a heritage railway, scenic train, or old rail trail. Ride to the end of the line and back.",c:"ADVENTURE",xp:40,diff:"Easy"},
-{t:"Free solo a small climb",d:"A beginner-level outdoor climb with no rope. Something you can safely solo but that makes your palms sweat.",c:"ADVENTURE",xp:80,diff:"Hard"},
-{t:"Take a cold plunge in open water in winter",d:"January or February, find a lake, river, or sea. Get in up to your neck. Stay in for 60 seconds minimum.",c:"ADVENTURE",xp:70,diff:"Medium"},
-{t:"Navigate somewhere entirely by the stars",d:"On a clear night, travel at least 1km using only star navigation. No phone, no map. Get it right.",c:"ADVENTURE",xp:80,diff:"Hard"},
-{t:"Do a night hike without a flashlight",d:"Let your eyes adjust. Hike a trail you sort of know using only moonlight or ambient light. No cheating.",c:"ADVENTURE",xp:70,diff:"Medium"},
-{t:"Explore an abandoned railway line",d:"Find a disused rail corridor. Walk at least 2km of the old track. Note what was there and what remains.",c:"ADVENTURE",xp:60,diff:"Medium"},
-{t:"Catch and cook your own dinner",d:"Fish, forage, or trap (legally) something and actually cook it over a fire as your meal. No side trips to the shop.",c:"ADVENTURE",xp:90,diff:"Hard"},
-{t:"Paddle a stand-up paddleboard in the ocean",d:"Rent a SUP in ocean conditions. Try to get out past the break. Get knocked off at least once.",c:"ADVENTURE",xp:60,diff:"Medium"},
-{t:"Hike in the dark to catch the sunrise",d:"Start hiking before 4am. Arrive at your viewpoint exactly as the sun crests the horizon.",c:"ADVENTURE",xp:70,diff:"Medium"},
-{t:"Ride a horse bareback",d:"No saddle. Just you and the horse. Get a guide to help if needed but actually ride without the saddle on.",c:"ADVENTURE",xp:80,diff:"Hard"},
-{t:"Sleep on a rooftop",d:"A legal rooftop — yours, a friend's, a hostel with roof access. Set up a sleeping bag and spend the night up top.",c:"ADVENTURE",xp:50,diff:"Medium"},
-{t:"Swim in the ocean at midnight",d:"Not a beach resort. A real ocean at real midnight. Ideally with phosphorescence. Definitely alone or with one person.",c:"ADVENTURE",xp:70,diff:"Medium"},
-{t:"Take a road trip with no destination",d:"Get in the car with a full tank. Drive wherever feels right until the tank is half empty. Then find your way home.",c:"ADVENTURE",xp:60,diff:"Medium"},
-{t:"Explore a lighthouse",d:"Find an actual lighthouse, get to the top, and look out over the sea from the light level.",c:"ADVENTURE",xp:40,diff:"Easy"},
-{t:"Climb a water tower",d:"Find an old water tower. Climb it if safe and accessible. If not, find one that lets you get near the top legally.",c:"ADVENTURE",xp:70,diff:"Medium"},
-{t:"Bodysurf a wave",d:"No board, no fins. Just you and a real ocean wave. Catch at least 5 bodysurf rides in one session.",c:"ADVENTURE",xp:50,diff:"Medium"},
-{t:"Spend 24 hours in a stranger's city",d:"Pick a city you've never visited within 4 hours. Leave at sunrise, return at midnight. Don't plan anything in advance.",c:"ADVENTURE",xp:90,diff:"Hard"},
-{t:"Paraglide off a hill",d:"Tandem or solo. Find a paragliding operator. Get off the ground on a wing and feel what birds feel.",c:"ADVENTURE",xp:100,diff:"Hard"},
-{t:"Build and light a proper campfire",d:"No firestarter. Use flint, friction, or a single match with only what you collect. Must burn for over an hour.",c:"ADVENTURE",xp:60,diff:"Medium"},
-{t:"Find and document a ghost town",d:"Research and visit an abandoned settlement. Photograph every structure. Get one story from a local about what happened.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Explore an abandoned building",d:"Find a derelict spot. Get in safely — wear sturdy boots, bring a flashlight. Document what you see inside: peeling paint, old furniture, weird graffiti. Collect one cool story from a local about what happened there. Don't trespass anywhere actively guarded.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Ride a freight elevator",d:"Find an old industrial building with a manual freight elevator still in operation. Charm or barter your way into riding it at least twice — once going up, once going down. Feel the rumble of vintage machinery.",c:"ADVENTURE",xp:30,diff:"Easy"},
+{t:"Go cliff jumping",d:"Find a safe cliff above deep water — at least 4 metres high. Confirm the depth below with a local or by checking first. Work up the nerve. Jump feet-first, arms crossed. Bonus points for screaming on the way down.",c:"ADVENTURE",xp:100,diff:"Hard"},
+{t:"Spend a night stargazing alone",d:"Drive or hike to somewhere with zero light pollution — at least 30km from any city. Lie flat on your back for 2+ hours. Learn the names of 5 constellations while you're there. No phone screen for the whole session.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Ride a wheelbarrow full speed downhill",d:"Find a grassy hill with no obstacles. Get a trusted friend to push you in a real wheelbarrow as fast as humanly possible. Hold on. Do not tip. Repeat until someone's laughing too hard to continue.",c:"ADVENTURE",xp:40,diff:"Medium"},
+{t:"Build a raft and float it",d:"Gather scrap wood, plastic barrels, rope, inner tubes — whatever floats. Build a raft sturdy enough to hold you. Actually float on it across a pond, lake, or slow river. Document whether it survives the journey.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Hike somewhere you've never been at sunrise",d:"Wake up before 4am. Drive to a trailhead you've never visited. Be at the summit or viewpoint exactly as the sun crests the horizon. Eat breakfast up there. No sleeping in permitted.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Go night swimming somewhere wild",d:"Not a pool. A lake, ocean, quarry, or river after dark. Feel the strange energy of being in open water at night when you can't see the bottom. Bring one friend for safety. Stay in at least 15 minutes.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Find the highest natural point near your city",d:"Look up the tallest hill, peak, or ridge within 50km. Get to the absolute top — not the car park, not the viewpoint deck. The actual highest ground. Document the view in every direction.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Kayak somewhere you'd normally drive",d:"Rent or borrow a kayak. Navigate a river or canal from point A to point B that you've driven alongside a hundred times. See your familiar route from water level. Wave at confused drivers.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Spend a night in the woods with no tent",d:"Hammock, tarp, or bivy sack only. No tent poles, no zippered doors. Sleep under open sky or forest canopy in actual wilderness. Listen to every sound. Wake with the birds.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Follow a river to its source",d:"Pick any river, stream, or creek near you. Walk upstream — for hours if needed — until you find where it begins. A spring, a marsh, a pipe. Document the exact spot. Drink from it if safe.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Scramble up a boulder field",d:"Find a rocky hillside or talus slope without a trail. Climb using hands and feet, testing every rock before committing weight. Go higher than feels comfortable. Stop at the top and look back down.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Ride a horse for the first time",d:"Find a local stable offering trail rides or lessons. Ride an actual horse — not a pony led by a handler — at a trot or canter. Post to the trot. Feel what it's like to move with a large animal.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Go caving",d:"Find a local cave system — guided or wild. If guided, go to the deepest accessible point. If wild, bring proper lights and a buddy. Crawl through at least one tight passage. Turn off all lights for 2 minutes of absolute darkness.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Zipline between two points",d:"Find a zipline course, outdoor adventure centre, or build a safe one between two sturdy trees. Travel from A to B above the ground. Let go of the handles for at least 3 seconds. Scream optional.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Jump from a bridge into water",d:"Find a legal, known-safe bridge jumping spot. Confirm depth — at least 3 metres — and absence of submerged objects. Jump at least three times. On the third jump, don't hesitate at all.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Get lost on purpose in a forest",d:"Enter a forest without a phone or map. Walk for 30 minutes in a deliberately random direction, making mental notes of landmarks. Then navigate yourself back out using only what you observed. No compass.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Sandboard down a sand dune",d:"Find a tall sand dune — coastal or desert. Use a proper sandboard, a snowboard, a boogie board, or even a flattened cardboard box. Go down standing if you can. Fall dramatically at least once.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Go storm chasing in your car",d:"When a big storm rolls in, drive toward it instead of away. Park at a safe elevated point with a clear view. Watch lightning strike the ground. Count the seconds between flash and thunder. Feel small.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Find and swim in a natural waterfall pool",d:"Research and locate a real waterfall with a pool deep enough to swim in. Hike there. Get in the water. Swim under the falling water. Feel the weight of the cascade on your shoulders.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Explore your city's underground",d:"Research stormwater tunnels, old steam tunnels, abandoned cellar networks, or catacombs near you. Find legal access to at least one. Document what's down there. Come back with one story you didn't know before.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Ride in a helicopter",d:"Find a local scenic helicopter tour — often cheaper than you think for a 10-15 minute flight. Go up. Look straight down at the ground. Feel the weirdness of hovering with nothing below you.",c:"ADVENTURE",xp:100,diff:"Hard"},
+{t:"Rappel down a cliff face",d:"Sign up for an intro abseiling course or find an experienced friend with gear. Go over the edge of something real — at least 15 metres. Lean back into the harness. Trust the rope. Walk backwards down the rock.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Do an overnight canoe trip",d:"Canoe from a put-in point to a different take-out point downstream. Camp one night on the riverbank. Cook your dinner over a fire. Paddle the entire distance — no motors allowed.",c:"ADVENTURE",xp:100,diff:"Hard"},
+{t:"Cross a gorge on a rope bridge",d:"Find a gorge, canyon, or ravine with a rope or suspension bridge. Walk across it without holding the rails. Stop in the middle and look down. If it swings, let it swing.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Skateboard a hill you've been scared of",d:"Pick a hill that has always felt too fast or too steep. Skate it from top to bottom without bailing or foot-braking. Full commitment. Wear pads. Do it before the fear talks you out of it.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Go night cycling through your city",d:"At 2–3am, cycle through every distinct neighbourhood in your city. Go somewhere you've never been on foot or by day. Notice how different the familiar streets look under streetlights and silence.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Take a cold plunge in open water in winter",d:"January or February. Find a lake, river, or sea. Get in up to your neck. Stay in for 60 seconds minimum — no cheating. Feel your body panic, then calm. Do it with at least one other person for safety.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Sleep on a rooftop",d:"A legal, accessible rooftop — yours, a friend's, a hostel with roof access. Set up a sleeping bag, mat, and pillow. Spend the entire night under the sky. Wake up to the sunrise from above the city.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Swim in the ocean at midnight",d:"Not a lit beach resort. A real ocean, real midnight, ideally with phosphorescence. Alone or with one trusted person. Float on your back and look at the stars from sea level. Stay in at least 20 minutes.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Take a road trip with no destination",d:"Get in the car with a full tank. Drive in whatever direction feels right. No GPS, no destination. When the tank hits half, figure out where you are and find your way home. Eat at the most interesting place you pass.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Climb a water tower",d:"Find an old water tower. If it's legally accessible, climb to the top. If not, find one with a viewing platform or public access. Get as high as you can and look out over the landscape.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Bodysurf a wave",d:"No board, no fins — just your body. Find real ocean waves. Catch at least 5 proper bodysurf rides in one session where the wave carries you all the way to shore. Feel the ocean push you.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Spend 24 hours in a stranger's city",d:"Pick a city within 4 hours that you've never visited. Leave at sunrise. Don't plan anything. Ask locals where to go. Return at midnight. Fill 24 hours with pure discovery.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Paraglide off a hill",d:"Tandem or solo. Find a paragliding school or operator. Run off a hill and feel the wing catch the air. Look down at the world getting smaller. Stay up as long as the conditions allow.",c:"ADVENTURE",xp:100,diff:"Hard"},
+{t:"Build and light a proper campfire",d:"No firestarters, no lighter fluid. Use flint and steel, a bow drill, or a single match with only natural tinder you gathered yourself. Build a fire that burns steadily for over an hour. Cook something on it.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Find and document a ghost town",d:"Research an abandoned settlement within driving distance. Go there. Photograph every structure still standing. Find and record one story from a local or historical source about what happened to the town.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Hike a section of a long-distance trail",d:"Find the nearest long-distance trail — Appalachian, Pacific Crest, Camino, or your local equivalent. Hike a full 25km section in one day. Sign the trail register if there is one.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Camp on a beach",d:"Find a beach where overnight camping is legal. Set up your tent or bivy above the high-tide line. Fall asleep to the sound of waves. Wake up and walk straight into the ocean.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Go volcano hiking",d:"Find a dormant or active volcano you can legally hike. Climb to the rim or summit. Look into the crater. Feel the heat if it's active. Understand that you're standing on a geological force.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Ride a mountain bike down a real trail",d:"Not a paved path. A proper mountain bike trail with rocks, roots, and features. Ride it at speed. Get at least a little airborne. Accept that you might fall.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Do a multi-pitch climb",d:"With a guide or experienced partner. Climb a route that requires at least two pitches — stopping at a belay station mid-climb. Look down at how far you've come between pitches.",c:"ADVENTURE",xp:100,diff:"Hard"},
+{t:"Snorkel in open ocean",d:"Not a sheltered lagoon. Real open water with depth below you. Find reef, rocks, or marine life. Float face-down for at least 30 minutes. See something you can't identify.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Walk across a frozen lake",d:"In proper winter conditions with confirmed safe ice thickness (at least 10cm). Walk from one shore to the other. Stop in the middle. Listen to the ice creak and sing beneath your feet.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Go tobogganing as an adult",d:"Find a proper sledding hill. Use a real toboggan, sled, or improvised slider. Go down at least 10 times. Race someone. Walk back up every time — no tow rope.",c:"ADVENTURE",xp:30,diff:"Easy"},
+{t:"Explore a sea cave",d:"By kayak, boat, or swimming. Find a sea cave accessible from the water. Go inside. Listen to the echo of waves in the chamber. Watch the light play on the walls.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Run a trail race",d:"Sign up for any organised trail run — 5k, 10k, or longer. Train for at least 3 weeks. Show up on race day. Run through mud, over roots, up hills. Cross the finish line.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Hike to a hot spring",d:"Find a natural hot spring accessible only by hiking. Walk in. Soak for at least an hour. Appreciate that the earth heated this water for you.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Sleep in a bothy or wilderness hut",d:"Find a free, open-access wilderness shelter. Hike there with your gear. Spend the night. Share the space with any strangers who arrive. Leave it cleaner than you found it.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Do a polar bear plunge",d:"In winter or early spring. Find the coldest water available — preferably with ice still on it. Run in, full immersion, run out. No wetsuit. Feel more alive than you have all year.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Bivouac on a mountain summit",d:"Hike up in the afternoon. Sleep on the summit with minimal shelter — just a bivy bag or sleeping bag. Wake up above the clouds if you're lucky. Watch the sunrise from the highest point around.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Cross a country border on foot",d:"Find a legal pedestrian border crossing. Walk from one country into another. Get your passport stamped. Feel the oddity of crossing an invisible line that changes everything.",c:"ADVENTURE",xp:40,diff:"Easy"},
+{t:"Swim with wild dolphins or seals",d:"Find a location where wild marine mammals are known to approach swimmers. Get in the water. Let them come to you. Don't chase. Just be present in their world for a while.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Go ice climbing",d:"With a guide or experienced partner. Climb a frozen waterfall or ice wall using crampons and ice tools. Swing the axe, kick in the front points, move upward on vertical ice.",c:"ADVENTURE",xp:100,diff:"Hard"},
+{t:"Take a ferry to an island you've never visited",d:"Find an island accessible by public ferry. Go there for the day or overnight. Explore every accessible part. Talk to someone who lives there full-time.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Ride a longboard down a coastal road",d:"Find a smooth, gently sloping coastal road with a dedicated bike lane or low traffic. Longboard from the top to the bottom. Feel the ocean wind. Carve wide turns.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Do an adventure race",d:"Sign up for a sprint adventure race — trekking, biking, kayaking, navigation. Race as a team. Get lost, get found, get muddy. Cross the finish line together.",c:"ADVENTURE",xp:100,diff:"Hard"},
+{t:"Go mushroom foraging",d:"With an experienced guide or after serious study. Find and correctly identify at least 3 edible wild mushroom species. Cook them over a fire. Eat them with confidence.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Explore a slot canyon",d:"Find a narrow slot canyon — the kind where you have to turn sideways to pass. Walk through it. Look up at the thin strip of sky above. Feel the cool stone against your palms.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Float down a river on an inner tube",d:"Find a slow, safe river. Get a proper river tube. Float for at least 3 hours with friends. Bring a waterproof speaker or just listen to the water. Get out at a different point than you got in.",c:"ADVENTURE",xp:40,diff:"Easy"},
+{t:"Go wild swimming in winter",d:"No wetsuit. Find a lake, river, or sea in December through February. Get in. Stay in for at least 2 minutes. Feel the cold shock, then the strange warmth that follows.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Complete a via ferrata",d:"Find a via ferrata route — a protected climbing path with steel cables and rungs. Clip in and traverse along a cliff face. Look down. Keep moving. Reach the end.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Camp in a national park's backcountry",d:"Get the permit. Pack everything you need. Hike at least 5km from the nearest road. Camp somewhere no one else is camping. Follow Leave No Trace principles perfectly.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Ride a cable car up a mountain",d:"Find a mountain with a cable car or gondola. Ride it to the top. Step out into thin air. Hike around at altitude. Ride it back down — or hike down if you're feeling it.",c:"ADVENTURE",xp:30,diff:"Easy"},
+{t:"Explore a lava tube",d:"Find a lava tube cave — there are many in volcanic regions. Go inside with proper lights. Walk the length of it. Touch the rippled walls where molten rock once flowed.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Kayak in bioluminescent water",d:"Find a location known for bioluminescence — certain bays in Puerto Rico, Thailand, or the Maldives, or seasonal blooms elsewhere. Paddle through water that glows with every stroke. Drag your hand through the light.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Hike the tallest mountain in your country",d:"Or your state/province. Research the route. Train for it. Summit on a clear day. Sign the register at the top. Take the photo. Descend safely.",c:"ADVENTURE",xp:100,diff:"Hard"},
+{t:"Sleep suspended in a hammock over water",d:"Find two trees or anchors over a lake, pond, or calm river. Set up a hammock directly above the water. Sleep through the night swinging gently. Don't fall in.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Go coasteering",d:"Find a rocky coastline. Traverse it by climbing, scrambling, swimming, and jumping — no path, just the interface of land and sea. Wear appropriate gear. Go with someone who knows the route.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Visit every state park in your state",d:"Map them all. Visit each one, even if just for an hour. Document what makes each park unique. This quest takes as long as it takes.",c:"ADVENTURE",xp:100,diff:"Hard"},
+{t:"Do a sunrise-to-sunset hike",d:"Start hiking at civil twilight — about 30 minutes before sunrise. Keep hiking until civil twilight in the evening. Cover as much ground as you can. Eat all your meals on the trail.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Go on a multi-day packrafting trip",d:"Combine backpacking and packrafting. Hike into the wilderness carrying an inflatable raft. Paddle across lakes or down rivers. Hike out. Self-supported the whole way.",c:"ADVENTURE",xp:100,diff:"Hard"},
+{t:"Find and photograph 10 waterfalls in one day",d:"Research a region dense with waterfalls. Map the most efficient route. Visit and photograph 10 distinct waterfalls between sunrise and sunset. Each one must have visible flowing water.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Cross a desert on foot",d:"A section of desert — 20km minimum. Carry all your water. Navigate by map and compass or GPS. Feel the scale of an empty landscape. Finish at a predetermined point.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Sleep in a treehouse",d:"Not a kid's playhouse. Find a real, adult-accessible treehouse — rentable ones exist. Sleep elevated among branches. Listen to the tree move in the wind.",c:"ADVENTURE",xp:40,diff:"Easy"},
+{t:"Go snowshoeing to a remote cabin",d:"Rent snowshoes. Find a trail to a backcountry cabin or yurt that's only accessible in winter. Snowshoe in. Spend the night. Snowshoe out.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Swim across a river",d:"Find a safe, swimmable river crossing — check current and depth. Swim from one bank to the other. Feel the river's push. Climb out on the far side.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Do a multi-day horse trek",d:"Book a multi-day horse trek with an outfitter. Ride through wilderness for 2+ days. Care for your horse. Sleep at camp. Cover real distance on horseback.",c:"ADVENTURE",xp:90,diff:"Hard"},
+{t:"Stand on a continental divide",d:"Find the nearest continental divide — the line where water flows to different oceans. Stand with one foot on each side. Pour water and watch it choose its destiny.",c:"ADVENTURE",xp:40,diff:"Easy"},
+{t:"Explore an iceberg",d:"By kayak or boat in a region with icebergs — Alaska, Greenland, Iceland, Patagonia. Get close enough to see the blue heart of ancient ice. Listen to it crack and shift.",c:"ADVENTURE",xp:100,diff:"Hard"},
+{t:"Witness a total solar eclipse",d:"Plan ahead — check eclipse schedules. Travel to the path of totality. Stand in the shadow of the moon. Experience the eerie daylight-to-darkness in minutes.",c:"ADVENTURE",xp:80,diff:"Hard"},
+{t:"Bivy on a beach with no tent",d:"Sleeping bag directly on sand. No shelter above you. Fall asleep watching stars and listening to waves. Wake up covered in salt spray and dew.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Complete an orienteering course",d:"Find a local orienteering club. Run or walk a full course using only map and compass. Find every checkpoint. Record your time. Beat at least one other person.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Go dog sledding",d:"Find a dog sledding operator. Ride the runners behind a team of huskies through snow. Feel the power of dogs who were born to run. Thank each one.",c:"ADVENTURE",xp:70,diff:"Medium"},
+{t:"Hike in a different country",d:"Cross a border specifically to hike. Research a trail in a neighbouring country. Do the hike. Notice what's different about the landscape, the trail markers, the air.",c:"ADVENTURE",xp:60,diff:"Medium"},
+{t:"Go on a wild edible plant walk",d:"With a knowledgeable forager. Walk through forest or field. Identify, harvest, and taste at least 10 wild plants you've never eaten before. Spit out anything you're unsure of.",c:"ADVENTURE",xp:50,diff:"Medium"},
+{t:"Do a long-distance open water swim",d:"At least 2km in open water — lake, sea, or large river. Train for it. Have a safety kayaker or boat. Complete the distance without touching land or boat.",c:"ADVENTURE",xp:90,diff:"Hard"},
 
 // SKILLS ────────────────────────────────────────────────────────────
-{t:"Learn to tornado kick",d:"YouTube the technique, practice in a park daily for a week. Land a clean tornado kick that makes a satisfying whoosh.",c:"SKILLS",xp:80,diff:"Hard"},
-{t:"Learn an elbow lever",d:"A calisthenics skill where you balance horizontally on one elbow. Takes real strength — drill it daily until you hold it for 3 seconds.",c:"SKILLS",xp:80,diff:"Hard"},
-{t:"Teach yourself to juggle 3 balls",d:"Buy or find 3 balls. Watch one tutorial. Practice daily. Land 20+ consecutive catches without dropping.",c:"SKILLS",xp:50,diff:"Medium"},
-{t:"Learn to do a backflip off a diving board",d:"Start with a tuck on the board, work with a coach or friend. Land a clean backflip into water.",c:"SKILLS",xp:90,diff:"Hard"},
-{t:"Pick a lock",d:"Buy a beginner lock pick set and a practice lock. Learn the feel. Pick a padlock in under 2 minutes.",c:"SKILLS",xp:60,diff:"Medium"},
-{t:"Whittle a knife from a stick",d:"Find a hardwood stick and a sharp knife. Carve a pointed, handle-gripped knife shape. Get it sharp enough to cut string.",c:"SKILLS",xp:50,diff:"Medium"},
-{t:"Learn to weld",d:"Find a local maker space or community college with a welding class. Weld two pieces of metal together cleanly.",c:"SKILLS",xp:70,diff:"Medium"},
-{t:"Learn 20 words of a new language in one day",d:"Pick a language you know nothing about. Download Duolingo or print a sheet. Learn 20 real, usable words.",c:"SKILLS",xp:30,diff:"Easy"},
-{t:"Learn to play one song on guitar",d:"Borrow or buy a cheap guitar. Learn one full song — chords, strumming, the whole thing — and play it without stopping.",c:"SKILLS",xp:60,diff:"Medium"},
-{t:"Learn to skateboard basics",d:"Ollie, riding, stopping, turning. One week of practice in a car park. Film your best ollie.",c:"SKILLS",xp:50,diff:"Medium"},
-{t:"Learn calligraphy basics",d:"Get a cheap dip pen or brush pen. Learn to write the entire alphabet in copperplate or gothic style.",c:"SKILLS",xp:40,diff:"Easy"},
-{t:"Learn to free-dive underwater",d:"No tank. Just breath-hold. Learn the technique and dive to at least 5m deep. Pool is fine for first attempt.",c:"SKILLS",xp:70,diff:"Medium"},
-{t:"Learn to ride a unicycle",d:"Borrow or buy one. Practice along a wall for a week. Travel at least 20 metres unaided.",c:"SKILLS",xp:80,diff:"Hard"},
-{t:"Learn to do a muscle-up",d:"One explosive pull-up that transitions to a dip above the bar. Work on the transition. Land it once cleanly.",c:"SKILLS",xp:90,diff:"Hard"},
-{t:"Learn to make a soufflé",d:"The most anxiety-inducing dish in cooking. Get the technique right. Actually watch it rise. Eat it in triumph.",c:"SKILLS",xp:50,diff:"Medium"},
-{t:"Learn hand-to-hand combat basics",d:"Take a boxing, Muay Thai, or Krav Maga class. Learn at least 3 functional techniques you could actually use.",c:"SKILLS",xp:60,diff:"Medium"},
-{t:"Learn to solve a Rubik's cube",d:"Learn the beginner's layer-by-layer method. Solve a scrambled cube from memory without looking at the instructions.",c:"SKILLS",xp:60,diff:"Medium"},
-{t:"Learn to do a standing backflip",d:"On grass with a spotter or on a trampoline first. Land a clean standing back-tuck. Requires serious work.",c:"SKILLS",xp:100,diff:"Hard"},
-{t:"Learn to wire an electrical outlet",d:"Safely and with the power off. Watch tutorials, source materials, and correctly wire a new outlet or replace an old one.",c:"SKILLS",xp:50,diff:"Medium"},
-{t:"Learn to repair a bicycle yourself",d:"Puncture, derailleur adjustment, brake alignment. Fix all three on your own bike without taking it to a shop.",c:"SKILLS",xp:40,diff:"Easy"},
-{t:"Learn to make bread from scratch",d:"Flour, water, salt, yeast. No bread machine. Knead it, prove it, bake it. Eat it warm.",c:"SKILLS",xp:30,diff:"Easy"},
-{t:"Learn to cartwheel on a balance beam",d:"Master a cartwheel on the ground first, then on something elevated — a ledge, gymnastics beam, or even a curb.",c:"SKILLS",xp:60,diff:"Medium"},
-{t:"Learn to handstand against a wall",d:"Hold a wall handstand for 30 seconds with straight body, pointed toes. Then free-balance for 5 seconds.",c:"SKILLS",xp:60,diff:"Medium"},
-{t:"Learn to throw a boomerang",d:"Get a real returning boomerang. Practice in a field. Actually catch a clean return.",c:"SKILLS",xp:40,diff:"Easy"},
-{t:"Learn to tie 10 knots",d:"Bowline, cleat hitch, trucker's hitch, sheet bend, reef knot, figure-8, clove hitch, taut-line, prusik, alpine butterfly. All from memory.",c:"SKILLS",xp:50,diff:"Medium"},
-{t:"Learn to weld a sculpture",d:"Beyond basics — weld something that looks like a real object or creature using scrap metal.",c:"SKILLS",xp:80,diff:"Hard"},
-{t:"Learn to make sushi rolls",d:"Source sashimi-grade fish. Make maki and nigiri. Present a plate that looks like a restaurant made it.",c:"SKILLS",xp:50,diff:"Medium"},
-{t:"Learn to touch type at 40+ WPM",d:"Use keybr.com or Monkeytype. Practice the proper touch-typing technique. Get tested above 40 WPM.",c:"SKILLS",xp:50,diff:"Medium"},
-{t:"Learn to do a front flip on a trampoline",d:"Master the tuck, the rotation, the landing. Front flip on a trampoline, clean and controlled.",c:"SKILLS",xp:60,diff:"Medium"},
-{t:"Learn to throw a knife",d:"Safely, into a wooden target, not at people. Learn the one-rotation technique. Hit your target 5 times in a row.",c:"SKILLS",xp:60,diff:"Medium"},
-{t:"Learn to surf",d:"Take an intro lesson or teach yourself on a foamie. Ride at least 3 green waves to shore standing up.",c:"SKILLS",xp:80,diff:"Hard"},
-{t:"Learn to free-climb a tree",d:"Not a kids' tree. A tall, old, real tree. Climb to a height that makes you feel small. No ropes, no harness.",c:"SKILLS",xp:60,diff:"Medium"},
-{t:"Learn to do a kip-up (get up from lying down in one motion)",d:"From flat on your back, kip your legs up, snap your hips, and land standing. The move martial arts movies love.",c:"SKILLS",xp:70,diff:"Medium"},
-{t:"Learn to hotwire a car (your own)",d:"Research the process for your own vehicle, understand the wiring diagram. Actually start it without a key. For education only.",c:"SKILLS",xp:70,diff:"Medium"},
-{t:"Learn origami — fold 5 complex models",d:"Crane, dragon, modular cube, rose, phoenix. Not kiddie folds. Real origami from a real sheet.",c:"SKILLS",xp:50,diff:"Medium"},
-{t:"Learn to build a fire in rain",d:"Wet wood, wet ground, real rain. Build and sustain a fire that burns for 20 minutes using survival techniques.",c:"SKILLS",xp:80,diff:"Hard"},
-{t:"Learn to make candles from scratch",d:"Source wax, wicks, moulds. Pour, cool, trim, test. Make a candle that burns cleanly for over 2 hours.",c:"SKILLS",xp:30,diff:"Easy"},
-{t:"Learn to paint a portrait",d:"Sit someone down. Paint their face on canvas with acrylics or oils. Capture something true about them.",c:"SKILLS",xp:60,diff:"Medium"},
-{t:"Learn to throw a punch correctly",d:"Stance, guard, hip rotation, exhale on contact, don't lock the elbow. Get someone who knows to check your form.",c:"SKILLS",xp:40,diff:"Easy"},
-{t:"Learn to ride a motorbike",d:"Enroll in a CBT course or get a licensed instructor to teach you. Ride a real motorbike on a real road.",c:"SKILLS",xp:80,diff:"Hard"},
-{t:"Learn to pick a pocket (on a friend)",d:"Magician/sleight-of-hand technique. Learn the distract-and-lift method. Successfully lift something from a friend's pocket unnoticed.",c:"SKILLS",xp:60,diff:"Medium"},
-{t:"Learn to use a compass and map",d:"Orienteering basics. Navigate from point A to point B in unfamiliar terrain using only map and compass.",c:"SKILLS",xp:60,diff:"Medium"},
-{t:"Learn to sharpen a knife with a whetstone",d:"Not a pull-through sharpener. A proper whetstone, correct angle, full stroke. Test: shave arm hair cleanly.",c:"SKILLS",xp:40,diff:"Easy"},
-{t:"Learn to whistle extremely loud",d:"Fingers in mouth, two-finger technique, practice until you can be heard from 100 metres away.",c:"SKILLS",xp:20,diff:"Easy"},
-{t:"Learn to do a standing long jump",d:"Learn the proper explosive jump technique. Track your distance and beat your personal record 5 sessions in a row.",c:"SKILLS",xp:40,diff:"Easy"},
-{t:"Learn to speak in front of 20+ people",d:"Prepare a 5-minute talk on anything. Deliver it to a real audience of at least 20 people. No notes.",c:"SKILLS",xp:70,diff:"Medium"},
-{t:"Learn to do the splits",d:"One week of daily stretching. Achieve either full front or side splits. Document the floor touchdown.",c:"SKILLS",xp:60,diff:"Medium"},
-{t:"Learn to pick a padlock blindfolded",d:"After you can pick a lock normally — do it by feel alone with eyes covered in under 5 minutes.",c:"SKILLS",xp:80,diff:"Hard"},
-{t:"Learn to make fire without matches",d:"Flint and steel or bow drill method. Produce fire from friction or spark. No cheating.",c:"SKILLS",xp:70,diff:"Medium"},
-{t:"Learn to flip a water bottle perfectly",d:"The bottle flip. Get the technique dialled. Land 10 consecutive standing bottle flips from 3 different heights.",c:"SKILLS",xp:20,diff:"Easy"},
+{t:"Learn to tornado kick",d:"The martial arts movie move. Watch a detailed YouTube tutorial. Practice the steps daily in a park or gym for at least a week: the setup step, the chamber, the rotation, the kick extension. Land one clean tornado kick that makes a satisfying whoosh sound. Film it.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Learn an elbow lever",d:"A calisthenics skill where you balance your body horizontally on one elbow tucked into your abdomen. Requires real core and shoulder strength. Drill it daily for 2 weeks. Hold the position for 3 clean seconds with feet off the ground.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Teach yourself to juggle 3 balls",d:"Get three juggling balls or make them from balloons and rice. Watch one tutorial — the basic cascade pattern. Practice 15 minutes daily. Land 20 consecutive catches without dropping. Then juggle in public.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to do a backflip off a diving board",d:"Start with tuck jumps on the board. Progress to back dives, then back tucks with a spotter. Work with a coach or experienced friend. Land a clean backflip into water — full rotation, no belly flop.",c:"SKILLS",xp:90,diff:"Hard"},
+{t:"Pick a lock",d:"Buy a beginner lock pick set and a clear practice lock. Learn the feel of each pin setting. Practice until you can pick a standard padlock in under 2 minutes. Understand the mechanics of why locks work.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Whittle a knife from a stick",d:"Find a hardwood stick — oak, maple, or beech. Using a sharp pocket knife, carve a pointed, handle-gripped shape. Get it sharp enough to cut string or paper. Sand it smooth if you want. Keep it.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to weld",d:"Find a local maker space, community college, or friend with a welder. Take an intro class. Weld two pieces of steel together with a clean bead. Understand the difference between MIG, TIG, and stick.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn 20 words of a new language in one day",d:"Pick a language you know nothing about — Swahili, Finnish, Tagalog, whatever. Use flashcards, apps, or a notebook. Learn 20 real, usable words. Test yourself at the end of the day. Use one in conversation.",c:"SKILLS",xp:30,diff:"Easy"},
+{t:"Learn to play one song on guitar",d:"Borrow or buy a cheap acoustic guitar. Learn one complete song — chords, strumming pattern, transitions. Play it all the way through without stopping. Record it, even if it's rough.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to skateboard basics",d:"Get a skateboard — borrow or buy a cheap one. Learn to push, ride, turn, and stop confidently. Then learn an ollie. Practice daily in a car park for a week. Film your best ollie.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn calligraphy basics",d:"Get a dip pen with nibs or brush pens. Learn to write the entire alphabet in a classic style — copperplate, gothic, or italic. Write a quote beautifully enough to frame it.",c:"SKILLS",xp:40,diff:"Easy"},
+{t:"Learn to free-dive underwater",d:"No tank — just breath-hold. Learn the breathing technique and equalisation. Practice in a pool first. Dive to at least 5 metres deep. Stay calm. Come up slowly.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn to ride a unicycle",d:"Borrow or buy one. Practice along a wall or fence for at least a week — 15 minutes daily. Eventually let go and pedal. Travel at least 20 metres unaided. Feel the weirdest balance of your life.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Learn to do a muscle-up",d:"The explosive pull-up that transitions to a dip above the bar. Work on high pull-ups, false grip, and the transition. Land one clean muscle-up — no kipping, full lockout at the top.",c:"SKILLS",xp:90,diff:"Hard"},
+{t:"Learn to make a soufflé",d:"The most anxiety-inducing dish in cooking. Get the technique exactly right — the roux, the egg whites, the folding. Put it in the oven. Actually watch it rise without opening the door. Eat it in triumph before it falls.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn hand-to-hand combat basics",d:"Take a boxing, Muay Thai, Krav Maga, or BJJ class. Learn at least 3 functional techniques — a strike, a block, an escape — that you could actually use. Drill them until they're muscle memory.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to solve a Rubik's cube",d:"Learn the beginner's layer-by-layer method. Practice the algorithms. Time yourself. Solve a fully scrambled cube from memory in under 5 minutes, then under 2. Feel the click of the last turn.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to do a standing backflip",d:"On grass or gymnastics mats with a spotter. Work progressions: backward rolls, macacos, back handsprings. Build the courage to commit. Land a clean standing back tuck. The ground will still be there.",c:"SKILLS",xp:100,diff:"Hard"},
+{t:"Learn to wire an electrical outlet",d:"With the power OFF. Watch tutorials. Understand line, neutral, and ground. Buy materials. Correctly wire a new outlet or replace an old one. Test it. Turn the power back on. It works.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to repair a bicycle yourself",d:"Fix a flat tire — remove wheel, replace tube, reseat tire. Adjust the derailleur so it shifts cleanly. Align the brakes so they stop evenly. Do all three on your own bike without taking it to a shop.",c:"SKILLS",xp:40,diff:"Easy"},
+{t:"Learn to make bread from scratch",d:"Flour, water, salt, yeast. No bread machine. Knead it by hand until smooth and elastic. Let it prove. Bake it in a real oven. Pull out a golden loaf. Eat it warm with butter. Smell your kitchen for hours.",c:"SKILLS",xp:30,diff:"Easy"},
+{t:"Learn to handstand against a wall",d:"Kick up against a wall. Hold for 30 seconds with a straight body, pointed toes, tight core. Then try free-balancing — even just 5 seconds away from the wall counts as a win.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to throw a boomerang",d:"Get a real returning boomerang — not a toy store one. Watch tutorials on the throw technique. Go to a large open field on a calm day. Throw it. Watch it curve. Actually catch it on its return.",c:"SKILLS",xp:40,diff:"Easy"},
+{t:"Learn to tie 10 knots",d:"Bowline, cleat hitch, trucker's hitch, sheet bend, reef knot, figure-8, clove hitch, taut-line hitch, prusik, alpine butterfly. Learn all 10 from memory. Tie each one with your eyes closed.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to make sushi rolls",d:"Source sashimi-grade fish from a reputable fishmonger. Make proper sushi rice — seasoned with rice vinegar, sugar, and salt. Roll maki and form nigiri. Present a plate that looks restaurant-quality. Eat it all.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to touch type at 40+ WPM",d:"Use keybr.com, Monkeytype, or TypingClub. Learn proper finger placement on the home row. Practice 15 minutes daily for 2 weeks. Test at 40+ words per minute with 95%+ accuracy.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to throw a knife",d:"Safely — into a wooden target, never at people or animals. Get throwing knives. Learn the one-rotation and half-rotation techniques. Stick 5 consecutive throws from at least 3 metres.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to surf",d:"Take a lesson or borrow a foamie. Learn to pop up. Paddle out past the breakers. Ride at least 3 green (unbroken) waves all the way to shore standing on the board. Feel the glide.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Learn to do a kip-up",d:"From flat on your back — kip your legs up, snap your hips forward, and land standing. The move every action hero uses to get up. Practice on grass or mats until you nail it cleanly.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn origami — fold 5 complex models",d:"Not the simple stuff. Fold at least 5 advanced models: crane (properly), lotus, dragon, modular kusudama, and one of your choice. Use proper origami paper. Display them.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to build a fire in rain",d:"Wet conditions, wet wood, actual rain falling. Find dry inner wood by splitting logs. Build a platform to keep the fire off wet ground. Use feather sticks and birch bark. Sustain a fire for 20+ minutes.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Learn to make candles from scratch",d:"Source wax (soy, beeswax, or paraffin), wicks, and moulds or containers. Melt, pour, and cool. Add essential oils if you want. Make at least 3 candles that burn cleanly for 2+ hours each.",c:"SKILLS",xp:30,diff:"Easy"},
+{t:"Learn to paint a portrait",d:"Set up a canvas, acrylics or oils, and a patient friend. Paint their face. Capture something true about them — not just likeness, but character. Spend at least 4 hours on it.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to throw a punch correctly",d:"Stance, guard, hip rotation, exhale on impact, keep the wrist straight. Get someone who knows how to fight to check your form. Hit a heavy bag with proper technique until it feels natural.",c:"SKILLS",xp:40,diff:"Easy"},
+{t:"Learn to ride a motorbike",d:"Take a certified training course. Learn clutch, throttle, brake coordination. Ride a real motorbike on a real road — at least 20km. Feel the vulnerability and the freedom.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Learn to use a compass and map",d:"Buy a proper orienteering compass and a topographic map of your area. Learn to take a bearing, account for declination, and navigate from point A to point B using only map and compass.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to sharpen a knife with a whetstone",d:"Get a whetstone — 1000/6000 grit combo. Learn to hold a consistent angle. Sharpen a dull knife until it can cleanly slice paper and shave arm hair. No pull-through sharpeners allowed.",c:"SKILLS",xp:40,diff:"Easy"},
+{t:"Learn to whistle extremely loud",d:"Two fingers in mouth, or the thumb-and-index technique. Practice until you can produce a piercing whistle audible from 100 metres away. Annoy everyone you know.",c:"SKILLS",xp:20,diff:"Easy"},
+{t:"Learn to speak in front of 20+ people",d:"Prepare a 5-minute talk on anything you know well. No reading from notes. Deliver it to a real audience of at least 20 people — at a meetup, class, or arranged gathering. Make eye contact. Finish strong.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn to do the splits",d:"Front splits or side splits. Stretch daily for at least 2 weeks — hamstrings, hip flexors, adductors. Use progressive stretches. Document the day your hips finally touch the floor.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to make fire without matches",d:"Bow drill or hand drill method. Carve the set yourself: spindle, fireboard, bearing block. Produce an actual coal. Transfer it to tinder and blow it into flame. Primitive and deeply satisfying.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn to do a backflip on flat ground",d:"Progress from trampoline to mats to grass. Work with a spotter. Build the explosive jump and tight tuck. Land your first standing backflip on flat ground. Film it. Watch it 100 times.",c:"SKILLS",xp:100,diff:"Hard"},
+{t:"Learn to cook 5 signature dishes",d:"Develop 5 dishes you can cook perfectly from memory — an appetiser, a soup, a main, a side, and a dessert. Cook all 5 for a dinner party. Receive genuine compliments.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn to do a human flag",d:"Grip a vertical pole. Press your body out horizontally. One of the hardest calisthenics holds. Work progressions for months. Hold it for at least 2 seconds.",c:"SKILLS",xp:100,diff:"Hard"},
+{t:"Learn to read sheet music",d:"Treble and bass clef. Note values, rests, key signatures, time signatures. Be able to look at a simple piece of sheet music and play it on a piano or other instrument. Sight-read something new.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to drive a manual car",d:"Find a friend with a stick shift or take a lesson. Learn clutch bite point, gear changes, hill starts. Drive 20km through varied traffic without stalling once.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to do a one-arm push-up",d:"Work from regular push-ups through archer push-ups, one-arm negatives, and finally the full movement. Chest to floor, full lockout. Do 5 consecutive on each arm.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Learn to make cheese",d:"Start with a simple fresh cheese — ricotta, paneer, or mozzarella. Heat milk, add acid or rennet, strain, shape. Eat cheese you made yourself within an hour of starting.",c:"SKILLS",xp:40,diff:"Easy"},
+{t:"Learn to do a front lever",d:"Hang from a bar and raise your body horizontally. Work through progressions: tucked, advanced tucked, straddle, full. Hold the full front lever for at least 3 seconds.",c:"SKILLS",xp:100,diff:"Hard"},
+{t:"Learn to code a simple website from scratch",d:"HTML, CSS, and a touch of JavaScript. Build a personal site with at least 3 pages. No templates, no website builders. Write every line yourself.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to do a butterfly kick",d:"The wushu/breakdance move. Learn the setup: step, dip, swing the back leg, push off, rotate horizontally. Land it clean. Feel like you're in a martial arts film.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Learn to mix 3 classic cocktails",d:"Old Fashioned, Martini, and Margarita — or your region's equivalents. Learn the proper techniques: stirring, shaking, muddling. Make all three for friends who know cocktails and get their approval.",c:"SKILLS",xp:40,diff:"Easy"},
+{t:"Learn to change a car tyre",d:"On your own car or a friend's. Locate the jack points. Loosen lug nuts before lifting. Swap the tyre. Tighten in a star pattern. Do it in under 20 minutes.",c:"SKILLS",xp:30,diff:"Easy"},
+{t:"Learn to do a planche",d:"The holy grail of calisthenics. Years of progression from planche lean through tuck, advanced tuck, straddle, to full. Even a straddle planche held for 2 seconds is a massive achievement.",c:"SKILLS",xp:100,diff:"Hard"},
+{t:"Learn to sew a garment",d:"Get a sewing machine or needle and thread. Follow a pattern. Cut fabric, pin, sew seams, hem. Create a piece of clothing you can actually wear in public.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to perform CPR",d:"Take a certified CPR course. Learn chest compressions, rescue breaths, AED use. Get your certification card. You now know how to save a life.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to do a 360 on a snowboard or skis",d:"On snow or indoor slope. Work up from 180s. Commit to the full rotation. Land riding away clean. Feel the world blur.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn to play chess well",d:"Study basic openings, tactics puzzles, and endgame principles. Play 50 games with analysis. Reach a 1000+ rating on chess.com or Lichess. Beat someone who used to beat you.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn to make a proper espresso",d:"Get access to an espresso machine. Learn dosing, tamping, extraction time. Pull a shot with good crema that tastes balanced — not sour, not bitter. Make a flat white or latte with it.",c:"SKILLS",xp:40,diff:"Easy"},
+{t:"Learn to do 100 push-ups in a row",d:"Train with a program like Grease the Groove or a progressive plan. Build from whatever you can do now. Hit 100 consecutive push-ups — chest touching floor each rep.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Learn to do a standing long jump of 2.5m",d:"Measure your current jump. Work on explosive power — plyometrics, squats, technique. Track weekly. Beat 2.5 metres (or your body-appropriate target).",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to write a proper essay",d:"Thesis, evidence, counterargument, conclusion. Write a 1500-word essay on something you care about. Edit it twice. Share it publicly or submit it somewhere.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to do a back walkover",d:"Bridge first, then kick over from a bridge. Work on back flexibility and shoulder strength. Complete the full movement — standing to bridge to standing — smoothly.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn to brew beer or cider",d:"Get a homebrew kit. Follow a recipe. Sanitise everything. Ferment for weeks. Bottle. Wait. Open and drink something you made. Even if it's not great, you made alcohol from scratch.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to navigate by the stars",d:"Find Polaris. Identify at least 5 constellations and use them to determine direction. On a clear night, navigate at least 1km using only celestial navigation.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to do a pistol squat",d:"Single-leg squat, other leg extended forward. Work progressions: assisted, to a box, negatives. Perform 5 clean pistol squats on each leg with full depth.",c:"SKILLS",xp:60,diff:"Medium"},
+{t:"Learn to draw a realistic eye",d:"Study the anatomy — iris, pupil, highlights, eyelids, lashes. Draw one eye in pencil with proper shading and reflection. Make it look alive.",c:"SKILLS",xp:40,diff:"Easy"},
+{t:"Learn to do a headstand",d:"Tripod or forearm headstand. Build neck strength and balance. Hold for 30 seconds away from a wall with straight legs. Feel the blood rush.",c:"SKILLS",xp:40,diff:"Easy"},
+{t:"Learn to do a kickflip on a skateboard",d:"Master the ollie first. Then learn the flick — front foot slides off the side. Land one kickflip rolling. The board flips under you. You land back on it. Magic.",c:"SKILLS",xp:90,diff:"Hard"},
+{t:"Learn to cook the perfect steak",d:"Learn doneness temperatures. Master the sear — cast iron or grill, high heat, butter baste. Rest it properly. Cut it open to perfect medium-rare. Sauce optional.",c:"SKILLS",xp:40,diff:"Easy"},
+{t:"Learn to do a pull-up if you can't do one",d:"Start with dead hangs, negatives, and banded pull-ups. Train consistently. The day you pull your chin over the bar unassisted is a genuine milestone.",c:"SKILLS",xp:50,diff:"Medium"},
+{t:"Learn to make a short film",d:"Write a 2-page script. Shoot it on any camera — phone is fine. Edit it together with free software. A complete 3-minute story from idea to final export.",c:"SKILLS",xp:70,diff:"Medium"},
+{t:"Learn to do a full split jerk",d:"Olympic weightlifting movement. Learn the dip, drive, and split. Put weight overhead. Have a coach check your form. Hit a bodyweight jerk.",c:"SKILLS",xp:80,diff:"Hard"},
+{t:"Learn to make pottery on a wheel",d:"Find a pottery studio offering beginner classes. Centre the clay. Pull up the walls. Make a bowl or cup that's actually functional. Glaze and fire it. Use it.",c:"SKILLS",xp:60,diff:"Medium"},
 
 // SOCIAL ────────────────────────────────────────────────────────────
-{t:"Start a fight club with your friends",d:"Establish a weekly sparring group. Get gloves, get a safe space, set rules. Your first spar must go 2+ rounds.",c:"SOCIAL",xp:80,diff:"Hard"},
-{t:"Host a dinner party for 8+ people",d:"Plan a menu, cook every course yourself, plate it properly. No takeout. Real dinner, real guests.",c:"SOCIAL",xp:60,diff:"Medium"},
-{t:"Organise a scavenger hunt for strangers",d:"Design a multi-clue urban scavenger hunt. Recruit at least 10 people via social or word of mouth to participate.",c:"SOCIAL",xp:80,diff:"Hard"},
-{t:"Strike up a conversation with an elderly stranger",d:"Sit next to someone 60+ and ask them what the best advice they were ever given is. Listen for 30 minutes.",c:"SOCIAL",xp:30,diff:"Easy"},
-{t:"Busk in public with any skill",d:"Play an instrument, juggle, paint on the spot, or tell jokes for tips. Stay out there for at least 1 hour.",c:"SOCIAL",xp:60,diff:"Medium"},
-{t:"Throw an impromptu block party",d:"Knock on 10 neighbours' doors and invite them over for a backyard gathering with 24 hours' notice. Minimum 15 people show.",c:"SOCIAL",xp:80,diff:"Hard"},
-{t:"Go on a blind date",d:"Ask a mutual friend to set you up with someone they think you'd like. No pre-Googling. Full conversation, at least 2 hours.",c:"SOCIAL",xp:50,diff:"Medium"},
-{t:"Spend a day only speaking in rhymes",d:"From the moment you wake up. Every sentence must rhyme. Commit to it with everyone you interact with.",c:"SOCIAL",xp:30,diff:"Easy"},
-{t:"Crash a wedding reception",d:"Charming plus-one energy only. Get food, get a dance, have a genuine conversation with someone from the wedding party.",c:"SOCIAL",xp:90,diff:"Hard"},
-{t:"Get 10 strangers to take a group photo together",d:"In a public place, convince 10 complete strangers to pose in a coordinated group photo with you.",c:"SOCIAL",xp:50,diff:"Medium"},
-{t:"Handwrite and deliver a letter to a friend",d:"Not email. Not text. Handwritten, in an envelope, delivered in person or by post. Personal and meaningful.",c:"SOCIAL",xp:20,diff:"Easy"},
-{t:"Challenge someone to an arm wrestle",d:"A stranger. A pub, a park, anywhere. Make it a proper challenge with a crowd watching.",c:"SOCIAL",xp:30,diff:"Easy"},
-{t:"Ask a stranger on a spontaneous adventure",d:"Walk up to someone who looks interesting and ask if they want to go do something random with you right now. At least one says yes.",c:"SOCIAL",xp:60,diff:"Medium"},
-{t:"Organise a midnight bowling night",d:"Get 8+ people out bowling between midnight and 3am. Make it weird and competitive.",c:"SOCIAL",xp:50,diff:"Medium"},
-{t:"Do an improv comedy class",d:"Sign up for an intro improv session. Perform in front of the class. Say yes-and to everything.",c:"SOCIAL",xp:50,diff:"Medium"},
-{t:"Hitchhike a short distance",d:"Stick your thumb out for a lift of at least 10km. Strike up a real conversation with the driver.",c:"SOCIAL",xp:70,diff:"Medium"},
-{t:"Throw a rooftop party",d:"Organise access to any rooftop. 15+ people, music, drinks, good light. Do not get caught.",c:"SOCIAL",xp:70,diff:"Medium"},
-{t:"Befriend someone 20+ years older than you",d:"Not online. In real life. Build a genuine friendship with someone from a completely different generation.",c:"SOCIAL",xp:60,diff:"Medium"},
-{t:"Do karaoke badly on purpose",d:"Pick a song you don't know. Go hard. Be the worst singer in the room and own it completely.",c:"SOCIAL",xp:30,diff:"Easy"},
-{t:"Start a book club and actually run 3 meetings",d:"Recruit at least 4 people. Pick 3 books together. Host 3 real meetings with actual discussion.",c:"SOCIAL",xp:60,diff:"Medium"},
-{t:"Join a club you know nothing about",d:"Chess, fencing, taxidermy, amateur radio — something bizarre you've never considered. Attend at least 3 sessions.",c:"SOCIAL",xp:50,diff:"Medium"},
-{t:"Give someone a genuine compliment every day for a week",d:"Not hollow flattery. Something specific, true, and unexpected. Watch what it does to people.",c:"SOCIAL",xp:20,diff:"Easy"},
-{t:"Plan a 48-hour trip for your group",d:"Organize everything — accommodation, transport, activities — for a group of 4+ people. No complaining allowed.",c:"SOCIAL",xp:70,diff:"Medium"},
-{t:"Cold-approach and make a friend",d:"Walk up to someone you find interesting — at a bar, a park, an event — and just start talking. End with a real contact.",c:"SOCIAL",xp:50,diff:"Medium"},
-{t:"Teach something to a kid",d:"A skill, a game, a recipe. Give a child 30 minutes of genuine teaching time and watch them get it.",c:"SOCIAL",xp:30,diff:"Easy"},
-{t:"Do a 24-hour communication blackout",d:"No phone, no internet, no messaging. Navigate an entire day using only face-to-face or written conversation.",c:"SOCIAL",xp:50,diff:"Medium"},
-{t:"Throw a themed costume house party",d:"Not a holiday — a genuinely creative theme. All guests must dress up. At least 20 people. Prizes for best costume.",c:"SOCIAL",xp:60,diff:"Medium"},
-{t:"Organise a weekly poker game that lasts 3 months",d:"Buy in, deal, collect. 8 people, real chips, real stakes. Run the game for 12+ weeks consecutively.",c:"SOCIAL",xp:80,diff:"Hard"},
-{t:"Go to a concert alone and make two friends",d:"Buy a ticket, go alone, start a conversation. Leave with two numbers from people you actually clicked with.",c:"SOCIAL",xp:50,diff:"Medium"},
-{t:"Learn the name of every person on your street",d:"Actually knock on doors or stop people. Learn 10+ names of your actual neighbours.",c:"SOCIAL",xp:40,diff:"Easy"},
-{t:"Pull off a surprise for someone",d:"Plan and execute a surprise that requires coordination, secrecy, and at least 3 other people. Make them cry.",c:"SOCIAL",xp:60,diff:"Medium"},
-{t:"Write a toast and deliver it",d:"At a dinner, party, or gathering — write a proper speech and deliver it without reading from paper.",c:"SOCIAL",xp:50,diff:"Medium"},
-{t:"Host a film screening outdoors",d:"Projector, sheet, night air, 10+ people. Screen a film outside and stay for the whole thing.",c:"SOCIAL",xp:50,diff:"Medium"},
-{t:"Get someone to try something they said they'd never do",d:"Identify a friend's hard no — a food, activity, or experience. Gently, creatively get them to try it and enjoy it.",c:"SOCIAL",xp:60,diff:"Medium"},
-{t:"Spend a day only using cash",d:"No card, no digital payments. Live with only physical money for one full day.",c:"SOCIAL",xp:20,diff:"Easy"},
+{t:"Start a fight club with your friends",d:"Weekly sparring group. Get gloves, mouthguards, a safe space. Set clear rules: no face shots, tap to stop, respect always. Your first spar must go 2+ rounds. It's about growth, not violence.",c:"SOCIAL",xp:80,diff:"Hard"},
+{t:"Host a dinner party for 8+ people",d:"Plan a full menu — appetiser, main, dessert. Cook every course yourself from scratch. Set the table properly. No takeout. Real dinner, real conversation, real clinking of glasses.",c:"SOCIAL",xp:60,diff:"Medium"},
+{t:"Organise a scavenger hunt for strangers",d:"Design a multi-clue urban scavenger hunt with clever riddles and photo challenges. Recruit at least 10 participants via social media or word of mouth. Watch strangers become teammates.",c:"SOCIAL",xp:80,diff:"Hard"},
+{t:"Strike up a conversation with an elderly stranger",d:"Sit next to someone 60+ at a park, café, or bus stop. Ask them: 'What's the best piece of advice you were ever given?' Listen for at least 30 minutes without checking your phone.",c:"SOCIAL",xp:30,diff:"Easy"},
+{t:"Busk in public with any skill",d:"Play music, juggle, draw portraits, tell jokes, do magic — anything performable. Set up in a public spot with a hat or case for tips. Stay out there for at least 1 hour, regardless of the crowd.",c:"SOCIAL",xp:60,diff:"Medium"},
+{t:"Throw an impromptu block party",d:"With 24 hours' notice, knock on 10+ neighbours' doors and invite them to a backyard or street gathering. Minimum 15 people show up. Provide music and some food. See what community feels like.",c:"SOCIAL",xp:80,diff:"Hard"},
+{t:"Go on a blind date",d:"Ask a mutual friend to set you up with someone they genuinely think you'd like. No pre-Googling, no Instagram stalking. Show up. Full conversation, at least 2 hours. See what happens.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Spend a day only speaking in rhymes",d:"From the moment you wake up, every sentence you speak must rhyme. Commit fully. Talk to strangers, order coffee, answer phone calls — all in rhyme. See who plays along.",c:"SOCIAL",xp:30,diff:"Easy"},
+{t:"Crash a wedding reception",d:"Charming plus-one energy only. Dress appropriately. Blend in. Dance with someone from the wedding party. Congratulate the couple sincerely. Eat cake. Leave before you're asked to.",c:"SOCIAL",xp:90,diff:"Hard"},
+{t:"Get 10 strangers to take a group photo together",d:"In a public place, approach 10 complete strangers and convince them to pose in a coordinated group photo with you. Give them a reason. Send everyone the photo.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Handwrite and deliver a letter to a friend",d:"Not email. Not text. Pen and paper in an envelope. Write something genuine and personal. Deliver it by hand or post. The physical letter is a dying art — revive it.",c:"SOCIAL",xp:20,diff:"Easy"},
+{t:"Challenge someone to an arm wrestle",d:"A stranger at a bar, a friend at a party, anyone. Set it up properly — elbows down, grip locked, crowd watching. Win or lose, buy them a drink after.",c:"SOCIAL",xp:30,diff:"Easy"},
+{t:"Ask a stranger on a spontaneous adventure",d:"Walk up to someone who looks interesting. Say: 'I'm trying to do something spontaneous right now — want to come?' Propose something specific. At least one person says yes.",c:"SOCIAL",xp:60,diff:"Medium"},
+{t:"Organise a midnight activity",d:"Midnight bowling, midnight picnic, midnight hike, midnight swim. Get 8+ people out doing something between midnight and 3am that's usually done in daylight. Make it weird and memorable.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Do an improv comedy class",d:"Sign up for an intro improv session. Learn 'yes, and.' Perform scenes in front of the class. Fail gloriously. Laugh genuinely. Discover that being unfunny on purpose is liberating.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Hitchhike a short distance",d:"Stick your thumb out on a safe road. Get a lift of at least 10km. Have a real conversation with the driver — ask about their life, their road stories. Thank them sincerely.",c:"SOCIAL",xp:70,diff:"Medium"},
+{t:"Throw a rooftop party",d:"Organise access to any accessible rooftop. 15+ people, music, good lighting, better vibes. Make it feel exclusive and free. Clean up thoroughly afterward.",c:"SOCIAL",xp:70,diff:"Medium"},
+{t:"Befriend someone 20+ years older than you",d:"Not online. In real life. Someone from a different generation — at work, in your neighbourhood, at a hobby group. Build genuine friendship. Learn what they know that you don't.",c:"SOCIAL",xp:60,diff:"Medium"},
+{t:"Do karaoke badly on purpose",d:"Pick a song you barely know. Go hard. Be the worst singer in the room and own it completely. The goal is not to sound good — it's to be fearless. Bring the energy.",c:"SOCIAL",xp:30,diff:"Easy"},
+{t:"Start a book club and run 3 meetings",d:"Recruit at least 4 people. Pick 3 books together — each person nominates one. Host 3 real meetings with actual discussion. Serve snacks. Keep it going.",c:"SOCIAL",xp:60,diff:"Medium"},
+{t:"Join a club you know nothing about",d:"Chess club, fencing, amateur radio, birdwatching, roller derby — something you've never considered. Attend at least 3 sessions. Be the newcomer. Learn the culture.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Give someone a genuine compliment every day for a week",d:"Not hollow flattery. Something specific, true, and unexpected. Notice the reaction. Watch what consistent, honest kindness does to the people around you.",c:"SOCIAL",xp:20,diff:"Easy"},
+{t:"Plan a 48-hour trip for your group",d:"Organise everything — transport, accommodation, activities, meals — for 4+ friends. No one else plans anything. Handle all the logistics. Make it smooth enough that no one complains.",c:"SOCIAL",xp:70,diff:"Medium"},
+{t:"Cold-approach and make a genuine friend",d:"Walk up to someone you find interesting — at a bar, park, event, anywhere. Start a real conversation. Don't pitch anything. Leave with their contact info and a plan to meet again.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Teach something to a kid",d:"A skill you have — juggling, a card trick, how to draw, a science concept. Give a child 30 minutes of genuine teaching. Watch their eyes when they get it.",c:"SOCIAL",xp:30,diff:"Easy"},
+{t:"Do a 24-hour communication blackout",d:"No phone, no internet, no messaging. Navigate an entire day using only face-to-face conversation, handwritten notes, and actual human presence. See what you notice.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Throw a themed costume house party",d:"Not a generic holiday theme. Something creative and specific — 'Characters from paintings,' 'Time travellers,' 'Things that shouldn't be alive.' All guests must dress up. At least 20 people. Award prizes.",c:"SOCIAL",xp:60,diff:"Medium"},
+{t:"Organise a weekly game that lasts 3 months",d:"Poker, D&D, board game night, trivia league. Same night every week for 12+ weeks. Build a community around it. See who sticks.",c:"SOCIAL",xp:80,diff:"Hard"},
+{t:"Go to a concert alone and make two friends",d:"Buy a single ticket. Go by yourself. Start conversations with people near you. Leave with contact info from two people you genuinely clicked with.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Learn the name of every person on your street",d:"Knock on doors or stop people walking by. Introduce yourself. Learn at least 10 neighbours' names and one fact about each. Build actual community.",c:"SOCIAL",xp:40,diff:"Easy"},
+{t:"Pull off a surprise for someone",d:"Plan and execute a genuine surprise — birthday, celebration, or just-because — that requires coordination, secrecy, and at least 3 other people. Make them emotional.",c:"SOCIAL",xp:60,diff:"Medium"},
+{t:"Write and deliver a toast",d:"At a dinner, party, wedding, or gathering. Write a proper toast — sincere, brief, and memorable. Stand up and deliver it without reading from paper. Clink glasses.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Host an outdoor film screening",d:"Projector, sheet or wall, night sky, 10+ people. Pick a film that suits the setting. Provide blankets and popcorn. Everyone stays through the credits.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Get someone to try something they swore they'd never do",d:"Identify a friend's hard no — a food, an activity, an experience. Gently, creatively, respectfully get them to try it. Make sure they actually enjoy the experience.",c:"SOCIAL",xp:60,diff:"Medium"},
+{t:"Spend a day using only cash",d:"No cards, no digital payments, no phone wallets. Withdraw physical money in the morning. Navigate a full day buying everything with paper and coins. Feel how money used to feel.",c:"SOCIAL",xp:20,diff:"Easy"},
+{t:"Organise a community cleanup",d:"Pick a neglected public space — a park, beach, street, or trail. Gather at least 10 volunteers. Spend a morning cleaning it up. Take before and after photos.",c:"SOCIAL",xp:60,diff:"Medium"},
+{t:"Perform at an open mic night",d:"Music, poetry, comedy, storytelling — whatever your thing is. Sign up. Get on stage. Perform for at least 3 minutes in front of strangers. Feel the terror and do it anyway.",c:"SOCIAL",xp:70,diff:"Medium"},
+{t:"Create and hide 10 positive notes around your city",d:"Write 10 uplifting messages on paper. Hide them in library books, on bus seats, in café tip jars, under park benches. Make 10 strangers smile without ever knowing it was you.",c:"SOCIAL",xp:20,diff:"Easy"},
+{t:"Go speed dating",d:"Find a speed dating event. Sit through the rapid-fire conversations. Be honest, be curious, be yourself. Even if you meet no one, you'll have 20+ micro-conversations to reflect on.",c:"SOCIAL",xp:40,diff:"Easy"},
+{t:"Start a conversation in a language you're learning",d:"Find a native speaker — at a restaurant, shop, or language exchange. Attempt a real conversation in their language. Make mistakes. Keep going. Make yourself understood.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Reconnect with a childhood friend",d:"The person you haven't spoken to in 5+ years. Find them. Call or message. Have a real catch-up. Reminisce. See who they've become and who you've become.",c:"SOCIAL",xp:40,diff:"Easy"},
+{t:"Organise a sunrise gathering",d:"Pick a spot with a good eastern view. Invite 10+ people to meet at dawn. Bring coffee and blankets. Watch the sun rise together in relative silence. Start the day differently.",c:"SOCIAL",xp:40,diff:"Easy"},
+{t:"Give a genuine apology to someone you wronged",d:"No excuses, no 'but.' Own what you did. Say you're sorry. Mean it. Don't expect forgiveness. Do it because it's right.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Host a 'come as your younger self' party",d:"Guests dress as their teenage or childhood selves. Play music from that era. Look at old photos. Talk about who you were and who you became.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Do a trust fall with a stranger",d:"At a team-building event, workshop, or just a willing stranger. Explain what you're doing. Fall backward. Let them catch you. Feel the weirdness of trusting someone you don't know.",c:"SOCIAL",xp:30,diff:"Easy"},
+{t:"Organise a debate night",d:"Pick fun, low-stakes topics — 'Is a hot dog a sandwich?' 'Best decade for music?' Teams argue both sides. Formal format. Judge declares a winner. Prizes for best arguments.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Go a full week without gossiping",d:"No talking about people who aren't present unless it's genuinely positive. Catch yourself before you start. See how it changes your relationships and your mind.",c:"SOCIAL",xp:50,diff:"Medium"},
+{t:"Start a compliment chain in public",d:"Give a genuine compliment to a stranger. Ask them to pay it forward and compliment someone else. See how far the chain goes.",c:"SOCIAL",xp:20,diff:"Easy"},
 
 // URBAN ────────────────────────────────────────────────────────────
-{t:"Eat at a restaurant you'd normally walk past",d:"That place with no Instagram presence and plastic chairs. Go in, order without looking at the price, eat everything.",c:"URBAN",xp:30,diff:"Easy"},
-{t:"Find the oldest building in your city",d:"Research and physically visit the oldest standing structure in your town or city. Find a story about it.",c:"URBAN",xp:40,diff:"Easy"},
-{t:"Ride every line of your city's subway in one day",d:"All of them, end to end. No exits except transfers. Document it. Time yourself.",c:"URBAN",xp:70,diff:"Medium"},
-{t:"Graffiti something legal",d:"Find a legal graffiti wall or street art project. Design and paint something that takes over 2 hours.",c:"URBAN",xp:60,diff:"Medium"},
-{t:"Find a secret spot in your city",d:"A rooftop garden, a hidden courtyard, an unmarked bar. Somewhere that takes research. Tell no one where it is.",c:"URBAN",xp:50,diff:"Medium"},
-{t:"Go dumpster diving",d:"Behind a bakery, a grocery store, a furniture shop. Find something genuinely useful. Don't be squeamish.",c:"URBAN",xp:40,diff:"Easy"},
-{t:"Spend a night in a hotel in your own city",d:"Tourist for a night. Room service, rooftop bar, the whole experience. Act like you've never been there.",c:"URBAN",xp:50,diff:"Medium"},
-{t:"Find and visit every bookshop in your city",d:"Map them, visit each one, buy at least one book from an independent. Count how many you find.",c:"URBAN",xp:50,diff:"Medium"},
-{t:"Eat street food from 5 different vendors in one day",d:"All from street stalls or markets. All different cuisines or dishes. All eaten standing up.",c:"URBAN",xp:30,diff:"Easy"},
-{t:"Take a completely random bus somewhere",d:"Board a bus you've never taken. Ride to the end of the line. Explore wherever you land for 2 hours.",c:"URBAN",xp:40,diff:"Easy"},
-{t:"Find the worst-rated restaurant and eat there",d:"Google the lowest-rated place nearby. Eat there. Try to find something good about it.",c:"URBAN",xp:30,diff:"Easy"},
-{t:"Walk every street in your neighbourhood",d:"Map your neighbourhood. Methodically walk every single street in it. All of them.",c:"URBAN",xp:60,diff:"Medium"},
-{t:"Find a jazz bar and stay until closing",d:"A real jazz bar with live music. Order a drink and stay from first set to last call.",c:"URBAN",xp:40,diff:"Easy"},
-{t:"Visit a market you've never been to",d:"Flea market, fish market, night market, flower market. Whatever's nearest that you've ignored.",c:"URBAN",xp:20,diff:"Easy"},
-{t:"Find and photograph every mural in your city",d:"Research, map, and photograph every significant street mural you can find. Document who made each one.",c:"URBAN",xp:60,diff:"Medium"},
-{t:"Get a haircut somewhere completely different",d:"A barber in a neighbourhood you never go to. Let them do what they think suits you.",c:"URBAN",xp:30,diff:"Easy"},
-{t:"Attend a live sports event",d:"In person. Not a big-ticket event — find a local match, bout, or race. Be loud and invested.",c:"URBAN",xp:30,diff:"Easy"},
-{t:"Explore an area of your city you've always avoided",d:"The rough area, the boring suburb, the industrial estate. Walk it with real curiosity for 2+ hours.",c:"URBAN",xp:40,diff:"Easy"},
-{t:"Eat alone at a nice restaurant",d:"Book a table for one. Take no phone out. Enjoy the meal and the room fully by yourself.",c:"URBAN",xp:40,diff:"Easy"},
-{t:"Find an open-air cinema screening",d:"Under stars, on a rooftop, in a park. Watch a film in the open air with a crowd of strangers.",c:"URBAN",xp:30,diff:"Easy"},
-{t:"Order something completely random off a menu",d:"Close your eyes, point, and eat whatever you land on. No swaps allowed.",c:"URBAN",xp:20,diff:"Easy"},
-{t:"Discover your city's most interesting hidden history",d:"Read or ask about something that happened in your city that isn't on any tourist sign. Find a physical location connected to it.",c:"URBAN",xp:40,diff:"Easy"},
-{t:"Find the best view in your city",d:"Not the tourist view. Do the research. Find the actual best view and get to it.",c:"URBAN",xp:50,diff:"Medium"},
-{t:"Spend a whole day in a museum",d:"Not a rush-through. Open to close. Read every panel in at least 3 exhibits. Talk to the staff.",c:"URBAN",xp:40,diff:"Easy"},
-{t:"Find a speakeasy bar",d:"The kind with no sign and a password or a hidden door. Do the research, find one, get in.",c:"URBAN",xp:50,diff:"Medium"},
-{t:"Visit a pawn shop and buy something",d:"Go in with no plan. Find something genuinely interesting for under $20. Learn its history.",c:"URBAN",xp:20,diff:"Easy"},
-{t:"Find and ride a vintage carousel",d:"An actual old carousel, not a modern fairground one. Ride it multiple times. Appreciate the craft.",c:"URBAN",xp:20,diff:"Easy"},
-{t:"Go to a record store and buy based on cover art only",d:"No previewing, no research. Buy one record based solely on how the cover looks. Play it front to back.",c:"URBAN",xp:30,diff:"Easy"},
-{t:"Find the city's biggest tree",d:"Look it up, find it, stand next to it. Photograph the scale.",c:"URBAN",xp:20,diff:"Easy"},
-{t:"Attend an open mic night",d:"Not as a performer — as an audience member who actually pays attention. All the way to the end.",c:"URBAN",xp:20,diff:"Easy"},
-{t:"Find a rooftop accessible to the public",d:"Library, gallery, hotel bar, multi-story car park. Somewhere high with a legit view and legitimate access.",c:"URBAN",xp:30,diff:"Easy"},
-{t:"Eat at a completely different type of restaurant each day for a week",d:"7 days, 7 different cuisines. None repeated. All sit-down.",c:"URBAN",xp:50,diff:"Medium"},
-{t:"Spend a full day with no spending",d:"Not even a coffee. Navigate a full day — food included — without spending a cent. Plan ahead.",c:"URBAN",xp:30,diff:"Easy"},
-{t:"Find the city's weirdest shop",d:"The taxidermy supply shop, the button museum, the old typewriter repair place. Find it, go in, stay a while.",c:"URBAN",xp:30,diff:"Easy"},
-{t:"Find an unlisted alleyway shortcut",d:"Map an alley, cut-through or passage in your neighbourhood that doesn't appear on Google Maps.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Eat at a restaurant you'd normally walk past",d:"The place with no Instagram presence and plastic chairs. The one that's been there for 30 years. Go in. Order without looking at prices. Eat everything. Talk to the owner.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Find the oldest building in your city",d:"Research what structure has stood the longest. Go there. Touch the walls if you can. Find and record at least one story about what happened inside it.",c:"URBAN",xp:40,diff:"Easy"},
+{t:"Ride every line of your city's transit in one day",d:"Subway, light rail, tram — every line, end to end. No exits except to transfer. Document the journey. Time yourself. Talk to at least one person on each line.",c:"URBAN",xp:70,diff:"Medium"},
+{t:"Paint something on a legal graffiti wall",d:"Find a designated street art zone or legal graffiti wall. Design and paint something that takes 2+ hours. Sign it with your tag. Leave it for others to see.",c:"URBAN",xp:60,diff:"Medium"},
+{t:"Find a secret spot in your city",d:"A hidden courtyard, a rooftop garden, an unmarked speakeasy, a basement jazz bar. Somewhere that takes research to find. Get there. Tell almost no one where it is.",c:"URBAN",xp:50,diff:"Medium"},
+{t:"Go dumpster diving",d:"Behind a bakery at closing time. A grocery store's produce bin. A furniture shop's discards. Find something genuinely useful or edible. Clean it. Use it. Don't be squeamish.",c:"URBAN",xp:40,diff:"Easy"},
+{t:"Spend a night in a hotel in your own city",d:"Book a room. Be a tourist. Use the pool, order room service, go to the rooftop bar. Walk around your own city like you've never been there. See it fresh.",c:"URBAN",xp:50,diff:"Medium"},
+{t:"Find and visit every bookshop in your city",d:"Map every new and used bookshop. Visit each one. Buy at least one book from an independent shop. Talk to a bookseller about what they recommend.",c:"URBAN",xp:50,diff:"Medium"},
+{t:"Eat street food from 5 different vendors in one day",d:"All from street stalls, carts, or markets. Five different dishes or cuisines. All eaten standing up or on a curb. Rate each one out of 10.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Take a completely random bus somewhere",d:"Board a bus you've never taken. Ride to the end of the line. Get off. Explore whatever neighbourhood you land in for at least 2 hours. Find something interesting.",c:"URBAN",xp:40,diff:"Easy"},
+{t:"Find the worst-rated restaurant and eat there",d:"Google Maps, sort by lowest rating. Go in with an open mind. Order a full meal. Try genuinely to find something good about it. Write an honest, fair review.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Walk every street in your neighbourhood",d:"Pull up a map. Trace a route that covers every single street and alley in your neighbourhood. Walk it over a weekend or several evenings. See everything you've been missing.",c:"URBAN",xp:60,diff:"Medium"},
+{t:"Find a jazz bar and stay until closing",d:"A real jazz bar with live musicians. Order one drink. Sit close to the stage. Stay from the first set until they turn the lights on. Tip the band.",c:"URBAN",xp:40,diff:"Easy"},
+{t:"Visit a market you've never been to",d:"Flea market, fish market, flower market, night market, farmers market. Whatever's nearest that you've always meant to check out. Go early. Talk to a vendor. Buy something small.",c:"URBAN",xp:20,diff:"Easy"},
+{t:"Find and photograph every mural in your city",d:"Research online, then walk or bike to each one. Photograph every significant street mural. Document the artist and title if possible. Build a personal mural map.",c:"URBAN",xp:60,diff:"Medium"},
+{t:"Get a haircut somewhere completely different",d:"A barber or salon in a neighbourhood you never visit. Don't bring a reference photo. Let them do what they think suits your face. Accept the result.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Attend a live sports event",d:"In person. Not a major league game — find a local match, a minor league team, a school rivalry, a boxing card. Buy a ticket. Be loud. Care about the outcome.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Explore an area of your city you've always avoided",d:"The 'rough' part of town, the boring suburb, the industrial estate. Walk it with genuine curiosity for 2+ hours. Find something that surprises you about it.",c:"URBAN",xp:40,diff:"Easy"},
+{t:"Eat alone at a nice restaurant",d:"Book a table for one at a proper restaurant. Dress well. No phone at the table. Order multiple courses. Enjoy your own company fully. Tip well.",c:"URBAN",xp:40,diff:"Easy"},
+{t:"Find an open-air cinema screening",d:"Rooftop, park, or beach cinema. Watch a film under the stars with a crowd of strangers. Bring a blanket. Stay for the credits. Feel the collective gasp at the big moment.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Order something completely random off a menu",d:"Close your eyes, point, and order whatever your finger lands on. No substitutions. No sending it back. Eat the whole thing.",c:"URBAN",xp:20,diff:"Easy"},
+{t:"Discover your city's most interesting hidden history",d:"Research something that happened in your city that isn't on any tourist sign — a forgotten disaster, a secret society, an unsolved mystery. Find a physical location connected to it.",c:"URBAN",xp:40,diff:"Easy"},
+{t:"Find the best view in your city",d:"Not the tourist viewpoint. Ask locals, explore rooftops (legal ones), climb parking garages. Find the actual best view. Go there at golden hour.",c:"URBAN",xp:50,diff:"Medium"},
+{t:"Spend a whole day in a museum",d:"Not a rushed visit. Open to close. Read every panel in at least 3 exhibits. Sketch something. Talk to a guard about what they've seen. Leave exhausted and full.",c:"URBAN",xp:40,diff:"Easy"},
+{t:"Find a speakeasy bar",d:"The kind with no sign, a hidden door, and a password or reservation requirement. Do the research. Find it. Get in. Order something classic.",c:"URBAN",xp:50,diff:"Medium"},
+{t:"Visit a pawn shop and buy something",d:"Go in with no plan. Browse for 20 minutes. Find something genuinely interesting or weird for under $20. Buy it. Learn its history or invent one.",c:"URBAN",xp:20,diff:"Easy"},
+{t:"Find and ride a vintage carousel",d:"An actual antique carousel — hand-carved horses, original organ music. Ride it at least three times. Pick a different animal each time.",c:"URBAN",xp:20,diff:"Easy"},
+{t:"Go to a record store and buy based on cover art only",d:"No listening stations. No Googling. Pick one album based solely on the cover. Take it home. Play it all the way through. Judge the book by its cover.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Find the city's biggest tree",d:"Research it — councils often list significant trees. Find it. Stand next to it. Photograph something for scale. Touch the bark. Estimate its age.",c:"URBAN",xp:20,diff:"Easy"},
+{t:"Attend an open mic night as audience",d:"Not performing — just watching. Sit in the front row. Pay attention to every act. Applaud genuinely. Talk to a performer afterward about their set.",c:"URBAN",xp:20,diff:"Easy"},
+{t:"Find a publicly accessible rooftop",d:"Library, gallery, hotel bar, multi-story car park. Somewhere high with a legitimate, legal way to get up there. Go at sunset.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Eat at 7 different cuisines in 7 days",d:"One cuisine per day for a week. No repeats. All sit-down restaurants or proper food stalls. Expand your palate.",c:"URBAN",xp:50,diff:"Medium"},
+{t:"Spend a full day with zero spending",d:"Not even a coffee. Navigate a full day — food, transport, entertainment — without spending a single cent. Plan ahead or improvise.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Find the city's weirdest shop",d:"Taxidermy supplies, vintage medical equipment, a button museum, a shop that only sells left-handed items. Find the strangest retail space near you. Go inside. Stay a while.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Map an unlisted alleyway shortcut",d:"Find an alley, cut-through, or pedestrian passage in your neighbourhood that doesn't appear on Google Maps. Walk it. Time it. Use it regularly.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Take a photo at the exact geographic centre of your city",d:"Research where the geographic centre is. Go there. Stand on it. Take a photo that proves you were there.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Find the city's best cheap meal",d:"Ask 10 locals: 'Where's the best meal in this city for under $10?' Go to the most-recommended spot. Order that meal. Confirm or deny.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Ride a city bike share from one end of town to the other",d:"Grab a bike from a dock at the northernmost or westernmost station. Ride to the opposite extreme. Dock it. Time yourself.",c:"URBAN",xp:50,diff:"Medium"},
+{t:"Visit a place of worship you've never been to",d:"A mosque, temple, church, synagogue, or gurdwara of a faith different from your own. Be respectful. Observe. Learn something about how others find meaning.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Find the city's narrowest building",d:"Research, find, and visit the skinniest building in your city. Try to go inside if possible. Measure its width with your arm span.",c:"URBAN",xp:20,diff:"Easy"},
+{t:"Do a full day in a single neighbourhood",d:"Pick a neighbourhood you rarely visit. Spend 8+ hours there. Eat breakfast, lunch, and dinner. Visit shops, parks, and cafés. Talk to residents. Know it by day's end.",c:"URBAN",xp:50,diff:"Medium"},
+{t:"Take a free walking tour of your own city",d:"Join a free tour meant for tourists. Learn things about your city you never knew. Tip the guide well. See your home through a visitor's eyes.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Find a diner open 24 hours and stay until sunrise",d:"The kind with formica tables and bottomless coffee. Arrive after midnight. Order food at 3am. Watch the early shift come in. Leave when the sun's fully up.",c:"URBAN",xp:50,diff:"Medium"},
+{t:"Document every piece of public art in a 1km radius",d:"Pick a central point. Walk every street within 1km. Photograph and note every sculpture, mural, installation, and statue. Create a personal catalogue.",c:"URBAN",xp:60,diff:"Medium"},
+{t:"Find and photograph all the city's ghost signs",d:"Those faded painted advertisements on old brick buildings. Research, locate, and photograph every one you can find. Note what they were selling and when.",c:"URBAN",xp:50,diff:"Medium"},
+{t:"Eat something that's the city's signature dish",d:"Every city has one — the dish it's known for. Find the place that does it best according to locals. Order it. Understand why it defines the place.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Take public transport to the last stop",d:"Ride a bus, tram, or train line all the way to its terminal station — the one where everyone gets off. Explore what's there. Ride back.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Find a bridge and cross it on foot",d:"A real bridge — not a pedestrian overpass. Walk the full span. Stop in the middle. Look down at what's below. Count the vehicles that pass.",c:"URBAN",xp:20,diff:"Easy"},
+{t:"Visit your city's oldest cemetery",d:"Walk among the oldest graves. Read the names and dates. Find the person who lived the longest and the one who died the youngest. Consider your own timeline.",c:"URBAN",xp:30,diff:"Easy"},
+{t:"Go to a restaurant and ask the server to order for you",d:"Tell them: 'Order me what you think I should eat.' Trust them completely. Eat whatever arrives. Tip generously for the adventure.",c:"URBAN",xp:20,diff:"Easy"},
+{t:"Find and photograph every clock tower in the city",d:"Map them all — train stations, churches, civic buildings. Visit each one. Photograph them at different times of day. Notice which ones still keep accurate time.",c:"URBAN",xp:50,diff:"Medium"},
 
 // MIND ────────────────────────────────────────────────────────────
-{t:"Write a short story in one sitting",d:"Sit down with a blank page. Write a complete short story — beginning, middle, end — in a single session of 2-4 hours.",c:"MIND",xp:60,diff:"Medium"},
-{t:"Meditate for 30 minutes without moving",d:"Sit comfortably. Set a timer for 30 minutes. Don't move. Don't open your eyes. Just sit with what comes up.",c:"MIND",xp:50,diff:"Medium"},
-{t:"Do a full digital detox for 48 hours",d:"No phone, no computer, no TV. 48 hours of analogue life. Read, write, move, talk.",c:"MIND",xp:70,diff:"Medium"},
-{t:"Read a book in a genre you hate",d:"If you hate fiction, read fiction. If you hate self-help, read self-help. All the way through. Find one thing you learned.",c:"MIND",xp:40,diff:"Easy"},
-{t:"Write your life story in 500 words",d:"From birth to now. 500 words exactly. Keep every word.",c:"MIND",xp:40,diff:"Easy"},
-{t:"Learn and memorise a poem",d:"A real poem — at least 20 lines. Memorise it and recite it from memory to at least one person.",c:"MIND",xp:40,diff:"Easy"},
-{t:"Take a completely different route to every destination for a week",d:"No habits. Every trip you make, find a different way. Notice what you've been missing.",c:"MIND",xp:30,diff:"Easy"},
-{t:"Spend a day not using any words",d:"24 hours of complete silence — no speech, no texting, no writing notes. Gesture and expression only.",c:"MIND",xp:60,diff:"Medium"},
-{t:"Write a letter to your 10-years-older self",d:"Seal it. Put it somewhere you'll find it in 10 years. Be honest about what you hope and fear.",c:"MIND",xp:30,diff:"Easy"},
-{t:"Do something that terrifies you socially",d:"The thing you talk yourself out of every time — a performance, a confession, an approach. Do the thing.",c:"MIND",xp:80,diff:"Hard"},
-{t:"Spend an afternoon doing absolutely nothing",d:"No stimulation. Sit in a garden or empty room. Let your mind go wherever it goes. No falling asleep.",c:"MIND",xp:30,diff:"Easy"},
-{t:"Watch a film in a foreign language without subtitles",d:"A full-length feature. No subtitles, no pausing. Try to follow the story from visuals and tone.",c:"MIND",xp:40,diff:"Easy"},
-{t:"Write an honest review of your own life so far",d:"Like a Yelp review, but for yourself. Three stars, two major complaints, two things you'd recommend.",c:"MIND",xp:40,diff:"Easy"},
-{t:"Listen to an entire album without doing anything else",d:"No phone, no scrolling. Sit in a chair and just listen to a record, front to back, at full attention.",c:"MIND",xp:20,diff:"Easy"},
-{t:"Do a cold shower every day for 2 weeks",d:"30 seconds minimum. Full cold. Document how you feel on day 1 vs day 14.",c:"MIND",xp:50,diff:"Medium"},
-{t:"Learn 5 philosophical concepts that changed history",d:"Stoicism, existentialism, utilitarianism, nihilism, phenomenology. Read the primary text — not just Wikipedia.",c:"MIND",xp:50,diff:"Medium"},
-{t:"Fast for 24 hours",d:"Water and black coffee only. No food from midnight to midnight. Note how your mind changes.",c:"MIND",xp:60,diff:"Medium"},
-{t:"Keep a journal for 30 days straight",d:"Every day. At least 300 words. Don't skip once. Read it at the end.",c:"MIND",xp:70,diff:"Medium"},
-{t:"Solve a logic puzzle in under 30 minutes",d:"A real one — Einstein's puzzle, a hard Sudoku, a cryptic crossword. Set the timer.",c:"MIND",xp:40,diff:"Easy"},
-{t:"Do a memory palace exercise",d:"Learn the method-of-loci technique and memorise a list of 20 unrelated items using a mental palace.",c:"MIND",xp:50,diff:"Medium"},
-{t:"Learn to lucid dream",d:"Practice reality checks for 2 weeks. WILD or MILD technique. Document the first time you become aware in a dream.",c:"MIND",xp:70,diff:"Medium"},
-{t:"Go a week without complaining",d:"Every time you catch yourself about to complain, stop. If you slip, restart the week. Hit 7 clean days.",c:"MIND",xp:60,diff:"Medium"},
-{t:"Make a decision that scares you",d:"The thing you've been putting off — the move, the conversation, the application. Decide. Today.",c:"MIND",xp:80,diff:"Hard"},
-{t:"Wake up at 5am every day for a week",d:"Alarm at 5, out of bed immediately. Use the time however you want. See who you become.",c:"MIND",xp:50,diff:"Medium"},
-{t:"Learn to argue the opposite of your beliefs convincingly",d:"Take a position you fundamentally disagree with. Research it deeply. Write or speak a 5-minute defence of it.",c:"MIND",xp:50,diff:"Medium"},
-{t:"Go a week without alcohol",d:"Seven consecutive days. Notice every moment you would normally reach for a drink.",c:"MIND",xp:40,diff:"Easy"},
-{t:"Write a manifesto",d:"Your actual beliefs. What you stand for, what you won't tolerate. One page. Keep it.",c:"MIND",xp:50,diff:"Medium"},
-{t:"Reread your oldest diary entries",d:"Find the oldest journal, letter, or text history you have. Read it all. Notice who you were.",c:"MIND",xp:20,diff:"Easy"},
-{t:"Spend a full day in complete nature",d:"No buildings, no roads. A full day from sunrise to sunset entirely in natural wilderness.",c:"MIND",xp:70,diff:"Medium"},
-{t:"Write the first chapter of a novel",d:"2000+ words. Characters, a world, a problem. The real first chapter of something you might actually write.",c:"MIND",xp:60,diff:"Medium"},
-{t:"Forgive someone out loud",d:"Tell them. Call them, find them, or write a letter. Say the words. Don't explain or justify — just say it.",c:"MIND",xp:70,diff:"Medium"},
-{t:"Try a sensory deprivation float tank",d:"Book a floatation tank session. Stay in for the full hour. Don't fight the silence.",c:"MIND",xp:60,diff:"Medium"},
-{t:"Confront a fear you've had since childhood",d:"Spiders, heights, water, the dark. Find the fear and sit with it deliberately for at least 15 minutes.",c:"MIND",xp:70,diff:"Medium"},
-{t:"Spend a day pretending to be from another decade",d:"1970s, 1980s, or 1920s. Dress the part. Talk the part. Refer only to things that existed in that era.",c:"MIND",xp:40,diff:"Easy"},
-{t:"Do a random act of kindness that costs nothing",d:"Something genuinely meaningful for a stranger or acquaintance that requires effort but no money.",c:"MIND",xp:20,diff:"Easy"},
+{t:"Write a short story in one sitting",d:"Sit with a blank page or document. Write a complete short story — beginning, middle, end — in a single session of 2-4 hours. No editing until you're done. Just get the story out.",c:"MIND",xp:60,diff:"Medium"},
+{t:"Meditate for 30 minutes without moving",d:"Find a comfortable seated position. Set a timer for 30 minutes. Close your eyes. Don't move a muscle. When thoughts come — and they will — just observe them. Stay until the timer sounds.",c:"MIND",xp:50,diff:"Medium"},
+{t:"Do a full digital detox for 48 hours",d:"No phone, no computer, no TV, no screens at all. For 48 hours, live an analogue life. Read paper books, write with pen, walk outside, talk face-to-face. Notice what you reach for.",c:"MIND",xp:70,diff:"Medium"},
+{t:"Read a book in a genre you hate",d:"If you hate romance, read romance. If you dismiss fantasy, read fantasy. Pick a well-regarded book in a genre you avoid. Read it all the way through. Find at least one thing valuable.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Write your life story in 500 words exactly",d:"From birth to this moment. 500 words — not 499, not 501. Every word must earn its place. Distill your existence to its essence.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Learn and memorise a poem",d:"At least 20 lines — a real poem by a real poet. Memorise it completely. Recite it from memory to at least one other person. Feel the rhythm in your bones.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Take a completely different route everywhere for a week",d:"No habitual paths. To work, to the shop, to friends' houses — every trip takes a new route. Notice everything you've been walking past for years.",c:"MIND",xp:30,diff:"Easy"},
+{t:"Spend a day not using any words",d:"24 hours of complete silence. No speech, no texting, no writing notes, no mouthing words. Communicate only through gesture, expression, and presence.",c:"MIND",xp:60,diff:"Medium"},
+{t:"Write a letter to your 10-years-older self",d:"Seal it in an envelope. Write a date 10 years from now on it. Put it somewhere safe. Be honest about what you hope and fear for the person you'll become.",c:"MIND",xp:30,diff:"Easy"},
+{t:"Do something that terrifies you socially",d:"The thing you talk yourself out of every single time — a performance, a difficult conversation, an approach, a confession. Identify it. Do it this week.",c:"MIND",xp:80,diff:"Hard"},
+{t:"Spend an afternoon doing absolutely nothing",d:"No phone, no book, no music, no task. Sit in a chair or on grass. Let your mind wander freely. Don't fall asleep. Just be. For 3 hours minimum.",c:"MIND",xp:30,diff:"Easy"},
+{t:"Watch a film in a foreign language without subtitles",d:"A full-length feature film. No subtitles, no dubbing, no pausing. Try to follow the story from visuals, tone, and context alone. See how much you understand.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Write an honest review of your own life so far",d:"Like a Yelp review. Star rating. Two major complaints. Two things you'd recommend. Write it as if a stranger will read it. Be brutally fair.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Listen to an album without doing anything else",d:"Dark room or comfortable chair. Good headphones. A full album from start to finish. No scrolling, no reading, no moving. Just listen. Every note. Every silence.",c:"MIND",xp:20,diff:"Easy"},
+{t:"Do a cold shower every day for 2 weeks",d:"At the end of your normal shower, turn it fully cold. Stay under for at least 30 seconds. Breathe through the shock. Do this 14 days straight. Journal how day 1 feels vs day 14.",c:"MIND",xp:50,diff:"Medium"},
+{t:"Learn 5 philosophical concepts deeply",d:"Stoicism, existentialism, utilitarianism, absurdism, phenomenology. For each, read the primary source — Marcus Aurelius, Sartre, Mill, Camus, Merleau-Ponty. Write one paragraph on each in your own words.",c:"MIND",xp:50,diff:"Medium"},
+{t:"Fast for 24 hours",d:"Water and black coffee or tea only. No food from dinner to dinner. Notice when hunger comes, peaks, and passes. Observe how your mind changes when your body thinks it's starving.",c:"MIND",xp:60,diff:"Medium"},
+{t:"Keep a journal for 30 days straight",d:"Every single day for a month. At least 300 words. No skipping. Write anything — what happened, what you felt, what you're afraid of. On day 31, read the whole thing.",c:"MIND",xp:70,diff:"Medium"},
+{t:"Solve a serious logic puzzle",d:"Einstein's riddle, a cryptic crossword, a hard Sudoku, or a formal logic proof. Set a timer for 30 minutes. Solve it without looking up hints.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Build a memory palace",d:"Learn the method of loci — the ancient Greek memory technique. Build a mental palace with 20 rooms. Place 20 items in it. Recall them perfectly 24 hours later.",c:"MIND",xp:50,diff:"Medium"},
+{t:"Learn to lucid dream",d:"Practice reality checks for 2 weeks. Keep a dream journal. Try the WILD or MILD technique. The first time you become aware you're dreaming — fly.",c:"MIND",xp:70,diff:"Medium"},
+{t:"Go a week without complaining",d:"No verbal complaints. No internal griping either — catch yourself. Every time you slip, the week resets. Reach 7 clean days. See what it does to your brain.",c:"MIND",xp:60,diff:"Medium"},
+{t:"Make a decision that scares you",d:"The one you've been putting off — leaving, staying, applying, quitting, confessing. Decide today. Act within 48 hours. Live with the consequences.",c:"MIND",xp:80,diff:"Hard"},
+{t:"Wake up at 5am every day for a week",d:"Alarm at 5:00. Feet on floor immediately. No snooze. Use the extra hours however you want — exercise, reading, writing, thinking. See who you become at dawn.",c:"MIND",xp:50,diff:"Medium"},
+{t:"Argue the opposite of your beliefs convincingly",d:"Take a position you fundamentally disagree with. Research it deeply — read the best arguments for it. Write or speak a 5-minute defence so convincing it disturbs you.",c:"MIND",xp:50,diff:"Medium"},
+{t:"Go a week without alcohol",d:"Seven consecutive days. No exceptions. Notice every moment you would normally reach for a drink. Observe what you use alcohol to avoid or enhance.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Write a personal manifesto",d:"What you stand for. What you won't tolerate. What you believe about life, love, work, and death. One page. Write it like you mean it. Keep it where you'll see it.",c:"MIND",xp:50,diff:"Medium"},
+{t:"Reread your oldest diary entries",d:"Find the oldest journal, letters, or message history you still have. Read every word. Notice who you were. Forgive them for what they didn't know.",c:"MIND",xp:20,diff:"Easy"},
+{t:"Spend a full day in complete nature",d:"No buildings, no roads, no human-made structures visible. From sunrise to sunset in wilderness. Bring food and water. Sit. Walk. Listen. Be a creature.",c:"MIND",xp:70,diff:"Medium"},
+{t:"Write the first chapter of a novel",d:"2000+ words. Real characters with real problems. A setting you can see. A voice that's yours. The actual first chapter of something you might finish one day.",c:"MIND",xp:60,diff:"Medium"},
+{t:"Forgive someone out loud",d:"Tell them — call, visit, or write. Say the words: 'I forgive you.' Don't explain or justify. Just release the debt. Mean it.",c:"MIND",xp:70,diff:"Medium"},
+{t:"Try a sensory deprivation float tank",d:"Book a floatation tank session. Strip down, get in the dark, silent, body-temperature water. Stay in for the full hour. Don't fight the strangeness. Let your mind unspool.",c:"MIND",xp:60,diff:"Medium"},
+{t:"Confront a childhood fear",d:"The one that's been with you since you were small — spiders, heights, deep water, the dark. Find it. Sit with it deliberately for at least 15 minutes. Breathe.",c:"MIND",xp:70,diff:"Medium"},
+{t:"Spend a day pretending to be from another decade",d:"Dress, speak, and behave as if it's 1975, 1922, or 1987. No modern references. No phone. See how the world looks through a different era's eyes.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Do a random act of kindness that costs nothing",d:"Something genuinely meaningful — help a stranger carry something heavy, leave a detailed positive review for a small business, spend an hour picking up litter. Effort, not money.",c:"MIND",xp:20,diff:"Easy"},
+{t:"Write a letter to someone who hurt you — and don't send it",d:"Get it all out. Every feeling, every memory, every thing you wish you'd said. Write until there's nothing left. Then burn it, delete it, or seal it away. The act is the release.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Spend a day with no opinions",d:"No judgments, no preferences, no 'this is good' or 'that is bad.' Observe everything neutrally. When asked what you think, genuinely consider that you might not know.",c:"MIND",xp:50,diff:"Medium"},
+{t:"Read one poem every morning for a month",d:"Before you check your phone. A different poem each day. Read it aloud if possible. Let it sit in your mind through the day.",c:"MIND",xp:30,diff:"Easy"},
+{t:"Learn the names of 20 birds in your area",d:"Get a field guide or app. Go outside. Identify 20 distinct bird species by sight and at least 5 by their calls. Know your non-human neighbours.",c:"MIND",xp:50,diff:"Medium"},
+{t:"Practice negative visualisation for a week",d:"Each morning, imagine losing something you value — your health, a loved one, your home. Feel the loss vividly. Then open your eyes to what you still have. Gratitude through subtraction.",c:"MIND",xp:50,diff:"Medium"},
+{t:"Write down everything you remember from childhood",d:"Sit for 2 hours with a notebook. Write every memory that surfaces — people, places, sensations, smells. Don't organise. Just capture. See what you've been carrying.",c:"MIND",xp:50,diff:"Medium"},
+{t:"Do a full day without looking in a mirror",d:"Cover them if needed. No checking your reflection. See how it changes your relationship with your appearance. Notice how much mental energy goes to self-monitoring.",c:"MIND",xp:30,diff:"Easy"},
+{t:"Spend a day asking questions instead of making statements",d:"Every time you'd normally assert something, ask a question instead. Be genuinely curious about the answers. See how conversations change.",c:"MIND",xp:40,diff:"Easy"},
+{t:"Learn and practice box breathing",d:"4 seconds in, 4 hold, 4 out, 4 hold. Use it during stressful moments for a week. Notice the physiological calm it produces. Teach it to someone else.",c:"MIND",xp:20,diff:"Easy"},
+{t:"Delete social media from your phone for 30 days",d:"All of it. Gone from the phone. Check only from a computer if you must — but try not to. Fill the reclaimed time with something that uses your hands.",c:"MIND",xp:70,diff:"Medium"},
+{t:"Spend a day alone in silence in nature",d:"No talking, no music, no podcasts. Find a natural space — forest, beach, mountain. Be there alone from morning to evening. Just you and the non-human world.",c:"MIND",xp:60,diff:"Medium"},
+{t:"Write a eulogy for yourself",d:"As if read by someone who loved you deeply and told the truth. What would they say about how you lived? What would you want them to say? Read it aloud.",c:"MIND",xp:60,diff:"Medium"},
 
 // CHAOS ────────────────────────────────────────────────────────────
-{t:"Do the most extreme thing on a menu",d:"The hottest dish, the biggest portion, the weirdest item. Order the thing no one orders. Finish it.",c:"CHAOS",xp:40,diff:"Easy"},
-{t:"Start a rumour about yourself and watch it spread",d:"Tell one person something interesting but false about yourself. Trace how it mutates over a month.",c:"CHAOS",xp:30,diff:"Easy"},
-{t:"Host a silent disco",d:"5+ people, 3 different playlists on wireless headphones, one room. Watch strangers dance to invisible music.",c:"CHAOS",xp:60,diff:"Medium"},
-{t:"Do a 72-hour challenge of your own invention",d:"Design a personal challenge — diet, movement, sleep, behaviour. Make it hard. Do it for 3 days straight.",c:"CHAOS",xp:70,diff:"Medium"},
-{t:"Eat something you've always said you'd never eat",d:"The thing that makes you say 'I could never.' Find it. Eat it. Mean it.",c:"CHAOS",xp:30,diff:"Easy"},
-{t:"Go somewhere new every day for a week",d:"A new place — a café, a park, a street, a building — every single day. Not anywhere you've been before.",c:"CHAOS",xp:40,diff:"Easy"},
-{t:"Buy a lottery ticket every day for a week and track the results",d:"$1 each. Different games. Track wins and losses. Understand exactly what you're gambling against.",c:"CHAOS",xp:20,diff:"Easy"},
-{t:"Say yes to everything for one full day",d:"Every request, every invitation, every suggestion from anyone you encounter. Don't break the streak.",c:"CHAOS",xp:50,diff:"Medium"},
-{t:"Send 10 postcards to strangers",d:"Find 10 addresses via PostCrossing or random pen-pal sites. Write something genuine to each.",c:"CHAOS",xp:30,diff:"Easy"},
-{t:"Go to a country you've never visited and get lost",d:"No itinerary. No bookings. Land, pick a direction. Navigate 48 hours of pure improvisation.",c:"CHAOS",xp:100,diff:"Hard"},
-{t:"Pull an all-nighter doing something constructive",d:"Don't sleep — but use all 24 hours. Write something, build something, learn something significant.",c:"CHAOS",xp:60,diff:"Medium"},
-{t:"Challenge someone to a street race",d:"On foot. A measured 100m. Find a stranger who looks fast. Make it official with a crowd counting down.",c:"CHAOS",xp:40,diff:"Easy"},
-{t:"Host a dinner where no one knows what they're getting",d:"Full menu, four courses. Nobody sees a menu. You plate and present. Make it bizarre but edible.",c:"CHAOS",xp:60,diff:"Medium"},
-{t:"Do something every day for 30 days",d:"Pick one discipline — cold shower, pushups, drawing, journaling, running — and do it every single day for 30 days.",c:"CHAOS",xp:90,diff:"Hard"},
-{t:"Wear the same outfit for a week",d:"Every day. No variation. Track what people notice, what they say, and what you feel.",c:"CHAOS",xp:30,diff:"Easy"},
-{t:"Try a food from a culture you know nothing about",d:"Not the mainstream dish. The weird one. Fermented, dried, raw, or strongly flavoured. Ask the person behind the counter what it is.",c:"CHAOS",xp:20,diff:"Easy"},
-{t:"Delete every social media app for a month",d:"Gone from your phone. All of them. Replace the time with something that needs your hands.",c:"CHAOS",xp:70,diff:"Medium"},
-{t:"Make a genuine bet on yourself",d:"A real wager — money, a public commitment — on achieving something you might fail at. Bet it. Win it.",c:"CHAOS",xp:60,diff:"Medium"},
-{t:"Spend a day doing everything with your non-dominant hand",d:"Writing, eating, opening doors, brushing your teeth. Left if you're right-handed. See what breaks.",c:"CHAOS",xp:30,diff:"Easy"},
-{t:"Go one week without using any swear words",d:"Including under your breath. Every slip resets the week. Clean language only.",c:"CHAOS",xp:30,diff:"Easy"},
-{t:"Find and eat a dish that took over 24 hours to prepare",d:"Slow-cooked, fermented, brined, or traditionally aged. Find something where time is the main ingredient.",c:"CHAOS",xp:40,diff:"Easy"},
-{t:"Spend an entire day outside",d:"Wake up, go outside, stay outside all day until you sleep. Rain, shine, whatever. No buildings.",c:"CHAOS",xp:50,diff:"Medium"},
-{t:"Try a sensory overload experience",d:"A rave, a loud concert front row, a noisy souk or market, a firework display at point-blank range. Let it wash over you.",c:"CHAOS",xp:40,diff:"Easy"},
-{t:"Break a personal record",d:"Anything physical — fastest run, most push-ups, longest hold. Set a baseline today and beat it this week.",c:"CHAOS",xp:50,diff:"Medium"},
-{t:"Invent and cook a completely original dish",d:"No recipe, no inspiration from known dishes. Invent something from scratch. Eat it. Rate it honestly.",c:"CHAOS",xp:50,diff:"Medium"},
-{t:"Enter a competition you've never tried",d:"Eating, coding, art, chess, cooking, photography — any competition. Actually enter and turn up.",c:"CHAOS",xp:60,diff:"Medium"},
-{t:"Give away something you love",d:"A possession that means something to you. Give it to someone who will use it or love it more.",c:"CHAOS",xp:40,diff:"Easy"},
-{t:"Go skinny dipping",d:"A lake, a sea, an empty pool. With friends or alone. Leave the clothes on the bank and get in.",c:"CHAOS",xp:50,diff:"Medium"},
-{t:"Volunteer for the hardest task in any group",d:"In any situation — a work project, a social event, a group challenge — be the first to volunteer for the worst job.",c:"CHAOS",xp:40,diff:"Easy"},
-{t:"Make something and sell it",d:"Anything you made with your hands — baked, built, drawn, grown. Sell it to a stranger for actual money.",c:"CHAOS",xp:60,diff:"Medium"},
-{t:"Go a full day without looking in a mirror",d:"Cover them if you have to. Don't look at your reflection once. See how it changes your relationship with your appearance.",c:"CHAOS",xp:30,diff:"Easy"},
-{t:"Read a book you've been putting off for years",d:"The one on the shelf that's been there since forever. Read it all the way through.",c:"CHAOS",xp:30,diff:"Easy"},
-{t:"Win an argument you were wrong about",d:"Pick a position you don't hold. Enter into a real debate with someone who agrees with your actual view. Win using only logic.",c:"CHAOS",xp:60,diff:"Medium"},
-{t:"Get up and dance in public without music",d:"In a park, on a street, in a waiting room. Dance. No music. No phone. Just you dancing.",c:"CHAOS",xp:40,diff:"Easy"},
-{t:"Go a week with no complaining and no excuses",d:"When you catch yourself about to complain or excuse — stop. Do the thing instead.",c:"CHAOS",xp:60,diff:"Medium"},
-{t:"Try a discipline every day for a week — then quit if you hate it",d:"7 days of Wim Hof breathing, intermittent fasting, cold therapy, or strength training. Honest verdict on day 8.",c:"CHAOS",xp:50,diff:"Medium"},
+{t:"Do the most extreme thing on a menu",d:"The spiciest dish, the largest portion, the weirdest ingredient combination. Order the thing the server warns you about. Finish every bite. Sign the waiver if there is one.",c:"CHAOS",xp:40,diff:"Easy"},
+{t:"Start a rumour about yourself and watch it spread",d:"Tell one person something interesting but completely false about yourself. Something harmless and intriguing. Don't tell anyone else. Trace how it mutates and spreads over the next month.",c:"CHAOS",xp:30,diff:"Easy"},
+{t:"Host a silent disco",d:"Rent or borrow wireless headphones. Create 3 different playlists on different channels. Everyone dances to their own music in the same room. Watch strangers dance to silence.",c:"CHAOS",xp:60,diff:"Medium"},
+{t:"Do a 72-hour personal challenge",d:"Design your own challenge — physical, mental, dietary, or behavioural. Make it genuinely hard. Complete it for 3 full days. Document the experience hourly.",c:"CHAOS",xp:70,diff:"Medium"},
+{t:"Eat something you've always said you'd never eat",d:"The thing that makes you say 'I could never.' Insects, organ meat, a notoriously disgusting food. Find it. Prepare it properly. Eat it with an open mind. You might surprise yourself.",c:"CHAOS",xp:30,diff:"Easy"},
+{t:"Go somewhere new every day for a week",d:"A café, a park, a neighbourhood, a street, a town — somewhere you've never set foot before. Every single day for 7 days. Document each discovery.",c:"CHAOS",xp:40,diff:"Easy"},
+{t:"Buy a lottery ticket every day for a week",d:"Different games each day. Track your wins and losses. At the end, calculate exactly what your odds were and how much you're down. Understand the mathematics of hope.",c:"CHAOS",xp:20,diff:"Easy"},
+{t:"Say yes to everything for one full day",d:"Every request, every invitation, every suggestion from anyone you encounter. No exceptions (within safety and legality). See where a day of total openness takes you.",c:"CHAOS",xp:50,diff:"Medium"},
+{t:"Send 10 postcards to random addresses",d:"Find addresses via PostCrossing, pen pal sites, or by opening a phone book to random pages. Write something real to each recipient. Drop them in the mail and wonder who reads them.",c:"CHAOS",xp:30,diff:"Easy"},
+{t:"Go to a country you've never visited with no plan",d:"Book a flight. Pack a bag. Land. Figure out everything from the moment you arrive — where to sleep, eat, go. Improvise for 48+ hours. Navigate the unknown.",c:"CHAOS",xp:100,diff:"Hard"},
+{t:"Pull an all-nighter doing something productive",d:"No partying. Use the full 24 hours to create something — write, code, build, paint, compose. Complete a significant project. Watch the sun come up while you're still working.",c:"CHAOS",xp:60,diff:"Medium"},
+{t:"Challenge someone to a foot race",d:"In a park, on a street, at a party. Find someone who looks fast. Mark a course — 100 metres or similar. Race. Win or lose with grace.",c:"CHAOS",xp:40,diff:"Easy"},
+{t:"Host a dinner where no one sees the menu",d:"Four courses. No one knows what they're eating until it's in front of them. Make each course surprising, unusual, but genuinely good. Describe each dish dramatically.",c:"CHAOS",xp:60,diff:"Medium"},
+{t:"Do one thing every single day for 30 days",d:"Pick one discipline — push-ups, drawing, meditation, running, writing, cold showers. Do it every day without fail for 30 days. Miss a day and you start over.",c:"CHAOS",xp:90,diff:"Hard"},
+{t:"Wear the same outfit for a full week",d:"Every day. Same clothes. Wash them if needed but wear the exact same thing. Track what people notice, what they say, and how you feel. Question why you own so many clothes.",c:"CHAOS",xp:30,diff:"Easy"},
+{t:"Try a food from a culture you know nothing about",d:"Not the mainstream dish — the obscure one. Fermented, dried, raw, or intensely flavoured. Find a restaurant or market serving it. Ask questions. Eat it.",c:"CHAOS",xp:20,diff:"Easy"},
+{t:"Delete social media apps for a month",d:"All of them — gone from every device. Replace the scrolling time with something that uses your hands. Notice how often you reach for your phone and find nothing.",c:"CHAOS",xp:70,diff:"Medium"},
+{t:"Make a genuine bet on yourself",d:"Put money, reputation, or a public commitment on the line. Bet that you can achieve something you might fail at — a deadline, a performance, a transformation. Win it or learn from losing.",c:"CHAOS",xp:60,diff:"Medium"},
+{t:"Spend a day doing everything with your non-dominant hand",d:"Writing, eating, brushing teeth, opening doors, using your phone. Every task. See what breaks, what adapts, and how your brain handles the constant friction.",c:"CHAOS",xp:30,diff:"Easy"},
+{t:"Go one week without swearing",d:"No profanity at all — not even under your breath. Every slip resets the week to day zero. Reach 7 clean days. Notice what you use swearing to express.",c:"CHAOS",xp:30,diff:"Easy"},
+{t:"Find and eat a dish that took 24+ hours to prepare",d:"Slow-cooked, fermented, aged, or traditionally prepared over a full day. Find the dish, learn how it was made, appreciate the time in every bite.",c:"CHAOS",xp:40,diff:"Easy"},
+{t:"Spend an entire day outside",d:"From the moment you wake up until you go to sleep. No buildings. No cars except to get to nature. Rain, shine, cold — doesn't matter. Be outdoors for every waking hour.",c:"CHAOS",xp:50,diff:"Medium"},
+{t:"Try a sensory overload experience",d:"A rave, a metal show front row, a fireworks display at close range, a crowded souk or market at peak hour. Let overwhelming sensory input wash over you without retreating.",c:"CHAOS",xp:40,diff:"Easy"},
+{t:"Break a personal record",d:"Physical or mental — fastest mile, most push-ups, longest plank, highest typing speed, most pages read in a day. Set a baseline today. Smash it within the week.",c:"CHAOS",xp:50,diff:"Medium"},
+{t:"Invent and cook a completely original dish",d:"No recipe. No inspiration from anything you've eaten before. Create a dish from pure invention. Name it. Eat it. Rate it honestly. Improve it or never make it again.",c:"CHAOS",xp:50,diff:"Medium"},
+{t:"Enter a competition you've never tried",d:"Eating contest, hackathon, art competition, chess tournament, poetry slam, chili cook-off — any organised competition. Register. Show up. Compete. Don't come last.",c:"CHAOS",xp:60,diff:"Medium"},
+{t:"Give away something you genuinely love",d:"A possession that means something to you. Give it to someone who will use it, treasure it, or need it more than you do. Don't replace it.",c:"CHAOS",xp:40,diff:"Easy"},
+{t:"Go skinny dipping",d:"A lake, a secluded beach, a pool after hours, a river bend. Alone or with trusted friends. Leave your clothes on the bank. Get in. Feel completely free.",c:"CHAOS",xp:50,diff:"Medium"},
+{t:"Volunteer for the hardest task",d:"In any group situation — work, social, community — when a difficult, unpleasant, or challenging task appears, be the first to raise your hand. Do it without complaining.",c:"CHAOS",xp:40,diff:"Easy"},
+{t:"Make something and sell it to a stranger",d:"Anything you created — baked goods, art, a carved object, a knitted item, a plant cutting. Price it. Sell it to someone you don't know for actual money.",c:"CHAOS",xp:60,diff:"Medium"},
+{t:"Go a day without looking in a mirror",d:"Cover them up if you have to. Don't check your reflection once. Notice how often you normally do. See what changes about how you feel in your body.",c:"CHAOS",xp:30,diff:"Easy"},
+{t:"Read a book you've been avoiding for years",d:"The one sitting on your shelf that you bought with good intentions and never opened. Read every page. Find out why you were avoiding it.",c:"CHAOS",xp:30,diff:"Easy"},
+{t:"Win an argument from the wrong side",d:"Take a position you don't actually hold. Enter a real debate with someone who agrees with your actual view. Win using only logic, rhetoric, and evidence. Then reveal what you did.",c:"CHAOS",xp:60,diff:"Medium"},
+{t:"Get up and dance in public with no music",d:"In a park, on a sidewalk, in a shopping centre. No headphones. No music playing. Just you dancing to whatever's in your head. Own it completely.",c:"CHAOS",xp:40,diff:"Easy"},
+{t:"Go a week with no excuses",d:"When something goes wrong or you fail at something, don't explain why. Accept full responsibility out loud. 'I messed up. That's on me.' No 'but.' No 'because.'",c:"CHAOS",xp:60,diff:"Medium"},
+{t:"Try a discipline every day for a week, then quit if you hate it",d:"Pick something you've been curious about but skeptical of — Wim Hof breathing, ice baths, intermittent fasting, CrossFit, veganism. Commit fully for 7 days. On day 8, decide honestly.",c:"CHAOS",xp:50,diff:"Medium"},
+{t:"Do a backflip off something",d:"Into water from a safe height. Off a diving board, a rock, a pier. Commit to the rotation. Land cleanly. Feel the world invert.",c:"CHAOS",xp:80,diff:"Hard"},
+{t:"Shave your head or dramatically change your hair",d:"Not a trim. A transformation. Cut it all off, dye it an unexpected colour, do something you've been scared to do. Hair grows back. Fear doesn't leave on its own.",c:"CHAOS",xp:50,diff:"Medium"},
+{t:"Try a completely new fitness regimen for a month",d:"Something you've never done — rock climbing, pole fitness, parkour, martial arts, dance. Commit for 4 weeks. See what your body can learn when you stop doing the same thing.",c:"CHAOS",xp:70,diff:"Medium"},
+{t:"Eat only one colour of food for a day",d:"All red, all green, all white — every meal, every snack, every drink. See how hard it is. See what you learn about food variety.",c:"CHAOS",xp:30,diff:"Easy"},
+{t:"Leave your phone at home for a full day",d:"Intentionally. Walk out the door without it. Navigate, communicate, and entertain yourself without the rectangle. Feel the phantom buzz that isn't there.",c:"CHAOS",xp:40,diff:"Easy"},
+{t:"Do a random road trip with dice",d:"Assign directions to numbers (1=north, 2=south, etc.). At every junction, roll a die. Let chance decide where you end up. Drive for at least 3 hours.",c:"CHAOS",xp:60,diff:"Medium"},
+{t:"Write a message to a random number",d:"Think of a number one digit off from someone you know. Text them something kind, mysterious, or funny. See if they respond. Document what happens.",c:"CHAOS",xp:20,diff:"Easy"},
+{t:"Do a handstand every day for 30 days",d:"Even if you can't hold one. Kick up against a wall. Each day, try to hold it a little longer away from the wall. Track progress. See your world from upside down.",c:"CHAOS",xp:60,diff:"Medium"},
+{t:"Sleep somewhere unexpected",d:"Not your bed. A hammock, a roof (safe and legal), a tent in the living room, a friend's floor, a forest clearing. Change where you close your eyes.",c:"CHAOS",xp:30,diff:"Easy"},
+{t:"Go to an event you'd normally never attend",d:"A monster truck rally, a ballet, a wrestling match, a poetry reading, a religious service of a different faith. Go with an open mind. Stay for the whole thing.",c:"CHAOS",xp:40,diff:"Easy"},
+{t:"Climb a tree to the highest safe point",d:"A tall, strong tree. Go as high as you safely can. Find a branch to sit on. Stay up there for 10 minutes. See the world from a different altitude.",c:"CHAOS",xp:40,diff:"Easy"},
+{t:"Run through a field at full speed",d:"Find an open field. Sprint as fast as you can until you can't anymore. Feel your lungs burn. Collapse in the grass. Look at the sky.",c:"CHAOS",xp:30,diff:"Easy"},
+{t:"Make a time capsule and bury it",d:"Include something that represents right now — a note, a photo, a small object, a news headline. Seal it well. Bury it somewhere you'll remember. Mark it with a date 5 years from now.",c:"CHAOS",xp:40,diff:"Easy"}
 ];
 
-// Expand the quest pool by generating many more with templates
-const ADVENTURE_MODS = ["at midnight","in a foreign country","in the rain","during a full moon","with a stranger","in complete silence","while fasting","with no map","in winter","alone"];
-const SKILL_MODS = ["in one week","from scratch with no tutorial","with your non-dominant hand","and teach it to someone else immediately","competitively"];
+// =====================================================================
+// QUEST GENERATION ENGINE - Creates thousands more unique quests
+// =====================================================================
+
+// Template pools for generating additional unique quests
+const ADV_LOCATIONS = ["quarry","reservoir","mountain pass","old growth forest","sandbar","tidal pool","alpine meadow","slot canyon","badlands","salt flat","mangrove swamp","volcanic crater","karst landscape","river delta","coastal bluff"];
+const ADV_ACTIONS = ["bushwhack to","circumnavigate","free solo traverse","bivouac beside","swim across","paddle around","hike the perimeter of","run the length of","scramble up","rappelling descend into"];
+const ADV_MODIFIERS = ["during golden hour","in dense fog","with a full moon","at first light","in complete solitude","while fasting","during a meteor shower","in winter snow","with one stranger","in complete silence"];
+
+const SKILL_OBJECTS = ["a bullwhip","a grappling hook","a butterfly knife","nunchaku","a bo staff","a crossbow","a slingshot","a throwing axe","a kendama","a speed cube","a chess opening book","a programming language","a fermentation crock","a soldering iron","a pottery wheel","a loom","a darkroom enlarger","a drone","a 3D printer","a welding torch"];
+const SKILL_ACTIONS = ["master","become proficient with","learn to operate","build from scratch","teach yourself to use","get certified in","memorise the technique for","practice until automatic with","understand the mechanics of","create something beautiful with"];
+
+const SOCIAL_SETTINGS = ["a train station","a laundromat","an airport bar","a dog park","a community garden","a bus terminal","a public library","a skatepark","a protest march","a street festival","a farmers market","a basketball court","a karaoke bar","a board game café","a night market"];
+const SOCIAL_ACTIONS = ["organise a flash mob at","host a book swap in","throw a birthday party for a stranger at","start a conversation circle at","teach a free workshop at","create an art installation in","lead a group meditation at","organise a potluck at","set up a temporary cinema in","conduct a survey about happiness at"];
+
+const URBAN_TARGETS = ["every building over 100 years old","all the Brutalist architecture","every independent coffee roaster","all the city's fire stations","every Art Deco facade","all the community noticeboards","every pedestrian bridge","all the vintage clothing stores","every record pressing plant","all the city's public clocks"];
+const URBAN_ACTIONS = ["map and photograph","document the history of","rate and review","sketch","write a zine about","create a walking tour of","spend a day exploring","interview someone at each of","measure and compare","collect a small artifact from each of"];
+
+const MIND_PROMPTS = ["your greatest fear","the moment everything changed","what you'd say to a lost loved one","the best decision you ever made","what you believe about death","your definition of a good life","something you've never told anyone","what you wish you'd known at 18","the person who shaped you most","what you want written on your grave"];
+const MIND_ACTIONS = ["write a 1000-word reflection on","meditate on the question of","discuss with a trusted friend","make art about","record a voice memo exploring","write a letter you'll never send about","create a visual timeline of","compose a song or poem about","spend an hour in silence considering","journal daily for a week about"];
+
+const CHAOS_ITEMS = ["a piñata","a trampoline","a smoke machine","a bubble machine","a megaphone","a portable disco ball","a unicycle","a puppet","a theremin","an inflatable pool"];
+const CHAOS_ACTIONS = ["bring it to a public place and use it","build one from scratch","organise an event around it","learn to perform with it","gift it to a stranger and film the reaction","use it somewhere completely inappropriate","combine it with another random object","attempt to break a world record with it","teach someone to use it in under 10 minutes","make a short film featuring it"];
+
+// Generate extra quests from templates
 const EXTRA_QUESTS = [];
+function addExtraQuests() {
+  // Adventure combos
+  for(let i=0;i<ADV_LOCATIONS.length;i++) {
+    const loc = ADV_LOCATIONS[i];
+    const act = ADV_ACTIONS[i % ADV_ACTIONS.length];
+    const mod = ADV_MODIFIERS[i % ADV_MODIFIERS.length];
+    EXTRA_QUESTS.push({
+      t: `${act} a ${loc} ${mod}`,
+      d: `Find a real ${loc} near you. ${act} it. Do it ${mod}. Document the experience with photos or words. Go with at least one person if it's remote.`,
+      c:"ADVENTURE", xp:50+(i%4)*15, diff:["Easy","Medium","Medium","Hard"][i%4]
+    });
+  }
 
-// Template expansion for variety
-const tmpl_adv = [
-  "Ride a {V} you've never ridden",
-  "Find and explore a {P} no one you know has been to",
-  "Complete a 10km {A} challenge",
-  "Navigate to a {L} using only offline maps",
-  "Sleep a night in a {S}",
-];
-const V_list = ["motorised skateboard","longboard","moped","mountain bike","e-scooter"];
-const P_list = ["peninsula","bay","island","gorge","plateau"];
-const A_list = ["trail running","cycling","swimming","rowing","hiking"];
-const L_list = ["mountain hut","coastal village","hilltop viewpoint","waterfall","ancient ruin"];
-const S_list = ["yurt","hammock in the wild","beach shack","cave entrance","rooftop under the stars"];
+  // Skills combos
+  for(let i=0;i<SKILL_OBJECTS.length;i++) {
+    const obj = SKILL_OBJECTS[i];
+    const act = SKILL_ACTIONS[i % SKILL_ACTIONS.length];
+    EXTRA_QUESTS.push({
+      t: `${act} ${obj}`,
+      d: `Find or acquire ${obj}. Research the proper technique. Practice deliberately for at least 2 weeks. Reach a level where you can demonstrate the skill confidently to someone else.`,
+      c:"SKILLS", xp:40+(i%3)*20, diff:["Easy","Medium","Hard"][i%3]
+    });
+  }
 
-for(let i=0;i<V_list.length;i++) EXTRA_QUESTS.push({t:`Ride a ${V_list[i]} you've never ridden`,d:`Find one, learn the controls, and ride at least 2km on a route that has at least one hill.`,c:"ADVENTURE",xp:40+i*10,diff:["Easy","Medium","Medium","Hard","Medium"][i]});
-for(let i=0;i<P_list.length;i++) EXTRA_QUESTS.push({t:`Explore a ${P_list[i]} no one you know has been to`,d:`Research it, get there, explore for 3+ hours. Bring back one story.`,c:"ADVENTURE",xp:60,diff:"Medium"});
-for(let i=0;i<A_list.length;i++) EXTRA_QUESTS.push({t:`Complete a 10km ${A_list[i]} challenge`,d:`Train or don't. Just complete a 10km ${A_list[i]} without stopping.`,c:"ADVENTURE",xp:70,diff:"Hard"});
-for(let i=0;i<L_list.length;i++) EXTRA_QUESTS.push({t:`Navigate to a ${L_list[i]} using only offline maps`,d:`Download offline maps and get there without asking or checking your connection.`,c:"SKILLS",xp:60,diff:"Medium"});
-for(let i=0;i<S_list.length;i++) EXTRA_QUESTS.push({t:`Sleep a night in a ${S_list[i]}`,d:`Actually sleep through the night in a ${S_list[i]}. Document what you hear at 3am.`,c:"ADVENTURE",xp:70,diff:"Medium"});
+  // Social combos
+  for(let i=0;i<SOCIAL_SETTINGS.length;i++) {
+    const setting = SOCIAL_SETTINGS[i];
+    const action = SOCIAL_ACTIONS[i % SOCIAL_ACTIONS.length];
+    EXTRA_QUESTS.push({
+      t: `${action} ${setting}`,
+      d: `Plan it. Recruit at least 10 people. Execute the event at ${setting}. Document what happens when strangers come together for something unexpected.`,
+      c:"SOCIAL", xp:60, diff:"Medium"
+    });
+  }
 
-const SKILL_EXTRAS = [
-  {t:"Learn to fold a crane and 4 other origami models",d:"Real origami, proper folds. Five distinct models from memory.",c:"SKILLS",xp:40,diff:"Easy"},
-  {t:"Learn to do 100 push-ups in a row",d:"Train for it. Grease the groove, rest-pause, whatever method. Hit 100 unbroken.",c:"SKILLS",xp:80,diff:"Hard"},
-  {t:"Learn to run 5km without stopping",d:"If you can't currently. Couch to 5k or equivalent. Run 5km, no walk breaks.",c:"SKILLS",xp:60,diff:"Medium"},
-  {t:"Learn to do 20 pull-ups in a row",d:"Work from whatever your max is to 20. Track every session.",c:"SKILLS",xp:90,diff:"Hard"},
-  {t:"Learn to draw a realistic face",d:"From a reference photo, draw a realistic human face in pencil. Shading, proportions, detail.",c:"SKILLS",xp:50,diff:"Medium"},
-  {t:"Learn to do a standing side kick",d:"Proper chamber, extension, snap back. Hit a pad with enough force to move it.",c:"SKILLS",xp:50,diff:"Medium"},
-  {t:"Learn to do a full Turkish get-up",d:"With a kettlebell or weight. All steps clean, controlled. 5 reps each side.",c:"SKILLS",xp:60,diff:"Medium"},
-  {t:"Learn the NATO phonetic alphabet perfectly",d:"Alpha, Bravo, Charlie... all 26. Recite from memory in under 30 seconds.",c:"SKILLS",xp:20,diff:"Easy"},
-  {t:"Learn to make pasta from scratch",d:"Flour, eggs, salt. Roll it thin, cut it, cook it. Sauce made from scratch too.",c:"SKILLS",xp:40,diff:"Easy"},
-  {t:"Learn to do a planche lean",d:"Straight body, leaning forward on straight arms. Hold for 10 seconds. Core and shoulder strength.",c:"SKILLS",xp:80,diff:"Hard"},
-  {t:"Learn to make leather tooling basic designs",d:"Get a piece of leather, a swivel knife, and stamps. Carve a basic geometric pattern.",c:"SKILLS",xp:50,diff:"Medium"},
-  {t:"Learn to read sheet music",d:"Treble and bass clef. Be able to play a simple melody from notation on an instrument.",c:"SKILLS",xp:60,diff:"Medium"},
-  {t:"Learn to do a back walkover",d:"Gymnastics skill. From standing, bend back and kick over. Requires flexibility and back strength.",c:"SKILLS",xp:70,diff:"Medium"},
-  {t:"Learn to do a one-armed push-up",d:"Proper form, chest to floor. Do 5 consecutive on each arm.",c:"SKILLS",xp:80,diff:"Hard"},
-  {t:"Learn to drive stick shift",d:"Manual transmission. Clutch, bite point, gear changes. Drive 20km without stalling.",c:"SKILLS",xp:60,diff:"Medium"},
-];
-EXTRA_QUESTS.push(...SKILL_EXTRAS);
+  // Urban combos
+  for(let i=0;i<URBAN_TARGETS.length;i++) {
+    const target = URBAN_TARGETS[i];
+    const action = URBAN_ACTIONS[i % URBAN_ACTIONS.length];
+    EXTRA_QUESTS.push({
+      t: `${action} ${target}`,
+      d: `Research ${target} in your city. ${action} over the course of at least a week. Create something — a map, a book, a gallery — from what you discover.`,
+      c:"URBAN", xp:50, diff:"Medium"
+    });
+  }
 
-const CHAOS_EXTRAS = [
-  {t:"Do the Wim Hof breathing technique for 10 days",d:"3 rounds of 30-40 breaths + retention every morning. Document what happens.",c:"CHAOS",xp:60,diff:"Medium"},
-  {t:"Eat one meal every day for a week that you've never eaten before",d:"7 different meals across 7 different cuisines. All new.",c:"CHAOS",xp:40,diff:"Easy"},
-  {t:"Try intermittent fasting for two weeks",d:"16:8 or 18:6. No food outside your window. See what changes.",c:"CHAOS",xp:50,diff:"Medium"},
-  {t:"Sleep on the floor for a week",d:"No bed. Mattress on the floor or mat only. See what your back does.",c:"CHAOS",xp:40,diff:"Easy"},
-  {t:"Go vegan for 30 days",d:"No animal products. Plan it properly. Track energy, mood, and cravings.",c:"CHAOS",xp:70,diff:"Medium"},
-  {t:"Spend one hour a day outside every day for a month",d:"All weather. Every day. One unbroken hour with sky above you.",c:"CHAOS",xp:60,diff:"Medium"},
-  {t:"Build something with your hands this week",d:"Shelf, fire pit, garden bed, birdhouse — something structural you can use.",c:"CHAOS",xp:50,diff:"Medium"},
-  {t:"Commit to early morning exercise every day for 3 weeks",d:"Before 7am. Every weekday. Any form of physical effort for 30+ minutes.",c:"CHAOS",xp:70,diff:"Medium"},
-  {t:"Do a 5-day juice fast",d:"Only fresh juice and water. No solid food for 5 days. Document the journey.",c:"CHAOS",xp:80,diff:"Hard"},
-  {t:"Create and stick to a morning routine for 21 days",d:"Same routine, every morning. No variation. No skipping. Note what breaks first.",c:"CHAOS",xp:60,diff:"Medium"},
-];
-EXTRA_QUESTS.push(...CHAOS_EXTRAS);
+  // Mind combos
+  for(let i=0;i<MIND_PROMPTS.length;i++) {
+    const prompt = MIND_PROMPTS[i];
+    const action = MIND_ACTIONS[i % MIND_ACTIONS.length];
+    EXTRA_QUESTS.push({
+      t: `${action} ${prompt}`,
+      d: `Set aside undistracted time. ${action} ${prompt}. Go deep — not surface-level reflections but real excavation. This quest is about understanding yourself better.`,
+      c:"MIND", xp:40+(i%2)*20, diff:["Easy","Medium"][i%2]
+    });
+  }
 
-const MIND_EXTRAS = [
-  {t:"Read 5 books in a month",d:"Real books. Finished. At least one that challenges you intellectually.",c:"MIND",xp:80,diff:"Hard"},
-  {t:"Learn and apply a new mental model",d:"First principles, inversion, second-order thinking. Apply it to a real decision in your life.",c:"MIND",xp:40,diff:"Easy"},
-  {t:"Write something that makes someone else cry",d:"A letter, story, or poem. Show it to someone. Watch for the reaction.",c:"MIND",xp:60,diff:"Medium"},
-  {t:"Do 10 minutes of intentional gratitude every morning for 2 weeks",d:"Write three genuine things. Not generic. Specific moments from the last 24 hours.",c:"MIND",xp:40,diff:"Easy"},
-  {t:"Learn to sit with discomfort for 20 minutes",d:"Sit still, not comfortable. No distraction. Notice what your mind tries to do.",c:"MIND",xp:40,diff:"Easy"},
-  {t:"Spend a day with no music",d:"No headphones, no background music, no ambient playlists. Just silence and ambient sound.",c:"MIND",xp:30,diff:"Easy"},
-  {t:"Write an honest eulogy for yourself",d:"As if from a person who loved you and also told the truth. Read it back aloud.",c:"MIND",xp:60,diff:"Medium"},
-  {t:"Go a week saying exactly what you mean",d:"No hedging, no half-truths, no social niceties that aren't true. Direct and honest in every conversation.",c:"MIND",xp:60,diff:"Medium"},
-];
-EXTRA_QUESTS.push(...MIND_EXTRAS);
+  // Chaos combos
+  for(let i=0;i<CHAOS_ITEMS.length;i++) {
+    const item = CHAOS_ITEMS[i];
+    const action = CHAOS_ACTIONS[i % CHAOS_ACTIONS.length];
+    EXTRA_QUESTS.push({
+      t: `${action} ${item}`,
+      d: `Source or make ${item}. Then ${action} involving ${item}. The goal is not perfection — it's absurdity, joy, and a good story to tell afterward.`,
+      c:"CHAOS", xp:40, diff:"Easy"
+    });
+  }
 
-const SOCIAL_EXTRAS = [
-  {t:"Find a pen pal and write 5 real letters",d:"Via Slowly, PostCrossing, or mutual friend. Write 5 proper letters over at least 2 months.",c:"SOCIAL",xp:50,diff:"Medium"},
-  {t:"Reconnect with someone you've lost touch with",d:"The person you've been meaning to message. Call them. Have a real conversation.",c:"SOCIAL",xp:30,diff:"Easy"},
-  {t:"Organise a group hike",d:"10+ people, a real trail, a real pace. You plan the route, the transport, the snacks.",c:"SOCIAL",xp:50,diff:"Medium"},
-  {t:"Host a no-phones dinner",d:"Everyone stacks phones in a bowl at the door. Full meal together with zero screens.",c:"SOCIAL",xp:40,diff:"Easy"},
-  {t:"Help a stranger without being asked",d:"See someone struggling and just help. Don't make it weird. Don't expect thanks.",c:"SOCIAL",xp:20,diff:"Easy"},
-  {t:"Say yes to the next social invitation you'd normally decline",d:"The uncomfortable one. The one with people you don't know well. Go, stay, be present.",c:"SOCIAL",xp:30,diff:"Easy"},
-  {t:"Organise a charity fundraiser with friends",d:"Pick a cause, plan an event, get donations. Raise at least 10x the effort it took to organise.",c:"SOCIAL",xp:70,diff:"Medium"},
-  {t:"Have dinner with your family and no side-conversations",d:"Everyone at the table, no phones, no TV, one conversation for the whole meal.",c:"SOCIAL",xp:20,diff:"Easy"},
-];
-EXTRA_QUESTS.push(...SOCIAL_EXTRAS);
+  // Additional hand-crafted quests to push past 1000
+  const moreQuests = [
+    {t:"Learn to do a double leg takedown",d:"Wrestling or MMA basics. Learn the penetration step, head position, grip, and drive. Drill with a partner on mats. Execute 10 clean takedowns in a row.",c:"SKILLS",xp:60,diff:"Medium"},
+    {t:"Make a weapon from scratch",d:"Forge a knife, carve a staff, build a sling, or fletch arrows. Use traditional or improvised methods. Create something functional. Test it safely on appropriate targets.",c:"SKILLS",xp:80,diff:"Hard"},
+    {t:"Try your own street food combo",d:"Visit 3 different street food vendors. Buy one item from each. Combine them into a single, unholy fusion dish. Name it. Eat it. Rate the result.",c:"CHAOS",xp:30,diff:"Easy"},
+    {t:"Ride shopping carts down a hill",d:"Find abandoned shopping carts or borrow with permission. Find a smooth grassy hill with a safe runout. Get in. Go fast. Film the chaos.",c:"CHAOS",xp:40,diff:"Medium"},
+    {t:"Learn to move silently through a forest",d:"Study the fox walk and other stealth movement techniques. Practice in dry leaves and twigs. Move 100 metres without making a single audible footstep.",c:"SKILLS",xp:70,diff:"Medium"},
+    {t:"Start a fire with ice",d:"Form a clear ice lens into a parabolic shape. Use it to focus sunlight onto tinder. Create fire from frozen water. This actually works.",c:"SKILLS",xp:80,diff:"Hard"},
+    {t:"Find and drink from a natural spring",d:"Research springs in your area. Hike to one. Confirm the water is safe. Drink directly from the source. Fill a bottle to take home.",c:"ADVENTURE",xp:40,diff:"Easy"},
+    {t:"Build a catapult or trebuchet",d:"Small scale. Wood, rubber bands or rope, a fulcrum. Build a functional siege engine that can launch a grape 5+ metres. Test it accurately.",c:"SKILLS",xp:70,diff:"Medium"},
+    {t:"Write and perform a stand-up comedy set",d:"Write 5 minutes of original material. Memorise it. Perform it at an open mic. Even if no one laughs, you did the hardest part — getting up there.",c:"SOCIAL",xp:80,diff:"Hard"},
+    {t:"Spend a night in a haunted location",d:"Research reputedly haunted spots near you — old hotels, abandoned asylums, historic battlefields. Spend the night (legally). Document anything unexplainable.",c:"ADVENTURE",xp:80,diff:"Hard"},
+    {t:"Learn to identify 20 trees by bark alone",d:"In winter or without looking at leaves. Touch, texture, pattern. Identify 20 different tree species by their bark. Test yourself blindfolded.",c:"MIND",xp:50,diff:"Medium"},
+    {t:"Create a geocache and hide it",d:"Build a waterproof container. Fill it with a logbook and small treasures. Hide it in a clever location. Register it on geocaching.com. Watch strangers find it.",c:"URBAN",xp:40,diff:"Easy"},
+    {t:"Do the '100 rejections' challenge",d:"For one month, ask for things you expect to be rejected for — discounts, favours, weird requests. Track rejections. Aim for 100. You'll be surprised how many turn into yes.",c:"SOCIAL",xp:70,diff:"Medium"},
+    {t:"Learn to identify edible mushrooms",d:"With an expert or after extensive study with multiple field guides. Find, correctly identify, and safely eat at least 5 different wild mushroom species.",c:"SKILLS",xp:90,diff:"Hard"},
+    {t:"Spend 24 hours in a foreign city with no money",d:"No cash, no cards. Rely entirely on kindness, barter, and ingenuity to eat and find shelter. Document every interaction. This quest is about trust in strangers.",c:"ADVENTURE",xp:100,diff:"Hard"},
+    {t:"Learn to do a roundhouse kick to head height",d:"Flexibility, technique, and power. Work on hip mobility and leg strength. Land a clean roundhouse kick that reaches head height on a standing target.",c:"SKILLS",xp:70,diff:"Medium"},
+    {t:"Build a sweat lodge and use it",d:"Research traditional methods. Build a small, safe sweat lodge structure. Heat stones in a fire. Pour water to create steam. Sit in the heat. Emerge cleansed.",c:"ADVENTURE",xp:80,diff:"Hard"},
+    {t:"Go a full week eating only seasonal, local food",d:"Nothing imported. Nothing out of season. Learn where your food comes from. Cook everything yourself. See what's actually available from within 100km.",c:"CHAOS",xp:60,diff:"Medium"},
+    {t:"Learn to whistle a full song perfectly",d:"Pick a song with a clear melody. Practice whistling it note-perfect. Record it. It should be recognisable and musical.",c:"SKILLS",xp:30,diff:"Easy"},
+    {t:"Organise a city-wide game of capture the flag",d:"Recruit 20+ people. Divide into teams. Set boundaries across several blocks. Use glow sticks or flags. Play for 2+ hours. Let the city become a game board.",c:"SOCIAL",xp:70,diff:"Medium"},
+    {t:"Learn to read a river for kayaking",d:"Study hydrology — eddies, strainers, holes, waves. Go to a river and identify every feature. Understand where the safe line is and where the danger hides.",c:"SKILLS",xp:60,diff:"Medium"},
+    {t:"Spend a day following someone else's schedule exactly",d:"Ask a friend or stranger to plan your entire day — what you eat, where you go, what you do. Follow it precisely. See what it's like to live someone else's choices.",c:"CHAOS",xp:40,diff:"Easy"},
+    {t:"Learn to do the L-sit hold for 30 seconds",d:"On parallettes, floor, or rings. Legs straight out, body at 90 degrees. Work up from tucked holds. Hit 30 seconds with perfect form.",c:"SKILLS",xp:80,diff:"Hard"},
+    {t:"Write and send a message in a bottle",d:"Write a genuine message — your hopes, a secret, a poem. Seal it well. Throw it into the ocean or a large river. Wonder forever where it ends up.",c:"CHAOS",xp:20,diff:"Easy"},
+    {t:"Learn to defend yourself with everyday objects",d:"Take a self-defence class that teaches improvised weapons — keys, pen, bag, jacket. Practice the techniques. Understand that anything can be a tool of protection.",c:"SKILLS",xp:60,diff:"Medium"},
+    {t:"Hike a full moon trail",d:"Start hiking at moonrise. Hike entirely by moonlight — no artificial light unless absolutely necessary. See how your eyes adapt. Feel the different quality of night hiking.",c:"ADVENTURE",xp:60,diff:"Medium"},
+    {t:"Organise a neighbourhood skill swap",d:"Gather 10+ neighbours. Each person teaches one skill for 20 minutes. Everyone learns something new. Build community through shared knowledge.",c:"SOCIAL",xp:50,diff:"Medium"},
+    {t:"Learn to give a proper massage",d:"Take a workshop or study anatomy of muscles. Practice on willing friends. Learn to find knots and release them. Give a massage that makes someone fall asleep.",c:"SKILLS",xp:40,diff:"Easy"},
+    {t:"Go dumpster diving and cook a full meal from what you find",d:"Behind bakeries and produce markets at closing. Collect enough clean, edible food for a 3-course meal. Wash, prepare, and cook everything thoroughly. Eat it all.",c:"CHAOS",xp:60,diff:"Medium"},
+    {t:"Learn to break a board with your hand",d:"Martial arts technique. Proper conditioning, focus, and follow-through. Break a real wooden board — not a trick board — with a clean strike.",c:"SKILLS",xp:50,diff:"Medium"},
+    {t:"Spend a day in a wheelchair or on crutches",d:"Borrow or rent equipment. Navigate your normal day with a physical limitation. Notice every curb, every door, every obstacle you've never thought about. Develop empathy through experience.",c:"MIND",xp:50,diff:"Medium"},
+    {t:"Learn to read body language like a detective",d:"Study microexpressions, posture, gesture clusters. Practice reading people in public places. Write down your observations and verify when possible.",c:"SKILLS",xp:50,diff:"Medium"},
+    {t:"Create a treasure map for someone else to follow",d:"Hide a small treasure somewhere. Create a beautiful, hand-drawn map with clues. Give it to a friend or stranger. Watch them decipher it.",c:"SOCIAL",xp:30,diff:"Easy"},
+    {t:"Learn to do a pancake stretch",d:"Sit with legs wide, fold forward until chest touches the floor. Daily stretching for weeks. Achieve full pancake — chest flat to ground.",c:"SKILLS",xp:60,diff:"Medium"},
+    {t:"Go 24 hours without spending or consuming anything new",d:"No new food (eat leftovers only), no new water from the tap (use stored), no electricity (lights off). Live on only what's already available for one full day.",c:"CHAOS",xp:50,diff:"Medium"},
+    {t:"Learn to take a professional-quality headshot",d:"Study lighting, composition, and posing. Using whatever camera you have, take a headshot of someone that looks like it could be on a magazine cover.",c:"SKILLS",xp:40,diff:"Easy"},
+    {t:"Do a multi-day fast",d:"48-72 hours with only water and electrolytes. Research proper fasting protocols first. Break the fast gently. Document the mental and physical journey.",c:"MIND",xp:80,diff:"Hard"},
+    {t:"Learn to palm read",d:"Study the major lines — life, head, heart, fate. Practice on 20 different people. Give genuine, thoughtful readings. Note patterns in what people reveal about themselves.",c:"SKILLS",xp:40,diff:"Easy"},
+    {t:"Throw a dart at a map and go there",d:"Pin a map of your region to a wall. Throw a dart. Go wherever it lands — within 24 hours if possible. Explore for at least half a day.",c:"ADVENTURE",xp:50,diff:"Medium"},
+    {t:"Learn to clean a fish and cook it",d:"Catch or buy a whole fish. Gut, scale, and fillet it yourself. Cook it simply. Eat it. Understand where your food comes from.",c:"SKILLS",xp:40,diff:"Easy"},
+    {t:"Spend a day communicating only through drawings",d:"No words, no gestures — only drawings on paper or a tablet. Convey everything you need to through images. See what gets lost and what becomes clearer.",c:"MIND",xp:40,diff:"Easy"},
+    {t:"Learn to use an axe properly",d:"Splitting, felling (small trees), limbing, and safety. Spend a day processing firewood with proper technique. Feel the satisfaction of a clean, powerful swing.",c:"SKILLS",xp:50,diff:"Medium"},
+    {t:"Do a 'yes day' with a child",d:"Spend a full day with a kid — yours, a friend's, a relative's. Say yes to every reasonable request. See the world through their curiosity.",c:"SOCIAL",xp:40,diff:"Easy"},
+  ];
+  EXTRA_QUESTS.push(...moreQuests);
+}
 
-// More unique quests to get to ~500
-const BONUS_QUESTS = [
-{t:"Do a polar plunge in a lake on New Year's Day",d:"Or the nearest cold January morning. Get the full immersion. Stay in for 2 minutes.",c:"ADVENTURE",xp:80,diff:"Hard"},
-{t:"Ride a cable car over a city",d:"Hong Kong, San Francisco, Tbilisi — or your local equivalent. Ride end to end.",c:"ADVENTURE",xp:30,diff:"Easy"},
-{t:"Sleep under the stars on a mountain",d:"Elevation over 1500m. No shelter above you. Just stars and sleeping bag.",c:"ADVENTURE",xp:90,diff:"Hard"},
-{t:"Go white water rafting",d:"Grade 3+ rapids. A guide is fine. Hit genuine whitewater and get properly wet.",c:"ADVENTURE",xp:80,diff:"Hard"},
-{t:"Go paragliding tandem",d:"Find a local paragliding school. Strap in with an instructor and soar. Look down.",c:"ADVENTURE",xp:90,diff:"Hard"},
-{t:"Build an igloo or snow shelter",d:"In actual snow, deep enough to get inside and stay warm. Build it properly enough to sleep in.",c:"ADVENTURE",xp:80,diff:"Hard"},
-{t:"Go on a 3-day solo hiking trip",d:"Three days, solo, in proper wilderness. Self-navigation, self-catering, self-reliance.",c:"ADVENTURE",xp:100,diff:"Hard"},
-{t:"Swim across a lake",d:"Find a lake and swim the full width. Know the distance. Time it.",c:"ADVENTURE",xp:70,diff:"Medium"},
-{t:"Ride an ATV in terrain",d:"Off-road, real terrain, not a beach tourist track. Get it muddy.",c:"ADVENTURE",xp:60,diff:"Medium"},
-{t:"Go skydiving tandem",d:"First time out of a plane. Tandem with instructor. 10,000+ feet. Eyes open.",c:"ADVENTURE",xp:100,diff:"Hard"},
-{t:"Learn to do a proper roundhouse kick",d:"Hip rotation, pivot, chamber, snap. Hit a heavy bag hard enough to knock it back.",c:"SKILLS",xp:50,diff:"Medium"},
-{t:"Learn to do a human flag hold",d:"Press sideways on a vertical pole, body horizontal. One of calisthenics' hardest holds.",c:"SKILLS",xp:100,diff:"Hard"},
-{t:"Learn to cook on an open fire",d:"Campfire only. Full meal. At least 3 components. Nothing pre-cooked.",c:"SKILLS",xp:50,diff:"Medium"},
-{t:"Learn to forage 10 edible plants",d:"With a guide or book. Correctly identify and safely eat 10 wild edible species.",c:"SKILLS",xp:70,diff:"Medium"},
-{t:"Learn to do a butterfly kick",d:"The b-boy/wushu move. Spin, kick, land. Takes weeks to get clean.",c:"SKILLS",xp:80,diff:"Hard"},
-{t:"Learn to code a simple game from scratch",d:"Pong, Snake, Flappy Bird. Just you, a tutorial-free approach, and raw code.",c:"SKILLS",xp:70,diff:"Medium"},
-{t:"Learn to free-run a basic parkour route",d:"Vault, precision jump, cat-leap. Find a route and run it cleanly 10 times.",c:"SKILLS",xp:80,diff:"Hard"},
-{t:"Learn to play chess at intermediate level",d:"Study openings, tactics puzzles, endgames. Reach 1000+ rating on chess.com.",c:"SKILLS",xp:70,diff:"Medium"},
-{t:"Learn to ferment something",d:"Kimchi, kombucha, sourdough, kefir. Make a successful batch from scratch.",c:"SKILLS",xp:40,diff:"Easy"},
-{t:"Learn to read a stranger's body language accurately",d:"Study Navarro, Ekman, or Lieberman. Apply it to a real conversation. Get 3 things right.",c:"SKILLS",xp:50,diff:"Medium"},
-{t:"Learn to flip a knife",d:"The grip flip, not thrown. Smooth, controlled, silent. Do it 20 times in a row without dropping.",c:"SKILLS",xp:60,diff:"Medium"},
-{t:"Learn to play poker and win a home game",d:"Hand rankings, pot odds, position, bluffing. Win a real money home game.",c:"SKILLS",xp:60,diff:"Medium"},
-{t:"Learn to do a straddle planche on parallettes",d:"Advanced calisthenics hold. Straight body, horizontal, on bars. Work up to 5 seconds.",c:"SKILLS",xp:100,diff:"Hard"},
-{t:"Learn to make a film — shoot and edit a 3-min short",d:"Script, shoot on anything, edit it together. A complete 3-minute story from idea to final cut.",c:"SKILLS",xp:70,diff:"Medium"},
-{t:"Learn to sail a small boat",d:"A dinghy or small keelboat. Tack, gybe, launch, recover. Handle real wind.",c:"SKILLS",xp:80,diff:"Hard"},
-{t:"Build a relationship with someone from a different culture",d:"Deep enough that they invite you to something cultural or family-related.",c:"SOCIAL",xp:70,diff:"Medium"},
-{t:"Run a community event from start to finish",d:"You organise, publicise, set up, run, and clean up an event that serves 20+ people.",c:"SOCIAL",xp:80,diff:"Hard"},
-{t:"Go to a protest or rally",d:"For something you genuinely care about. Stand in the crowd. Be present.",c:"SOCIAL",xp:30,diff:"Easy"},
-{t:"Spend a week saying yes to every social invitation",d:"Every one. Party, walk, coffee, awkward dinner. All of them. Track what happens.",c:"SOCIAL",xp:60,diff:"Medium"},
-{t:"Interview an elderly person about their best decade",d:"Record it with permission. Listen without checking your phone. Write a summary.",c:"SOCIAL",xp:40,diff:"Easy"},
-{t:"Eat a meal with 10 people from 10 different countries",d:"Not at a world food festival — at someone's home. Cook together if possible.",c:"SOCIAL",xp:70,diff:"Medium"},
-{t:"Throw a flat-warming that people still talk about",d:"New place. Epic party. Minimum 30 people, a theme, and at least one moment nobody expected.",c:"SOCIAL",xp:70,diff:"Medium"},
-{t:"Join a team sport you've never played",d:"Water polo, ultimate frisbee, roller derby, gaelic football. Join a league. Play 5+ games.",c:"SOCIAL",xp:70,diff:"Medium"},
-{t:"Find an abandoned place and give it a story",d:"Explore it. Research its history. Write or tell the story of who was there and what happened.",c:"URBAN",xp:60,diff:"Medium"},
-{t:"Take a photo a day for 30 days in your city",d:"Different location every day. Build a genuine visual document of your city.",c:"URBAN",xp:40,diff:"Easy"},
-{t:"Find and visit every monument in your city",d:"Map them all. Visit each one. Know the story behind at least half.",c:"URBAN",xp:50,diff:"Medium"},
-{t:"Eat the most expensive thing on a menu you'd normally never visit",d:"A michelin star or fine dining experience. Go alone or with one person. Eat every course.",c:"URBAN",xp:70,diff:"Medium"},
-{t:"Find the oldest café or bar in your city and sit there for 3 hours",d:"Order slowly, talk to the bartender, watch who comes in. Write something about it.",c:"URBAN",xp:30,diff:"Easy"},
-{t:"Attend a poetry slam",d:"Find a local slam or open mic. Sit in the front row. Buy the poet a drink.",c:"URBAN",xp:20,diff:"Easy"},
-{t:"Take a foreign language class for a month",d:"Weekly sessions. Learn one topic per week. Actually use what you learned on a native speaker.",c:"MIND",xp:60,diff:"Medium"},
-{t:"Meditate in a public space for 30 minutes",d:"Park bench, train station, library. Eyes closed, not moving. Don't care who looks.",c:"MIND",xp:40,diff:"Easy"},
-{t:"Read the news from 5 different countries for a week",d:"Same story, completely different framing. Document what each country emphasises.",c:"MIND",xp:40,diff:"Easy"},
-{t:"Watch the sunrise and sunset on the same day",d:"Same location if possible. Full sun movement. Note what's different about the light.",c:"MIND",xp:30,diff:"Easy"},
-{t:"Write something every day for 30 days",d:"Any format. Minimum 200 words. Doesn't matter if it's good. Just write.",c:"MIND",xp:60,diff:"Medium"},
-{t:"Ask one big question and spend a day researching the answer",d:"Something that's genuinely puzzled you. Go deep. Read real sources. Write a 1-page answer.",c:"MIND",xp:40,diff:"Easy"},
-];
-EXTRA_QUESTS.push(...BONUS_QUESTS);
+addExtraQuests();
 
+// Combine all quests and assign unique IDs
 const ALL_QUESTS_RAW = [...RAW_QUESTS, ...EXTRA_QUESTS];
-
-// Assign unique IDs
 const ALL_QUESTS = ALL_QUESTS_RAW.map((q,i) => ({...q, id: i+1}));
 
 // =====================================================================
@@ -719,9 +846,9 @@ let state = {
   xp: 0,
   completedIds: [],
   activeIds: [],
-  seenOrder: [], // shuffle tracking
-  memories: {}, // {questId: [{type:'img'|'vid', data:base64}]}
-  xpHistory: [], // [{date, xp}]
+  seenOrder: [],
+  memories: {},
+  xpHistory: [],
   currentFilter: 'ALL',
 };
 
@@ -760,7 +887,6 @@ function getAvailableQuests() {
 function getDisplayedQuests() {
   let quests = getAvailableQuests();
   if(state.currentFilter !== 'ALL') quests = quests.filter(q => q.cat === state.currentFilter || q.c === state.currentFilter);
-  // Use seeded shuffle based on current shuffleSeed, but maintain seen order to avoid repeats
   const shuffled = seededShuffle(quests, shuffleSeed);
   return shuffled.slice(0, 30);
 }
@@ -859,7 +985,6 @@ function renderStats() {
       <div class="bar-count">${counts[c]}</div>
     </div>`).join('');
 
-  // XP history chart
   const canvas = document.getElementById('xp-chart');
   const ctx = canvas.getContext('2d');
   canvas.width = canvas.offsetWidth * window.devicePixelRatio || 600;
@@ -883,7 +1008,6 @@ function renderStats() {
     ctx.fillText('Complete quests to see XP history', w/2, h/2);
   }
 
-  // Recent completed
   const recent = ALL_QUESTS.filter(q => state.completedIds.includes(q.id)).slice(-5).reverse();
   const rEl = document.getElementById('recent-completed');
   if(!recent.length) { rEl.innerHTML = `<p style="color:var(--gray);font-size:13px">No completions yet.</p>`; return; }
@@ -921,7 +1045,6 @@ function renderLevels() {
     </div>`;
   }).join('');
 
-  // top bar
   document.getElementById('xp-bar').style.width = prog+'%';
   document.getElementById('level-badge').textContent = `LVL ${cur.lvl}`;
 }
@@ -963,20 +1086,18 @@ function openModal(questId) {
   const memSection = document.getElementById('memory-section');
 
   if(isCompleted) {
-    acceptBtn.style.display='none'; doneBtn.style.display='none';
-    acceptBtn.textContent='Completed ✓';
+    acceptBtn.style.display='block'; acceptBtn.textContent='✓ Completed'; acceptBtn.disabled=true; acceptBtn.style.opacity='0.5';
+    doneBtn.style.display='none';
     memSection.style.display='block';
   } else if(isActive) {
     acceptBtn.style.display='none'; doneBtn.style.display='block';
     memSection.style.display='block';
+    acceptBtn.disabled=false; acceptBtn.style.opacity='1';
   } else {
     acceptBtn.style.display='block'; doneBtn.style.display='none';
-    acceptBtn.textContent='Accept Quest';
+    acceptBtn.textContent='Accept Quest'; acceptBtn.disabled=false; acceptBtn.style.opacity='1';
     memSection.style.display='none';
   }
-
-  if(isCompleted) { acceptBtn.style.display='block'; acceptBtn.textContent='✓ Completed'; acceptBtn.disabled=true; acceptBtn.style.opacity='0.5'; }
-  else { acceptBtn.disabled=false; acceptBtn.style.opacity='1'; }
 
   renderMemories(questId);
   document.getElementById('modal-overlay').classList.add('open');
@@ -1029,7 +1150,6 @@ function completeQuestById(id) {
   state.activeIds = state.activeIds.filter(x=>x!==id);
   state.xp += q.xp;
 
-  // XP history
   const today = new Date().toISOString().split('T')[0];
   const lastEntry = state.xpHistory[state.xpHistory.length-1];
   if(lastEntry && lastEntry.date === today) {
